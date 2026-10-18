@@ -578,7 +578,7 @@ async function main() {
   const SUNO = { lobby: 'music_lobby', battle: 'music_battle', battle_intense: 'music_battle_intense', boss: 'music_boss_suno',
     victory: 'jingle_victory_suno', defeat: 'jingle_defeat_suno' };
   // loop points measured on the decoded Suno files (bar-aligned, skipping each song's ending)
-  const LOOPS = { lobby: [0.15, 159.4], battle: [24.55, 165.35], battle_intense: [8.35, 161.8] };
+  const LOOPS = { lobby: [0.15, 159.4], battle: [24.55, 165.35], battle_intense: [8.69, 161.2] };
   for (const [key, base] of Object.entries(SUNO)) {
     const src = ['.mp3', '.ogg', '.wav'].map(ext => path.join(ROOT, 'assets-src', 'music', base + ext)).find(f => fs.existsSync(f));
     if (!src) continue;
