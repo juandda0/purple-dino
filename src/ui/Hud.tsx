@@ -42,12 +42,11 @@ export function HpBars({ hp, max }: { hp: number; max: number }) {
   );
 }
 
-/** Countdown with the 12-dot ring from Pixel UI pack 3 (5 steps from full to empty). */
-export function TimerRing({ seconds, total, panic }: { seconds: number; total: number; panic: boolean }) {
-  const step = Math.min(4, Math.max(0, 4 - Math.floor((seconds / total) * 5)));
+/** Countdown: just the seconds in a framed box (the 12-dot ring was dropped, 2026-10-18). */
+export function Timer({ seconds, panic }: { seconds: number; panic: boolean }) {
   return (
-    <div className={`ring tag ${panic ? 'panic' : ''}`} style={{ backgroundImage: `url(${A}/ui/timer_${step}.png)` }} role="timer" aria-label={`${seconds} seconds left`}>
-      <span className="disp" style={{ fontSize: 34, color: panic ? 'var(--red)' : 'var(--yellow)' }}>{seconds}</span>
+    <div className={`timer tag ${panic ? 'panic' : ''}`} role="timer" aria-label={`${seconds} seconds left`}>
+      <span className="disp" style={{ fontSize: 40, color: panic ? 'var(--red)' : 'var(--yellow)' }}>{seconds}</span>
     </div>
   );
 }

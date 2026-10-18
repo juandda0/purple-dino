@@ -106,8 +106,8 @@ button:disabled { cursor: not-allowed; }
 .hpbar { position: relative; width: 84px; height: 22px; background: url(/assets/ui/hp_frame.png) 0 0 / 84px 22px no-repeat; image-rendering: pixelated; }
 .hpbar::after { content: ''; position: absolute; left: 8px; top: 6px; width: 68px; height: 10px; background: url(/assets/ui/hp_fill.png) 0 0 / 68px 10px no-repeat; image-rendering: pixelated; }
 .hpbar.empty::after { background-image: url(/assets/ui/hp_empty.png); }
-.ring { display: flex; align-items: center; justify-content: center; width: 112px; height: 112px; background: rgba(14, 10, 30, .88) no-repeat 8px 8px / 96px 96px; image-rendering: pixelated; }
-.ring.panic { animation: pulse .5s steps(2) infinite; }
+.timer { display: flex; align-items: center; justify-content: center; width: 112px; height: 88px; background: rgba(14, 10, 30, .88); }
+.timer.panic { animation: pulse .5s steps(2) infinite; }
 @keyframes pulse { 50% { transform: scale(1.08); } }
 
 /* answers */
@@ -161,7 +161,7 @@ button:disabled { cursor: not-allowed; }
 @keyframes fall { from { transform: translateY(-40px); } to { transform: translateY(940px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .walking .pov, .shake, .enemy, .ring.panic, .danger, .confetti-piece, .float-up, .pop-in, .block .pov-shield,
+  .walking .pov, .shake, .enemy, .timer.panic, .danger, .confetti-piece, .float-up, .pop-in, .block .pov-shield,
   .spr:not(.once) { animation: none !important; transition: none !important; }
   .bar > div { transition: none; }
 }

@@ -15,7 +15,7 @@ const ALLOW = [
   'pov/shield_?_*.png', 'pov/shield_block_1.png', 'pov/shield_shards.png', 'pov/sword_idle.png', 'pov/sword_attack_2_arm_long.png',
   'dinos/avatar_*.png', 'dinos/hero_idle_3x.png', 'dinos/hero_move_3x.png', 'dinos/hero_jump_3x.png', 'dinos/hero_dead_3x.png',
   'dinos/princess_idle_3x.png',
-  'ui/crest_full.png', 'ui/crest_empty.png', 'ui/hp_*.png', 'ui/timer_?.png', 'ui/frame_purple_0.png', 'ui/emblem_purple.png',
+  'ui/crest_full.png', 'ui/crest_empty.png', 'ui/hp_*.png', 'ui/frame_purple_0.png', 'ui/emblem_purple.png',
   'fx/hit_ring.png', 'fx/shadow_puff.png', 'fx/dust.png', 'fx/swing_arc_3.png',
   'castles/sunny_18.png',
   'audio/music.json', ...Object.values(music).map(t => `audio/${t.file}`),

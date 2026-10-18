@@ -7,7 +7,7 @@ import { BOSS_STOP, DIFFICULTY, isLastChance, shieldFor, type ShieldSprite } fro
 import { STOPS } from '../../game/stops';
 import type { BattleState, Room } from '../../game/types';
 import { ANSWER_STYLES } from '../../ui/answers';
-import { HpBars, Road, ShieldRow, TimerRing } from '../../ui/Hud';
+import { HpBars, Road, ShieldRow, Timer } from '../../ui/Hud';
 import { Sprite } from '../../ui/Sprite';
 
 const A = '/assets';
@@ -122,7 +122,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
         {question && <div className="tag" style={{ padding: '8px 14px', fontSize: 16, background: 'var(--dino-dark)' }}>UNIT {question.unit}</div>}
         {state.combo >= 2 && <div className="tag pop-in" style={{ padding: '8px 14px', fontSize: 16, background: 'var(--yellow)', color: 'var(--ink)' }}>COMBO x{state.combo}</div>}
       </div>
-      {room.status === 'question' && <div className="abs" style={{ left: 744, top: 20 }}><TimerRing seconds={seconds} total={total} panic={panic} /></div>}
+      {room.status === 'question' && <div className="abs" style={{ left: 744, top: 20 }}><Timer seconds={seconds} panic={panic} /></div>}
 
       {walking && <WalkBanner stopIndex={state.stop} />}
       {room.status === 'question' && question && (

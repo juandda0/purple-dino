@@ -10,7 +10,6 @@ const IMAGES = [
   `${A}/pov/sword_idle.png`, `${A}/pov/sword_attack_2_arm_long.png`, `${A}/fx/swing_arc_3.png`, `${A}/fx/hit_ring.png`,
   `${A}/fx/shadow_puff.png`, `${A}/fx/dust.png`, `${A}/ui/hp_frame.png`, `${A}/ui/hp_fill.png`, `${A}/ui/hp_empty.png`,
   `${A}/ui/frame_purple_0.png`, `${A}/ui/crest_full.png`, `${A}/ui/crest_empty.png`,
-  ...[0, 1, 2, 3, 4].map(i => `${A}/ui/timer_${i}.png`),
   ...['icon_triangle', 'icon_diamond', 'icon_star', 'icon_circle', 'check'].map(n => `${A}/sprites/${n}.svg`),
   ...STOPS.flatMap(s => [s.enemy, s.hitSprite, s.attackSprite].filter(Boolean).map(n => `${A}/sprites/${n}.svg`)),
 ];
