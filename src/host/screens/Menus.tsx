@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { music } from '../../audio/music';
 import { playSfx } from '../../audio/sfx';
 import { createRoom } from '../../data/room';
@@ -34,8 +35,14 @@ export function TopBar({ step, done = [] }: { step?: number; done?: string[] }) 
 
 const Background = () => <img className="bg" src={`${A}/bg/menu.png`} alt="" />;
 
+/** Back to the previous step of creating a game (what was picked is kept). */
+function BackButton({ onClick, disabled = false }: { onClick: () => void; disabled?: boolean }) {
+  return <button className="btn btn-light" style={{ padding: '18px 24px', fontSize: 14 }} disabled={disabled} onClick={() => { playSfx('back'); onClick(); }}>◀ BACK</button>;
+}
+
 export function StartScreen() {
   const go = useHost(s => s.go);
+  const navigate = useNavigate();
   const [help, setHelp] = useState(false);
   const [credits, setCredits] = useState(false);
   const start = async () => {
@@ -60,6 +67,8 @@ export function StartScreen() {
       </div>
       <div className="abs col" style={{ left: 600, top: 560, width: 400, gap: 18 }}>
         <button className="btn btn-primary" style={{ padding: '24px 28px', fontSize: 22 }} onClick={start}>CREATE GAME ▶</button>
+        {/* students can also play from a computer (e.g. a computer lab): same screen as on the phone */}
+        <button className="btn btn-light" style={{ padding: '16px 22px', fontSize: 16 }} onClick={() => { playSfx('select'); navigate('/join', { state: { fromStart: true } }); }}>JOIN A GAME</button>
         <div className="row" style={{ gap: 18 }}>
           <button className="btn btn-light" style={{ flex: 1, padding: '16px 22px', fontSize: 14 }} onClick={() => { playSfx('popup'); setHelp(true); }}>HOW TO PLAY</button>
           <button className="btn btn-light" style={{ padding: '16px 22px', fontSize: 14 }} onClick={() => { playSfx('popup'); setCredits(true); }}>CREDITS</button>
@@ -172,6 +181,7 @@ export function CourseScreen() {
           </div>
         ))}
       </div>
+      <div className="abs" style={{ left: 190, top: 776 }}><BackButton onClick={() => go('start')} /></div>
     </>
   );
 }
@@ -202,9 +212,12 @@ export function UnitsScreen() {
           })}
         </div>
         <div className="row" style={{ justifyContent: 'space-between', paddingTop: 18, borderTop: '3px dashed var(--line)' }}>
-          <button className="btn btn-light" style={{ padding: '18px 24px', fontSize: 14 }} onClick={() => { playSfx('select'); setUnits(units.length === available.length ? [] : available); }}>
-            {units.length === available.length ? 'NONE' : 'ALL'}
-          </button>
+          <div className="row" style={{ gap: 16 }}>
+            <BackButton onClick={() => go('course')} />
+            <button className="btn btn-light" style={{ padding: '18px 24px', fontSize: 14 }} onClick={() => { playSfx('select'); setUnits(units.length === available.length ? [] : available); }}>
+              {units.length === available.length ? 'NONE' : 'ALL'}
+            </button>
+          </div>
           <div className="col" style={{ alignItems: 'center', gap: 6 }}>
             <div className="disp" style={{ fontSize: 16, color: 'var(--dino-light)' }}>{units.length} UNIT{units.length === 1 ? '' : 'S'}</div>
             <div className="muted" style={{ fontWeight: 500, fontSize: 20 }}>{units.length ? units.join(' · ') : 'Pick at least one'}</div>
@@ -272,8 +285,9 @@ export function DifficultyScreen() {
           );
         })}
       </div>
-      <div className="abs row" style={{ left: 190, top: 776, width: 1220, justifyContent: 'space-between' }}>
-        <span className="error-text" role="alert">{error}</span>
+      <div className="abs row" style={{ left: 190, top: 776, width: 1220, justifyContent: 'space-between', gap: 24 }}>
+        <BackButton onClick={() => go('units')} disabled={busy} />
+        <span className="error-text" role="alert" style={{ flex: 1 }}>{error}</span>
         <button className="btn btn-primary" style={{ padding: '18px 28px', fontSize: 18 }} onClick={create} disabled={busy}>{busy ? 'CREATING…' : 'CREATE LOBBY ▶'}</button>
       </div>
     </>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRoom, useSecondsLeft } from '../data/hooks';
 import { JoinError, joinRoom, leavePresence, readMyAnswer, setReady, submitAnswer } from '../data/room';
 import { safeStorage } from '../lib/storage';
@@ -59,6 +59,8 @@ function Logo() {
 
 function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string, code: string) => void }) {
   const navigate = useNavigate();
+  // opened from the start screen on a computer (JOIN A GAME): offer the way back; a phone from the QR code has nowhere to go back to
+  const fromStart = (useLocation().state as { fromStart?: boolean } | null)?.fromStart === true;
   const [profile, setProfile] = useState(loadProfile);
   const [typedCode, setTypedCode] = useState(code ?? '');
   const [error, setError] = useState<string | null>(null);
@@ -114,8 +116,9 @@ function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string,
         </div>
       </div>
       {error && <p className="error-text" role="alert">{error}</p>}
-      <div style={{ marginTop: 'auto' }}>
-        <button className="btn btn-primary" style={{ width: '100%', height: 76, fontSize: 20 }} disabled={busy}>
+      <div className="row" style={{ marginTop: 'auto', gap: 12 }}>
+        {fromStart ? <button type="button" className="btn btn-light" style={{ height: 76, padding: '0 20px', fontSize: 14 }} onClick={() => navigate('/')}>◀ BACK</button> : null}
+        <button className="btn btn-primary" style={{ flex: 1, height: 76, fontSize: 20 }} disabled={busy}>
           {busy ? 'JOINING…' : 'JOIN ▶'}
         </button>
       </div>
