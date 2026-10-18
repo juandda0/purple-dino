@@ -64,6 +64,11 @@ npm run test:rules    # database.rules.json against the emulator
 
 Source maps are built as `hidden` and are not deployed (`firebase.json` ignores `**/*.map`).
 
+**Deploy rules and app together, outside class time.** The database rules and the app change in lockstep (e.g. the
+one-room-per-teacher index, round keys, the `eligible` field): an old app cannot create rooms against new rules and
+vice versa. `npm run deploy` publishes both at once; afterwards, teachers with the game open should reload the page.
+Rooms created before the deploy keep working for their host.
+
 ## Assets and music
 
 Game art and sounds come from third-party packs, adapted to one style by the scripts in `design/` (`cd design && npm install && npm run assets && npm run music`). `public/assets/` and `dist/` are generated (git-ignored; `npm run assets` fills `public/assets/` from `design/assets/` using an explicit allowlist), while `design/assets/` and `design/sprites/` are committed, so `design/` does not need `npm install` just to run the game. Credits and licenses: [design/assets/CREDITS.md](design/assets/CREDITS.md).

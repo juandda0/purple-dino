@@ -1,5 +1,6 @@
 // Runs the battle on the teacher's screen (design §7: the host decides every round).
 // The right answer only lives here, in memory; the database gets the public question and the result.
+import { serverTimestamp } from 'firebase/database';
 import { serverNow } from '../lib/firebase';
 import { readAnswers, updateRoom, watchAnswers, watchPresence, watchRoom } from '../data/room';
 import { QuestionDeck } from '../game/questions';
@@ -12,11 +13,13 @@ export const TIMING = {
   strikeMs: 4200, // reveal on a sword strike before the next question
   shieldMs: 4600, // reveal + "retry in 3"
   defeatedMs: 5200, // enemy defeated -> walk to the next stop
-  graceMs: 1500, // after the deadline, before counting: same margin the database rules accept answers for
+  graceMs: 2000, // after the deadline, before counting: >= the 1.5 s the database rules accept answers for (+ clock skew)
   allAnsweredMs: 700, // everybody answered -> close early
   nobodyMs: 2500, // nobody could answer -> ask the same question again after this pause
   readTimeoutMs: 2500, // max wait for the final read of the answers
   retryMs: 1500, // pause before retrying a failed write
+  lateMs: 2000, // a question that reached the database this late (offline teacher laptop) is asked again
+  problemAfter: 3, // failed publishes in a row before the teacher sees a connection warning
 };
 
 const withTimeout = <T,>(p: Promise<T>, ms: number) =>
@@ -56,7 +59,14 @@ export class GameController {
   private gameId = '';
   readonly stats: HostStats = { questions: 0, correct: 0, possible: 0, bestCombo: 0, byUnit: {} };
 
-  constructor(private readonly code: string, private readonly config: GameConfig, private readonly onStats: (s: HostStats) => void = () => {}) {
+  private failedPublishes = 0;
+
+  constructor(
+    private readonly code: string,
+    private readonly config: GameConfig,
+    private readonly onStats: (s: HostStats) => void = () => {},
+    private readonly onConnection: (ok: boolean) => void = () => {},
+  ) {
     this.deck = new QuestionDeck(config.course, config.units);
     this.state = initialState(config.difficulty);
     this.unsubs.push(
@@ -68,7 +78,8 @@ export class GameController {
   start() {
     this.gameId = newGameId(serverNow());
     this.state = initialState(this.config.difficulty);
-    void this.write({ status: 'walking', state: this.state, question: null, reveal: null });
+    // a new game restarts the room's 24 h clock (PLAY AGAIN reuses the room)
+    void this.write({ status: 'walking', state: this.state, question: null, reveal: null, createdAt: serverTimestamp() });
     this.later(TIMING.walkMs, () => this.ask(false));
   }
 
@@ -149,15 +160,26 @@ export class GameController {
 
   /** The timer only starts once the question is really on everybody's screen; a failed write is retried. */
   private async publish(round: Round, patch: Record<string, unknown>) {
-    if (!(await this.write(patch))) {
+    const ok = await this.write(patch);
+    if (this.disposed || round !== this.round) return;
+    if (!ok) {
       round.stopAnswers();
-      if (!this.disposed && round === this.round) {
-        this.state = { ...this.state, questionNumber: this.state.questionNumber - 1 };
-        this.later(TIMING.retryMs, () => this.ask(false, true));
-      }
+      this.failedPublishes += 1;
+      if (this.failedPublishes >= TIMING.problemAfter) this.onConnection(false);
+      this.state = { ...this.state, questionNumber: this.state.questionNumber - 1 };
+      this.later(TIMING.retryMs, () => this.ask(false, true));
       return;
     }
-    if (this.disposed || round !== this.round) return;
+    if (this.failedPublishes) {
+      this.failedPublishes = 0;
+      this.onConnection(true);
+    }
+    // while offline the write only queues: if it landed late, nobody had time to answer -> ask again (no penalty)
+    if (serverNow() - round.startedAt > TIMING.lateMs) {
+      round.stopAnswers();
+      this.ask(false, true);
+      return;
+    }
     this.later(round.endsAt - serverNow() + TIMING.graceMs, () => void this.finish(round));
   }
 

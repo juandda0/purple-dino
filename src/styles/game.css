@@ -36,7 +36,9 @@ button:disabled { cursor: not-allowed; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- projector stage: fixed 1600x900, scaled to the window ---------- */
-.stage-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--night); overflow: hidden; }
+/* clip, not hidden: the 1600px layout box is wider than most windows, and with `hidden` a focus()/scrollIntoView
+   can still scroll the wrap sideways and shift the whole stage */
+.stage-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--night); overflow: clip; }
 /* the 1600x900 safe area; --ox/--oy = extra room up to the real screen edges (see ui/Stage.tsx) */
 .screen { --ox: 0px; --oy: 0px; position: relative; width: 1600px; height: 900px; overflow: visible; flex-shrink: 0; transform-origin: center center; }
 .abs { position: absolute; }
@@ -67,6 +69,11 @@ button:disabled { cursor: not-allowed; }
 .btn-go { background: var(--green); color: var(--ink); box-shadow: inset 0 -8px 0 var(--green-dark), 0 8px 0 var(--edge); }
 .btn-light { background: var(--panel-2); color: var(--text); box-shadow: inset 0 0 0 2px var(--line), 0 6px 0 var(--edge); }
 .btn:disabled, .btn-off { background: #2A2245; color: rgba(242, 238, 255, .4); box-shadow: inset 0 0 0 2px #3B2F63; }
+/* lobby: remove-a-student button over the tile's status mark */
+.player .kick { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: calc(100% - 8px); aspect-ratio: 1; padding: 0;
+  display: flex; align-items: center; justify-content: center; font: 700 20px var(--body); color: var(--white); background: var(--red-dark);
+  border: 3px solid var(--ink); cursor: pointer; opacity: 0; }
+.player:hover .kick, .player .kick:focus-visible { opacity: 1; }
 .okbox { display: flex; align-items: center; justify-content: center; background: var(--green); border: 3px solid var(--ink); flex-shrink: 0; }
 
 /* menus */

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { music } from '../audio/music';
 import { playSfx } from '../audio/sfx';
 import { useRoom } from '../data/hooks';
-import { clearAnswers, deleteRoom, updateRoom, watchAnswers, watchPresence } from '../data/room';
+import { clearAnswers, deleteRoom, removePlayer, updateRoom, watchAnswers, watchPresence } from '../data/room';
 import { GameController } from './controller';
 import { Battle } from './screens/Battle';
 import { GameOver, Victory } from './screens/End';
@@ -16,6 +16,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
   const controller = useRef<GameController | null>(null);
   const [online, setOnline] = useState<Set<string>>(new Set());
   const [answeredCount, setAnsweredCount] = useState(0);
+  const [connectionOk, setConnectionOk] = useState(true);
 
   useEffect(() => watchPresence(code, setOnline), [code]);
   useEffect(() => () => controller.current?.dispose(), []);
@@ -46,7 +47,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
     playSfx('select');
     controller.current?.dispose();
     setStats(null);
-    controller.current = new GameController(code, room.config, setStats);
+    controller.current = new GameController(code, room.config, setStats, setConnectionOk);
     controller.current.start();
   }, [code, room, setStats]);
 
@@ -88,7 +89,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
 
   switch (room.status) {
     case 'lobby':
-      return <Lobby code={code} room={room} online={online} onStart={start} onBack={() => void exit('units')} />;
+      return <Lobby code={code} room={room} online={online} onStart={start} onBack={() => void exit('units')} onRemove={uid => void removePlayer(code, uid).catch(() => playSfx('error'))} />;
     case 'won':
       return <Victory room={room} stats={stats} onPlayAgain={() => void playAgain()} onChangeUnits={() => void exit('units')} onExit={() => void exit('start')} />;
     case 'lost':
@@ -103,7 +104,16 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
           </Centered>
         );
       }
-      return room.state ? <Battle room={room} answered={Math.min(answeredCount, eligible)} eligible={eligible} onShake={onShake} /> : null;
+      return room.state ? (
+        <>
+          <Battle room={room} answered={Math.min(answeredCount, eligible)} eligible={eligible} onShake={onShake} />
+          {!connectionOk && (
+            <div className="abs tag" role="alert" style={{ left: 500, top: 140, width: 600, padding: '14px 18px', fontSize: 16, textAlign: 'center', background: 'var(--red-dark)' }}>
+              CONNECTION PROBLEM — CHECK THE WI-FI. RETRYING…
+            </div>
+          )}
+        </>
+      ) : null;
   }
 }
 

@@ -85,7 +85,7 @@
     "hostRooms": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
-        ".write": "auth != null && auth.uid === $uid && (!newData.exists() || !data.exists() || data.val() === newData.val() || root.child('rooms/' + data.val() + '/hostUid').val() !== auth.uid)",
+        ".write": "auth != null && auth.uid === $uid && (!data.exists() || data.val() === newData.val() || newData.parent().parent().child('rooms').child(data.val()).child('hostUid').val() !== auth.uid)",
         ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}$/) && newData.parent().parent().child('rooms').child(newData.val()).child('hostUid').val() === auth.uid"
       }
     },

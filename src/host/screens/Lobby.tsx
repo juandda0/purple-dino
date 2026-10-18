@@ -22,7 +22,9 @@ function joinUrl(code: string) {
   return `${window.location.origin}/join/${code}`;
 }
 
-export function Lobby({ code, room, online, onStart, onBack }: { code: string; room: Room; online: Set<string>; onStart: () => void; onBack: () => void }) {
+export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
+  code: string; room: Room; online: Set<string>; onStart: () => void; onBack: () => void; onRemove: (uid: string) => void;
+}) {
   const [qr, setQr] = useState<string | null>(null);
   useEffect(() => preloadBattleAssets(), []);
   useEffect(() => {
@@ -95,11 +97,13 @@ export function Lobby({ code, room, online, onStart, onBack }: { code: string; r
             {shown.map(([uid, p]) => {
               const on = online.has(uid);
               return (
-                <div key={uid} className={p.ready && on ? 'tile pop-in' : 'pop-in'} style={{ display: 'flex', alignItems: 'center', gap: density.small ? 8 : 12, minWidth: 0, padding: density.small ? '0 8px' : '0 12px 0 10px', ...(p.ready && on ? { borderWidth: 3 } : { background: 'rgba(242,238,255,.04)', border: '3px dashed rgba(242,238,255,.22)' }), opacity: on ? 1 : 0.45 }}>
+                <div key={uid} className={`player ${p.ready && on ? 'tile pop-in' : 'pop-in'}`} style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: density.small ? 8 : 12, minWidth: 0, padding: density.small ? '0 8px' : '0 12px 0 10px', ...(p.ready && on ? { borderWidth: 3 } : { background: 'rgba(242,238,255,.04)', border: '3px dashed rgba(242,238,255,.22)' }), opacity: on ? 1 : 0.45 }}>
                   <img src={`${A}/dinos/avatar_${p.avatar}.png`} width={density.small ? 15 : 30} height={density.small ? 17 : 34} alt="" />
                   <span style={{ flex: 1, minWidth: 0, fontWeight: 700, fontSize: density.font, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: p.ready ? 'var(--text)' : 'rgba(242,238,255,.6)' }}>{p.name}</span>
                   {p.ready && on ? <span className="okbox" style={{ width: density.check, height: density.check }}><img src={`${A}/sprites/check.svg`} width={density.small ? 12 : 18} height={density.small ? 9 : 13} alt="ready" /></span>
                     : <span style={{ width: density.check, textAlign: 'center', fontWeight: 700, fontSize: density.font, color: 'rgba(242,238,255,.45)' }}>{on ? '…' : '×'}</span>}
+                  {/* the teacher can take a student out (stale entry, wrong name); shows on hover/focus */}
+                  <button className="kick" aria-label={`Remove ${p.name}`} title={`Remove ${p.name}`} onClick={() => onRemove(uid)}>×</button>
                 </div>
               );
             })}

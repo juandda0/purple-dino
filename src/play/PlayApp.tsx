@@ -188,24 +188,44 @@ function InRoom({ code, uid }: { code: string; uid: string }) {
   }
 
   const me = room.players?.[uid];
-  const head = <Head room={room} name={me?.name ?? ''} avatar={me?.avatar ?? 'sena'} />;
+  // joinRoom writes our entry before we get here, so a missing one means the teacher removed us
+  if (!me) return <Removed code={code} />;
+  const head = <Head room={room} name={me.name} avatar={me.avatar} />;
   switch (room.status) {
     case 'lobby':
-      return <Waiting code={code} room={room} ready={Boolean(me?.ready)} name={me?.name ?? ''} avatar={me?.avatar ?? 'sena'} />;
+      return <Waiting code={code} room={room} ready={Boolean(me.ready)} name={me.name} avatar={me.avatar} />;
     case 'walking':
       return <Info head={head} title="GET READY" text="The pack is on the move. Eyes on the projector!" sprite="hero_move_3x" frames={6} />;
     case 'question': {
       const q = room.question!;
-      if (!me || me.joinedAt >= q.startedAt) return <Info head={head} title="YOU'RE IN!" text="You'll join the battle from the next question." sprite="hero_idle_3x" frames={3} />;
+      if (me.joinedAt >= q.startedAt) return <Info head={head} title="YOU'RE IN!" text="You'll join the battle from the next question." sprite="hero_idle_3x" frames={3} />;
       const mine = answers[q.key];
       if (mine != null) return <Locked head={head} option={mine} text={q.options[mine] ?? ''} />;
-      return <Answer head={head} code={code} room={room} onAnswer={o => setAnswers(m => ({ ...m, [q.key]: o }))} />;
+      // keyed by round: a repeated question (nobody connected / publish retry) starts with fresh buttons
+      return <Answer key={q.key} head={head} code={code} room={room} onAnswer={o => setAnswers(m => ({ ...m, [q.key]: o }))} />;
     }
     case 'reveal':
       return <Result head={head} reveal={room.reveal!} mine={answers[room.reveal!.key]} lives={room.state?.lives ?? 0} streak={personal.streak} />;
     default:
-      return <Final room={room} personal={personal} name={me?.name ?? ''} />;
+      return <Final room={room} personal={personal} name={me.name} />;
   }
+}
+
+function Removed({ code }: { code: string }) {
+  useEffect(() => {
+    leavePresence(code);
+    safeStorage.remove(JOINED_KEY(code)); // a reload must not put them straight back in
+  }, [code]);
+  return (
+    <div className="phone">
+      <Logo />
+      <div className="center-col">
+        <div className="disp" style={{ fontSize: 18, lineHeight: '28px' }}>YOU LEFT THE PACK</div>
+        <p className="muted" style={{ fontSize: 18 }}>Your teacher took you out of this room. If it was a mistake, join again.</p>
+        <a className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 14, textDecoration: 'none' }} href={`/join/${code}`}>JOIN AGAIN</a>
+      </div>
+    </div>
+  );
 }
 
 function Head({ room, name, avatar }: { room: Room; name: string; avatar: string }) {

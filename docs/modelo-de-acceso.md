@@ -49,10 +49,11 @@ No hay cuentas: todos entran con una **sesión anónima** de Firebase que el nav
 ## Casos especiales
 
 - Menores de edad: no se guardan datos reales más allá del nombre de pila durante la partida; no hay régimen especial (C).
+- Riesgo aceptado: "una sala por profe" se aplica por sesión anónima; quien abra sesiones nuevas una y otra vez podría ocupar varios códigos. Frenarlo del todo requiere App Check o una Cloud Function (oportunidad B del informe de auditoría).
 - Riesgo aceptado: los códigos son de 4 dígitos; alguien podría probar códigos y entrar a una sala ajena con un nombre falso (solo afecta a esa partida).
 - En un fallo (escudo) solo se publica el porcentaje de aciertos: los votos por opción permitirían deducir la respuesta antes del reintento (R3/R4), así que solo se publican con espadazo.
 - Riesgo aceptado: el banco de preguntas con respuestas viaja en el código del proyector (chunk separado que los celulares no descargan); un alumno técnico podría buscarlo. Mitigación futura: mover las respuestas a una Cloud Function.
 
 ## Preguntas abiertas
 
-1. ~~¿La profe puede expulsar?~~ Sí (2026-10-18): las reglas lo permiten; falta el botón en el lobby.
+1. ~~¿La profe puede expulsar?~~ Sí (2026-10-18): las reglas lo permiten y el lobby tiene un botón × por alumno (al pasar el mouse); el alumno ve "YOU LEFT THE PACK" y puede volver a entrar.

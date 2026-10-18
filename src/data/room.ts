@@ -48,6 +48,9 @@ export async function createRoom(config: GameConfig): Promise<string> {
 /** Host-only: writes part of the public room state. */
 export const updateRoom = (code: string, patch: Record<string, unknown>) => update(roomRef(code), patch);
 
+/** Host-only: takes a student out of the room (e.g. a stale entry or an inappropriate name). They can join again. */
+export const removePlayer = (code: string, uid: string) => remove(ref(db, `rooms/${code}/players/${uid}`));
+
 export async function deleteRoom(code: string) {
   await Promise.all([remove(ref(db, `answers/${code}`)), remove(ref(db, `presence/${code}`))]);
   await remove(roomRef(code));
@@ -107,9 +110,11 @@ function keepPresence(code: string, uid: string) {
   });
 }
 
-export function leavePresence() {
+/** Stops re-announcing presence; with a code it also drops the entry right away (e.g. after being removed). */
+export function leavePresence(code?: string) {
   presenceStop?.();
   presenceStop = null;
+  if (code) void ensureSignedIn().then(uid => remove(ref(db, `presence/${code}/${uid}`))).catch(() => undefined);
 }
 
 export const setReady = async (code: string, ready: boolean) =>

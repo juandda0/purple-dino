@@ -104,6 +104,14 @@ describe('one room per teacher; abandoned rooms (lote 4)', () => {
     await assertSucceeds(remove(ref(db('teacher'), 'rooms/1111')));
     await assertSucceeds(createAs('teacher', '2222'));
   });
+  it('the index cannot be dropped to open a second room while the first one exists (adversarial review)', async () => {
+    await assertSucceeds(createAs('teacher', '1111'));
+    await assertFails(remove(ref(db('teacher'), 'hostRooms/teacher')));
+    await assertFails(createAs('teacher', '2222'));
+    // the normal way out: delete the room first, then the index (what deleteRoom() does)
+    await assertSucceeds(remove(ref(db('teacher'), 'rooms/1111')));
+    await assertSucceeds(remove(ref(db('teacher'), 'hostRooms/teacher')));
+  });
   it('a room cannot be created without the index, nor the index point to a room that is not yours', async () => {
     await assertFails(set(ref(db('teacher'), `rooms/${CODE}`), { ...room(), createdAt: serverTimestamp() }));
     await seed(`rooms/${CODE}`, room({ hostUid: 'other' }));
@@ -113,6 +121,12 @@ describe('one room per teacher; abandoned rooms (lote 4)', () => {
   it('taking over an abandoned room restarts its 24 h clock', async () => {
     await seed(`rooms/${CODE}`, room({ createdAt: Date.now() - DAY - 60_000 }));
     await assertFails(update(ref(db('m1')), { [`rooms/${CODE}/hostUid`]: 'm1', 'hostRooms/m1': CODE }));
+    await assertSucceeds(update(ref(db('m1')), { [`rooms/${CODE}/hostUid`]: 'm1', [`rooms/${CODE}/createdAt`]: serverTimestamp(), 'hostRooms/m1': CODE }));
+  });
+  it('the host can restart the 24 h clock of its own room (PLAY AGAIN)', async () => {
+    await seed(`rooms/${CODE}`, room({ createdAt: Date.now() - 3_600_000 }));
+    await assertSucceeds(update(ref(db('teacher'), `rooms/${CODE}`), { createdAt: serverTimestamp() }));
+    await assertFails(update(ref(db('teacher'), `rooms/${CODE}`), { createdAt: Date.now() - DAY }));
   });
 });
 
@@ -200,7 +214,7 @@ describe('answers: one locked answer per student, never visible to classmates', 
     await seedQuestion({ startedAt: Date.now() - 30_000, endsAt: Date.now() - 5_000 });
     await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`), 1));
   });
-  it('an answer for the same round of a previous game in this room is rejected', async () => {
+  it('answers only go to the bucket of the current round (keys of other games or rounds are rejected)', async () => {
     await seedQuestion();
     await assertFails(set(ref(db('ana'), `answers/${CODE}/old000-s0q1a0/ana`), 1));
   });

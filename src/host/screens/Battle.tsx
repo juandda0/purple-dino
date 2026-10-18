@@ -47,23 +47,26 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
     return () => clearInterval(id);
   }, [room.status, question, total]);
 
-  // ---- sound + shake when a result comes in (once per round)
-  const lastReveal = useRef<string | null>(null);
+  // ---- sound + shake when a result comes in (once per round). Keyed on the reveal key: other room
+  // snapshots (someone joining, a reload) must not cancel the delayed sounds.
+  const latest = useRef({ reveal, combo: state.combo, enemyHp: state.enemyHp, lives: state.lives, onShake });
+  latest.current = { reveal, combo: state.combo, enemyHp: state.enemyHp, lives: state.lives, onShake };
+  const revealKey = reveal?.key;
   useEffect(() => {
-    if (!reveal || lastReveal.current === reveal.key) return;
-    lastReveal.current = reveal.key;
+    const { reveal: r, combo, enemyHp, lives, onShake: shake } = latest.current;
+    if (!revealKey || !r) return;
     const timers: Array<ReturnType<typeof setTimeout>> = [];
-    if (reveal.outcome === 'strike') {
+    if (r.outcome === 'strike') {
       playSfx('swing');
       timers.push(setTimeout(() => playSfx('enemyHit'), 180));
-      if (state.combo >= 2) timers.push(setTimeout(() => playSfx('combo'), 500));
-      if (state.enemyHp === 0) timers.push(setTimeout(() => playSfx('enemyDefeated'), 900));
+      if (combo >= 2) timers.push(setTimeout(() => playSfx('combo'), 500));
+      if (enemyHp === 0) timers.push(setTimeout(() => playSfx('enemyDefeated'), 900));
     } else {
-      playSfx(state.lives <= 1 ? 'shieldBreak' : 'clank');
+      playSfx(lives <= 1 ? 'shieldBreak' : 'clank');
     }
-    onShake();
+    shake();
     return () => timers.forEach(clearTimeout);
-  }, [reveal, state.combo, state.enemyHp, state.lives, onShake]);
+  }, [revealKey]);
 
   const walking = room.status === 'walking';
   const striking = reveal?.outcome === 'strike';
