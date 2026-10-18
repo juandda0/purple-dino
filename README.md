@@ -10,7 +10,8 @@ Documentation (Spanish): [GAME_DESIGN.md](GAME_DESIGN.md), [docs/requisitos.md](
 ## Requirements
 
 - Node 22+
-- Java 11+ (Firebase emulators)
+- Java 21+ (required by firebase-tools for the emulators)
+- Python 3 (only to regenerate the SVG sprites with `design/sprites.py`)
 
 ## Run locally (no Firebase account needed)
 
@@ -20,11 +21,29 @@ cp .env.example .env.local
 npm run dev:emu
 ```
 
-Open http://127.0.0.1:5173. The emulators use the offline project `demo-purple-dino`; the emulator UI is at http://127.0.0.1:4000.
+Open http://127.0.0.1:5173. The emulators use the offline project `demo-purple-dino`; ports: Vite 5173, Auth emulator 9099, Database emulator 9000, Emulator UI http://127.0.0.1:4000.
 
 ### Trying it with real phones on the same Wi-Fi
 
-The emulators only listen on `127.0.0.1` by default. To test with phones, set `"host": "0.0.0.0"` for `auth` and `database` in `firebase.json` (local only, do not commit), then run `npm run dev:emu -- -- --host` and open the projector at `http://<your-LAN-IP>:5173`: the QR code will point phones to that address.
+The emulators only listen on `127.0.0.1` by default (and `emulators:exec` ignores extra arguments, so `npm run dev:emu -- -- --host` does not work). Use the LAN variant instead:
+
+```bash
+npm run dev:lan
+```
+
+It uses `firebase.lan.json` (same database rules, emulators bound to `0.0.0.0`) and starts Vite with `--host`. Open the projector at `http://<your-LAN-IP>:5173`: the QR code will point phones there, and the app uses the page host as the emulator host (or `VITE_EMULATOR_HOST` if set).
+
+## Commands
+
+```bash
+npm run dev           # Vite only (5173); with VITE_USE_EMULATORS=true it expects the emulators to be running
+npm run dev:emu       # emulators (auth + database) + Vite
+npm run dev:lan       # same, reachable from phones on the LAN (see above)
+npm run build         # tsc -b + vite build (output in dist/)
+npm run preview       # serve the production build locally
+npm run typecheck     # tsc -b
+npm run lint          # eslint
+```
 
 ## Tests
 
@@ -34,13 +53,17 @@ npm test              # game logic only
 npm run test:rules    # database.rules.json against the emulator
 ```
 
+`npm run verify` and `npm run test:rules` start their own Database emulator, so they fail with "port taken" if `npm run dev:emu` is already running. In that case run the rules tests against the emulator that is already up: `npx vitest run --config vitest.rules.config.ts`.
+
 ## Deploy (done by the project owner)
 
 1. Create a Firebase project, enable **Anonymous** sign-in and **Realtime Database**.
-2. Fill `.env.local` with the web app config and `VITE_USE_EMULATORS=false`.
+2. Put the web app config in `.env.production.local` (real `VITE_FIREBASE_*` values; the database URL is `https://<project>-default-rtdb.<region>.firebasedatabase.app`). Do not use the demo values from `.env.example`.
 3. `npx firebase use --add` to select the project.
-4. `npm run build && npx firebase deploy --only database,hosting`.
+4. `npm run deploy`: runs `check:env` (refuses demo/emulator config), `build`, and `firebase deploy --only database,hosting`.
+
+Source maps are built as `hidden` and are not deployed (`firebase.json` ignores `**/*.map`).
 
 ## Assets and music
 
-Game art and sounds come from third-party packs, adapted to one style by the scripts in `design/` (`cd design && npm install && npm run assets && npm run music`). Credits and licenses: [design/assets/CREDITS.md](design/assets/CREDITS.md).
+Game art and sounds come from third-party packs, adapted to one style by the scripts in `design/` (`cd design && npm install && npm run assets && npm run music`). `public/assets/` and `dist/` are generated (git-ignored; `npm run assets` fills `public/assets/` from `design/assets/` using an explicit allowlist), while `design/assets/` and `design/sprites/` are committed, so `design/` does not need `npm install` just to run the game. Credits and licenses: [design/assets/CREDITS.md](design/assets/CREDITS.md).

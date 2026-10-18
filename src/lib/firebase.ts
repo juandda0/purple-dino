@@ -1,6 +1,6 @@
-// Firebase is initialised once per page load (module scope). With VITE_USE_EMULATORS=true it talks to
-// the local emulators (npm run emulators); the emulator host follows the page host so phones on the
-// same Wi-Fi can reach a laptop running `npm run dev -- --host` (see README).
+// Firebase is initialised once per page load (module scope). In dev mode with VITE_USE_EMULATORS=true it talks
+// to the local emulators (npm run dev:emu); the emulator host follows the page host so phones on the same Wi-Fi
+// can reach a laptop running `npm run dev:lan` (see README).
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth, signInAnonymously } from 'firebase/auth';
 import { connectDatabaseEmulator, getDatabase, onValue, ref } from 'firebase/database';

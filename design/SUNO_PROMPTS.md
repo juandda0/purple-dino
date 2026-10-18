@@ -4,19 +4,19 @@ En Suno usa el modo **Custom**, activa **Instrumental** y pega en **Style of Mus
 
 Todas comparten la misma base para que suenen al mismo juego: chiptune 16-bit oscuro (dark fantasy, no infantil), con sintetizadores de onda cuadrada y triangular como en *Landlord*.
 
-Cuando las tengas, ponlas en `~/Downloads/assets/` con estos nombres y se integran (solo cambia `assets/audio/music.json`):
+Cuando las tengas, ponlas en `design/assets-src/music/` con estos nombres (los que espera `design/tools/build-music.js`, mapa `SUNO`; acepta `.mp3`, `.ogg` o `.wav`) y corre `cd design && npm run music`: copia las pistas y regenera `assets/audio/music.json` (el juego las toma con `npm run assets`).
 
 | Archivo | Momento |
 |---|---|
 | `music_lobby.mp3` | Lobby (y vuelve tras la victoria) |
 | `music_battle.mp3` | Batalla normal |
-| `music_battle_intense.mp3` | Misma batalla, intensa (cuando queda la mitad del tiempo o menos) |
+| `music_battle_intense.mp3` | Misma batalla, intensa (último tercio del tiempo de la pregunta) |
 | `music_boss_suno.mp3` | Jefe final, King Dread (opcional: hoy es un remix del tema intenso) |
-| `jingle_victory.mp3` | Ganar |
-| `jingle_defeat.mp3` | Perder |
+| `jingle_victory_suno.mp3` | Ganar (opcional: hoy la victoria se compone en `build-music.js`) |
+| `jingle_defeat_suno.mp3` | Perder |
 
 **Consejos**
-- **Batalla intensa:** genérala desde la batalla normal con **Cover** (o *Remix*) usando el prompt intenso. Así conserva la tonalidad, el tempo y la melodía, y el juego puede pasar de una a otra sin corte. El último 25 % del tiempo el juego además acelera la música un 12 % y añade latidos, tic-tac y una subida de ruido.
+- **Batalla intensa:** genérala desde la batalla normal con **Cover** (o *Remix*) usando el prompt intenso. Así conserva la tonalidad, el tempo y la melodía, y el juego puede pasar de una a otra sin corte. Hay un solo umbral (`PANIC_AT = 1/3`, `src/audio/music.ts`): en el último tercio del tiempo el juego pasa a esta pista y además acelera la música un 12 % y añade latido, tic-tac y una subida de ruido.
 - **Loops (lobby, batalla, jefe):** si el final hace un cierre, recórtalo con *Crop* en Suno o avísame y busco el punto de loop.
 - **Jingles:** Suno genera mínimo ~30 s; recorta a la fanfarria/el remate (≈ 6–15 s).
 
@@ -90,6 +90,7 @@ epic dark chiptune boss battle, 16-bit, instrumental, menacing and heavy, 150 BP
 ```
 
 ## 5. Ganar — "Princess Rescued"
+*(no se usó: la victoria está compuesta en `build-music.js`, Mi mayor, 150 BPM)*
 
 **Style**
 ```

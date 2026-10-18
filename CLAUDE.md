@@ -7,11 +7,17 @@ Quiz cooperativo de inglés para clase: la profe proyecta la batalla (`/`) y los
 | Comando | Qué hace |
 |---|---|
 | `npm run dev:emu` | Emuladores de Firebase (auth + database) + Vite en http://127.0.0.1:5173 |
-| `npm run verify` | typecheck + lint + tests + tests de reglas (emulador) + build |
+| `npm run dev:lan` | Igual, pero con emuladores en `0.0.0.0` (`firebase.lan.json`) y Vite `--host`, para probar con celulares en la misma red |
+| `npm run verify` | typecheck + lint + tests + tests de reglas (emulador) + build. Levanta su propio emulador de Database: falla con "port taken" si `dev:emu` está corriendo; en ese caso `npx vitest run --config vitest.rules.config.ts` |
 | `npm test` | Tests de la lógica del juego (Vitest) |
 | `npm run test:rules` | Tests de `database.rules.json` contra el emulador |
 | `npm run assets` | Copia `design/assets` + sprites a `public/assets` (corre solo antes de dev/build) |
+| `npm run deploy` | `check:env` (rechaza config demo) + build + deploy de database y hosting; la config real va en `.env.production.local` |
 | `cd design && npm run assets` / `npm run music` | Regenera sprites/fondos/UI y la música desde `design/assets-src/` |
+
+Puertos: Vite 5173, Auth emulator 9099, Database emulator 9000, Emulator UI 4000 (`firebase.json`). Requisitos: Node 22+ y Java 21+ (firebase-tools).
+
+**No editar a mano**: `public/assets/` (lo genera `scripts/sync-assets.mjs` desde `design/assets/` con una lista explícita; un asset nuevo se agrega ahí) ni `design/assets/` (lo generan los scripts de `design/tools/`; los fuentes están en `design/assets-src/`). `public/assets/` y `dist/` están en `.gitignore`.
 
 ## Estructura
 

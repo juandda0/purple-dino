@@ -139,6 +139,9 @@ El contenido de inglés lo definen **el curso y las unidades** elegidas. La difi
 | Tiempo por pregunta | 30 s | 20 s | 15 s |
 | Preguntas por partida (sin fallos) | 6 | 11 | 16 |
 
+
+Las vidas son los fallos que aguanta la clase: **se pierde en el fallo número N** (Easy 5, Medium 3, Hard 2). Con el escudo ya roto queda la última vida, que se juega sin escudo ("LAST CHANCE"); ver `src/game/rules.ts`.
+
 ---
 
 ## 5. Contenido: cursos, unidades y preguntas
@@ -204,7 +207,7 @@ Vemos **a través de los ojos del dino**: sus dos brazos morados abajo, **escudo
 
 ### 6.2 Estilo
 
-- **Pixel art 16-bit**, resolución base **320×180** escalada ×4/×6 sin suavizado (pixeles nítidos en el proyector).
+- **Pixel art 16-bit**, resolución base **320×180** escalada ×5 (escenario de 1600×900) sin suavizado (pixeles nítidos en el proyector).
 - **Tono dark fantasy, no infantil** (público de 16–17 años): menús de noche con un castillo a lo lejos, batallas al atardecer, victoria al amanecer y game over de noche.
 - **Paleta limitada**, con el **morado** del dino como color de marca, rojo para el peligro y amarillo para los golpes.
 - **Protagonista**: dino morado; en batalla solo se ven sus brazos, la espada y el escudo (cuerpo completo en inicio y final). Sin mejillas rosadas ni detalles “tiernos”.
@@ -217,7 +220,7 @@ Vemos **a través de los ojos del dino**: sus dos brazos morados abajo, **escudo
 
 ---
 
-## 7. Propuesta técnica (para cuando desarrollemos)
+## 7. Propuesta técnica
 
 | Pieza | Decisión | Por qué |
 |---|---|---|
@@ -229,19 +232,24 @@ Vemos **a través de los ojos del dino**: sus dos brazos morados abajo, **escudo
 | QR | librería `qrcode` | Genera el QR en el lobby |
 | Login profe | **Ninguno en v1** | Abre la página y crea la partida |
 
-**Modelo de datos (borrador)**
+**Modelo de datos** (tipos en `src/game/types.ts`, acceso en `src/data/room.ts`, permisos en `docs/modelo-de-acceso.md`)
 
 ```
 rooms/{code}
+  hostUid, createdAt
   status: "lobby" | "walking" | "question" | "reveal" | "won" | "lost"
-  course, units[], difficulty
-  stop: 0..4, enemyHp, lives, attempt
-  question: { text, options[] }        ← SIN la respuesta correcta
-  questionEndsAt: timestamp
-  players/{uid}: { name, ready, online }
-  answers/{stop_q_attempt}/{uid}: optionIndex
+  config: { course, units[], difficulty }
+  state: { stop, enemyHp, enemyMaxHp, lives, combo, questionNumber }
+  question: { key, text, options[4], unit, attempt, startedAt, endsAt, eligible }   ← SIN la respuesta correcta
+  reveal: { key, outcome: "strike" | "shield", percent, answered, eligible,
+            votes[], correct, strikers[], moreStrikers }   ← votes/correct/strikers/moreStrikers solo si hubo espadazo
+  players/{uid}: { name, avatar, ready, joinedAt }
+hostRooms/{uid}: code                     ← una sala por profe
+presence/{code}/{uid}: true               ← quién está conectado ahora
+answers/{code}/{key}/{uid}: optionIndex   ← una respuesta por alumno y ronda
 ```
 
+- Clave de ronda (`key`): `{gameId}-s{stop}q{questionNumber}a{attempt}` (`roundKey()` en `src/game/rules.ts`).
 - La **pantalla del profe decide cada ronda**: tiene el banco de preguntas, cuenta las respuestas, decide espadazo o golpe y avanza el estado.
 - Los celulares **nunca reciben la respuesta correcta** (no se puede hacer trampa).
 - Las reglas de seguridad permiten que cada alumno escriba solo su propia respuesta.
@@ -255,8 +263,8 @@ rooms/{code}
 > - **POV**: el jugador en primera persona de *Landlord* espejado (escudo izq., espada der.), con los puños repintados como garras moradas de dino; 5 estados del escudo de acero (intacto → rayado → agrietado → partido → sin escudo), bloqueo, ataque y escudo en pedazos.
 > - **Dinos**: héroe morado y princesa rosada (con corona) del pack *DinoCharacters*, con todas sus animaciones; 12 avatares de colores para el lobby.
 > - **Castillos**: *Sunny Castle #18* (Pixel_1992) = el castillo liberado (victoria). *Lamora* queda generado (`bg/title.png`, `bg/gameover_castle.png`) pero no se usa: con tanto detalle tapaba el título y los textos; inicio y game over usan fondos más limpios (noche con luna y bosque nocturno).
-> - **Fondos**: cielos de *Ocean and Clouds* detrás del terreno de `sprites.py`. **UI**: crestas de escudo (vidas), barras de vida, anillo de tiempo, emblemas y marcos de *Pixel UI pack 3*. **FX**: humo e impactos de *Free Smoke Fx*. **Sonido**: UI de JDSherbert, golpes y música de *Landlord*.
-> - **Música** (`mockups/music.js`, prueba en `mockups/musica.html`, `npm run music`): lobby, batalla, jefe, ganar y perder. Durante cada pregunta la batalla se intensifica: con la mitad del tiempo pasa a la versión intensa (+4 % de tempo, latido), y en el último 25 % se acelera un 12 % con latido doble, tic-tac y una subida de ruido; al llegar a 0 suena un golpe y la música baja. Pistas: lobby, batalla, batalla intensa y game over generadas en Suno (prompts en `design/SUNO_PROMPTS.md`), con puntos de loop que saltan el final de cada canción; jefe = remix del tema intenso de Suno con capas de órgano, coro y percusión (`bossRemix()`); victoria compuesta a partir de la batalla (Mi mayor, 150 BPM) y luego vuelve el lobby.
+> - **Fondos**: cielos de *Ocean and Clouds* detrás del terreno de `sprites.py`. **UI**: crestas de escudo (vidas), barras de vida, anillo de tiempo, emblemas y marcos de *Pixel UI pack 3*. **FX**: humo e impactos de *Free Smoke Fx*. **Sonido**: UI de JDSherbert y efectos de batalla (golpes, escudo) de *Landlord*; la música no viene de Landlord (ver abajo).
+> - **Música** (`mockups/music.js`, prueba en `mockups/musica.html`, `npm run music`): lobby, batalla, jefe, ganar y perder. Durante cada pregunta hay un solo umbral (`PANIC_AT = 1/3` en `src/audio/music.ts`): calma hasta el último tercio del tiempo y luego pánico, con la pista intensa, +12 % de tempo, latido, tic-tac y una subida de ruido; al llegar a 0 suena un golpe y la música baja. Pistas: lobby, batalla, batalla intensa y game over generadas en Suno (prompts en `design/SUNO_PROMPTS.md`), con puntos de loop que saltan el final de cada canción; jefe = remix del tema intenso de Suno con capas de órgano, coro y percusión (`bossRemix()`); victoria compuesta en `build-music.js` (Mi mayor, 150 BPM) y luego vuelve el lobby.
 > - Los enemigos de sombra, la jaula y los íconos de respuesta siguen siendo SVG de `design/sprites.py` (no había assets equivalentes).
 > El archivo de Paper [Purple Dinosaur](https://app.paper.design/file/01M57SC9KXE01ZE529VFASSG2E) quedó **desactualizado** (estilo infantil, en español, con Gloop); se actualiza cuando vuelva a estar disponible el MCP de Paper.
 

@@ -4,7 +4,7 @@ Las fuentes originales están en `design/assets-src/`; `node tools/build-assets.
 
 | Pack | Autor / origen | Licencia | Qué usamos |
 |---|---|---|---|
-| **Landlord** (LÖVE Jam 2020) | Ferhat Tanman, Eugenia Cheskidova, Sercan Altundaş, Emre Aydın | Juego de jam; sin licencia explícita incluida → **pedir permiso a los autores antes de publicar** | Vista en primera persona (escudo, espada, brazo y animaciones de ataque/bloqueo) con las manos repintadas como garras de dino; sonidos de golpes; música de menú y batalla |
+| **Landlord** (LÖVE Jam 2020) | Ferhat Tanman, Eugenia Cheskidova, Sercan Altundaş, Emre Aydın | Juego de jam; sin licencia explícita incluida → **pedir permiso a los autores antes de publicar** | Vista en primera persona (escudo, espada, brazo y animaciones de ataque/bloqueo) con las manos repintadas como garras de dino; sonidos de golpes y escudo (efectos de batalla). Su música ya no se usa |
 | **DinoCharacters** (`download.zip`) | Arks / ScissorMarks (itch.io) | Revisar la página del pack (suele ser CC0/libre con crédito) | Héroe (dino morado), princesa (dino rosada + corona), 12 avatares de colores para el lobby |
 | **Ocean and Clouds – Free Pixel Art Backgrounds** | CraftPix.net | [CraftPix file license](https://craftpix.net/file-licenses/) (uso comercial permitido, no redistribuir el pack suelto) | Cielos de atardecer, noche con luna y amanecer |
 | **Pixel UI pack 3** | (itch.io) | Revisar la página del pack | Crestas de escudo (vidas), barras de vida, anillo de tiempo, estrellas, emblemas, marcos y botones |
@@ -16,7 +16,9 @@ Las fuentes originales están en `design/assets-src/`; `node tools/build-assets.
 | **Free Smoke Fx Pixel 2** | (itch.io / CraftPix) | Revisar la página del pack | Humo de sombra, impactos, polvo |
 | **Ultimate UI SFX Pack (FREE)** | JDSherbert | Uso comercial y no comercial **con crédito obligatorio** a JDSherbert | Sonidos de interfaz (hover, seleccionar, atrás, popup, error) |
 
-Crédito que muestra la pantalla **CREDITS** del juego (inicio → CREDITS): *UI SFX by JDSherbert · First-person art & sounds from "Landlord" (Love Jam 2020) · Dinos by Arks · Backgrounds by CraftPix.net · Castles by Pixel_1992*.
+Crédito que muestra la pantalla **CREDITS** del juego (inicio → CREDITS; el texto está en `src/host/screens/Menus.tsx`): *UI SFX by JDSherbert · First-person art & sounds from "Landlord" (Love Jam 2020) · Dinos by Arks · Backgrounds by CraftPix.net · Castles by Pixel_1992*.
+
+**Tipografías**: Press Start 2P (CodeMan38) y Pixelify Sans, bajo SIL Open Font License, incluidas en el juego con los paquetes npm `@fontsource/press-start-2p` y `@fontsource/pixelify-sans`.
 
 ## No usados
 - **191_loop.wav** (origen sin indicar) — era la batalla del jefe; reemplazada por el remix de Suno. Sigue en `assets-src/music/` pero ya no se usa.

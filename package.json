@@ -12,6 +12,7 @@
     "predev": "npm run assets",
     "dev": "vite",
     "dev:emu": "firebase emulators:exec --only auth,database --project demo-purple-dino --ui \"npm run dev\"",
+    "dev:lan": "firebase emulators:exec --config firebase.lan.json --only auth,database --project demo-purple-dino --ui \"npm run dev -- --host\"",
     "prebuild": "npm run assets",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
