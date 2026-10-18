@@ -64,7 +64,7 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
     <>
       <img className="bg" src={`${A}/bg/menu.png`} alt="" />
       <TopBar />
-      <div className="abs row" style={{ right: 64, top: 36, gap: 12, fontFamily: 'var(--display)', fontSize: 13 }}>
+      <div className="row lobby-config">
         <div className="card" style={{ padding: '12px 16px' }}>COURSE {config.course}</div>
         <div className="card" style={{ padding: '12px 16px' }}>UNITS {config.units.join(' · ')}</div>
         <div className="card" style={{ padding: '12px 16px', background: 'var(--yellow)', color: 'var(--ink)' }}>
@@ -72,23 +72,23 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
         </div>
       </div>
       {/* fixed height: the START button must always be visible, even with 40 students (design: up to 40 per room) */}
-      <div className="abs row" style={{ left: 64, top: 132, width: 1472, height: 728, gap: 40, alignItems: 'stretch' }}>
-        <div className="panel col" style={{ width: 500, flexShrink: 0, alignItems: 'center', gap: 20, padding: '32px 36px 36px' }}>
+      <div className="row lobby-main">
+        <div className="panel col lobby-join">
           <div className="disp" style={{ fontSize: 22, lineHeight: '30px', textAlign: 'center' }}>SCAN TO<br />JOIN THE PACK</div>
-          <div style={{ padding: 10, background: 'var(--white)', border: '4px solid var(--edge)', position: 'relative', width: 354, height: 354 }}>
+          <div className="lobby-qr">
             {qr && <img src={qr} width={330} height={330} alt={`QR code to join room ${code}`} style={{ imageRendering: 'pixelated' }} />}
-            <img className="abs" src={`${A}/dinos/avatar_sena.png`} width={45} height={51} alt="" style={{ left: 154, top: 152, background: '#fff', outline: '6px solid #fff' }} />
+            <img className="lobby-qr-dino" src={`${A}/dinos/avatar_sena.png`} width={45} height={51} alt="" />
           </div>
-          <div className="muted" style={{ fontWeight: 500, fontSize: 20, textAlign: 'center' }}>
+          <div className="muted lobby-url">
             or go to <b style={{ color: 'var(--text)' }}>{window.location.host}/join</b> and type
           </div>
           <div className="row" style={{ gap: 10 }} role="img" aria-label={`Room code ${code.split('').join(' ')}`}>
             {code.split('').map((d, i) => (
-              <div key={i} className="disp" style={{ width: 68, height: 76, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dino)', border: '4px solid var(--edge)', boxShadow: 'inset 0 -6px 0 var(--dino-dark)', fontSize: 36 }}>{d}</div>
+              <div key={i} className="disp lobby-digit">{d}</div>
             ))}
           </div>
         </div>
-        <div className="panel col" style={{ flex: 1, minWidth: 0, gap: 22, padding: '32px 36px 32px' }}>
+        <div className="panel col lobby-pack">
           <div className="row" style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
             <div className="col" style={{ gap: 10 }}>
               <div className="disp" style={{ fontSize: 22 }}>THE PACK</div>
@@ -101,7 +101,7 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
           <div style={{ display: 'flex', height: 24, border: '4px solid var(--edge)', background: 'var(--panel-2)' }}>
             <div style={{ width: `${connected.length ? (ready.length / connected.length) * 100 : 0}%`, background: 'var(--green)', boxShadow: 'inset 0 -5px 0 var(--green-dark)', transition: 'width .3s' }} />
           </div>
-          <div style={{ flex: 1, minHeight: 0, display: 'grid', gridTemplateColumns: `repeat(${density.cols}, minmax(0, 1fr))`, gridAutoRows: density.h, gap: density.gap, alignContent: 'start', overflow: 'hidden' }}>
+          <div className="lobby-players" style={{ '--cols': density.cols, gridAutoRows: density.h, gap: density.gap } as React.CSSProperties}>
             {players.length === 0 && <div className="muted" style={{ fontSize: 24, gridColumn: '1 / -1' }}>Waiting for the first dino…</div>}
             {shown.map(([uid, p]) => {
               const on = online.has(uid);
@@ -123,12 +123,12 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
             })}
             {hidden > 0 && <div className="disp muted" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>+{hidden} MORE</div>}
           </div>
-          <div className="row" style={{ justifyContent: 'space-between', gap: 20 }}>
+          <div className="row lobby-foot">
             <button className="btn btn-light" style={{ padding: '16px 20px', fontSize: 13 }} onClick={onBack}>◀ BACK</button>
-            <div className="muted" style={{ fontWeight: 500, fontSize: 20, flex: 1 }}>
+            <div className="muted lobby-waiting">
               {waiting.length > 0 ? <>Waiting for <b style={{ color: 'var(--text)' }}>{waiting.slice(0, 3).join(', ')}{waiting.length > 3 ? ` + ${waiting.length - 3} more` : ''}</b>…</> : connected.length ? 'Everybody is ready!' : ''}
             </div>
-            <button className={`btn ${canStart ? 'btn-go' : ''}`} style={{ padding: '20px 30px', fontSize: 18 }} disabled={!canStart} onClick={onStart}>START ▶</button>
+            <button className={`btn lobby-start ${canStart ? 'btn-go' : ''}`} disabled={!canStart} onClick={onStart}>START ▶</button>
           </div>
         </div>
       </div>

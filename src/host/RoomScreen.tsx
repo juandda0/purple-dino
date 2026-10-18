@@ -12,7 +12,7 @@ import { Lobby } from './screens/Lobby';
 import { useHost } from './store';
 
 /** Everything that happens inside a room on the teacher's screen. */
-export function RoomScreen({ code, onShake }: { code: string; onShake: () => void }) {
+export function RoomScreen({ code, onShake, onStatus }: { code: string; onShake: () => void; onStatus: (status: string | null) => void }) {
   const roomState = useRoom(code);
   const { stats, setStats, setCode, go } = useHost();
   const controller = useRef<GameController | null>(null);
@@ -45,6 +45,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
 
   // end-of-game music
   const status = room?.status;
+  useEffect(() => onStatus(status ?? null), [status, onStatus]); // the lobby can reflow on small screens (HostApp)
   useEffect(() => {
     if (status === 'won') void music.play('victory');
     if (status === 'lost') void music.play('defeat');
@@ -91,7 +92,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
     <>
       {renderView()}
       {offline || trouble ? (
-        <div className="abs tag" role="alert" style={{ left: 450, top: 140, width: 700, padding: '14px 18px', fontSize: 16, textAlign: 'center', background: 'var(--red-dark)', zIndex: 5 }}>
+        <div className="tag room-alert" role="alert">
           {offline ? 'NO CONNECTION — CHECK THE WI-FI. THE GAME WILL CONTINUE WHEN IT IS BACK.' : 'THE GAME COULD NOT BE SAVED. RETRYING…'}
         </div>
       ) : null}

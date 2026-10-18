@@ -179,7 +179,7 @@ function WalkBanner({ stopIndex }: { stopIndex: number }) {
 
 function Options({ options, votes, correct }: { options: string[]; votes?: number[]; correct?: number }) {
   return (
-    <div className="opts">
+    <div className="opts" translate="no">
       {options.map((text, i) => {
         const s = ANSWER_STYLES[i]!;
         const isCorrect = correct === i;
@@ -208,7 +208,7 @@ function QuestionPanel({ text, options, state, answered, eligible, retry }: { te
           <div style={{ fontWeight: 700, fontSize: 20 }}>{eligible ? `${answered}/${eligible} answered` : 'Waiting for the pack to connect…'}</div>
         </div>
       </div>
-      <div style={{ fontWeight: 700, fontSize: 40, lineHeight: '46px' }}>{text}</div>
+      <div translate="no" style={{ fontWeight: 700, fontSize: 40, lineHeight: '46px' }}>{text}</div>
       <Options options={options} />
     </div>
   );
@@ -224,7 +224,7 @@ function StrikePanel({ text, options, votes, correct, percent, strikers, more }:
           {strikers.length > 0 && <div style={{ fontWeight: 700, fontSize: 20 }}>{strikers.join(', ')}{more ? ` + ${more} more` : ''} struck</div>}
         </div>
       </div>
-      <div style={{ fontWeight: 700, fontSize: 40, lineHeight: '46px' }}>{text}</div>
+      <div translate="no" style={{ fontWeight: 700, fontSize: 40, lineHeight: '46px' }}>{text}</div>
       <Options options={options} votes={votes} correct={correct} />
     </div>
   );

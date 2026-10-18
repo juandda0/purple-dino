@@ -120,10 +120,35 @@ button:disabled { cursor: not-allowed; }
 .diff { width: 380px; }
 .diffs-foot { width: 1220px; justify-content: space-between; gap: 24px; }
 .diffs-foot .error-text { flex: 1; }
+/* lobby: fixed height, the START button must always be visible even with 40 students */
+.lobby-config { position: absolute; right: 64px; top: 36px; gap: 12px; font-family: var(--display); font-size: 13px; }
+.lobby-main { position: absolute; left: 64px; top: 132px; width: 1472px; height: 728px; gap: 40px; align-items: stretch; }
+.lobby-join { width: 500px; flex-shrink: 0; align-items: center; gap: 20px; padding: 32px 36px 36px; }
+.lobby-qr { position: relative; width: 354px; height: 354px; padding: 10px; background: var(--white); border: 4px solid var(--edge); }
+.lobby-qr-dino { position: absolute; left: 154px; top: 152px; background: #fff; outline: 6px solid #fff; }
+.lobby-url { font-weight: 500; font-size: 20px; text-align: center; }
+.lobby-digit { width: 68px; height: 76px; display: flex; align-items: center; justify-content: center; background: var(--dino); border: 4px solid var(--edge);
+  box-shadow: inset 0 -6px 0 var(--dino-dark); font-size: 36px; }
+.lobby-pack { flex: 1; min-width: 0; gap: 22px; padding: 32px 36px; }
+.lobby-players { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); align-content: start; overflow: hidden; }
+.lobby-foot { justify-content: space-between; gap: 20px; }
+.lobby-waiting { font-weight: 500; font-size: 20px; flex: 1; }
+.lobby-start { padding: 20px 30px; font-size: 18px; }
+.room-alert { position: absolute; left: 450px; top: 140px; width: 700px; padding: 14px 18px; font-size: 16px; text-align: center; background: var(--red-dark); z-index: 5; }
 /* dialogs (how to play, credits): the backdrop covers the whole window */
 .dialog { position: absolute; inset: calc(-1 * var(--oy)) calc(-1 * var(--ox)); background: rgba(5, 3, 12, .75); display: flex; align-items: center; justify-content: center; }
 .dialog-box { width: 960px; padding: 36px 44px; gap: 18px; }
 .dialog-text { font-size: 26px; line-height: 36px; }
+/* credits: the developer first; the third-party packs open with VIEW MORE */
+.dev { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 24px; background: var(--panel-2);
+  border: 4px solid var(--edge); box-shadow: inset 0 0 0 2px var(--line); }
+.dev-role { font-size: 12px; letter-spacing: .12em; }
+.dev-name { font-size: 32px; line-height: 40px; color: var(--white); }
+.dev-link { padding: 18px 24px; font-size: 16px; }
+a.btn { text-decoration: none; }
+.dialog-actions { gap: 16px; }
+.credits-more { padding: 18px 20px; font-size: 13px; }
+.credits[hidden] { display: none; }
 .credits { display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 22px; line-height: 28px; }
 .lock { width: 34px; height: 30px; position: relative; flex-shrink: 0; }
 .lock::before { content: ''; position: absolute; left: 7px; top: 0; width: 20px; height: 18px; border: 5px solid currentColor; border-bottom: none; }
@@ -212,7 +237,9 @@ button:disabled { cursor: not-allowed; }
 .screen.fluid { width: 100%; height: auto; min-height: 100%; }
 .fluid .host-screens { position: relative; inset: auto; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; gap: 28px;
   padding: max(20px, env(safe-area-inset-top)) 16px calc(84px + env(safe-area-inset-bottom)); }
-.fluid .bg, .fluid .vignette { position: fixed; inset: 0; left: 0; top: 0; width: 100%; height: 100%; z-index: -1; }
+/* sized to the large viewport: on Android this scroller hides the address bar, and a 100%-high background would
+   resize (and its cover crop jump) while scrolling */
+.fluid .bg, .fluid .vignette { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; z-index: -1; }
 .fluid .vignette { box-shadow: inset 0 0 80px 20px rgba(5, 3, 12, .55); }
 .fluid .edge-br { position: fixed; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); }
 .fluid .title-block { position: static; gap: 12px; padding: 0 4px; }
@@ -273,17 +300,45 @@ button:disabled { cursor: not-allowed; }
 .fluid .diffs-foot { flex-wrap: wrap; gap: 14px; }
 .fluid .diffs-foot .error-text { order: -1; flex-basis: 100%; }
 .fluid .diffs-foot .error-text:empty { display: none; }
+/* lobby: join panel (QR + code) on top, the pack below; the list grows instead of scrolling inside */
+.fluid .lobby-config { position: static; order: 1; flex-wrap: wrap; justify-content: center; gap: 8px; font-size: 9px; }
+.fluid .lobby-config .card { padding: 8px 10px !important; }
+.fluid .lobby-main { position: static; order: 2; width: 100%; max-width: 760px; height: auto; flex-direction: column; gap: 22px; }
+.fluid .lobby-join { width: auto; gap: 16px; padding: 22px 18px; }
+.fluid .lobby-join > .disp:first-child { font-size: 15px !important; line-height: 22px !important; }
+.fluid .lobby-qr { width: min(300px, 100%); height: auto; aspect-ratio: 1; padding: 8px; }
+.fluid .lobby-qr > img:first-child { width: 100%; height: 100%; }
+.fluid .lobby-qr-dino { left: 50%; top: 50%; transform: translate(-50%, -50%); width: 34px; height: 39px; outline-width: 5px; }
+.fluid .lobby-url { font-size: 16px; overflow-wrap: anywhere; }
+.fluid .lobby-digit { width: 56px; height: 64px; font-size: 28px; }
+.fluid .lobby-pack { gap: 16px; padding: 22px 18px; }
+.fluid .lobby-pack > .row:first-child .disp:first-child { font-size: 16px !important; }
+.fluid .lobby-players { flex: none; overflow: visible; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-rows: 48px !important; }
+.fluid .lobby-players .player > span:nth-of-type(1) { font-size: 17px !important; }
+.fluid .lobby-foot { flex-wrap: wrap; gap: 14px; }
+.fluid .lobby-waiting { order: -1; flex-basis: 100%; font-size: 17px; }
+.fluid .lobby-waiting:empty { display: none; }
+.fluid .lobby-foot .btn-light { padding: 16px 18px !important; font-size: 12px !important; }
+.fluid .lobby-start { flex: 1; padding: 18px; font-size: 15px; }
+.fluid .room-alert { position: fixed; left: 16px; right: 16px; top: max(12px, env(safe-area-inset-top)); width: auto; font-size: 11px; line-height: 1.6; }
 /* dialogs */
 .fluid .dialog { position: fixed; inset: 0; z-index: 6; overflow-y: auto; align-items: safe center; padding: 16px; }
 .fluid .dialog-box { width: 100%; max-width: 760px; padding: 24px 20px; gap: 14px; }
 .fluid .dialog-text { font-size: 18px; line-height: 26px; }
+.fluid .dev { flex-wrap: wrap; gap: 16px; padding: 16px; }
+.fluid .dev-role { font-size: 10px; }
+.fluid .dev-name { font-size: 22px; line-height: 30px; }
+.fluid .dev-link { flex-basis: 100%; padding: 16px; font-size: 13px; }
 .fluid .credits { grid-template-columns: 1fr; gap: 2px; font-size: 16px; line-height: 22px; }
 .fluid .credits dd { margin-bottom: 10px; }
 .fluid .dialog-box > .disp:first-child { font-size: 16px !important; }
-.fluid .dialog-box > .btn { font-size: 13px !important; padding: 16px 20px !important; }
+.fluid .dialog-actions .btn { font-size: 12px !important; padding: 16px 14px !important; }
 
 /* ---------- phone ---------- */
-.phone-app { min-height: 100%; display: flex; justify-content: center; background: linear-gradient(#1E1438, #0E0A1E 70%); }
+.phone-app { min-height: 100%; display: flex; justify-content: center; isolation: isolate; }
+/* the gradient stays put while the page scrolls (large viewport height: no jump when the address bar hides) */
+.phone-app::before { content: ''; position: fixed; left: 0; top: 0; z-index: -1; width: 100%; height: 100vh; height: 100lvh; pointer-events: none;
+  background: linear-gradient(#1E1438, #0E0A1E 70%); }
 .phone { width: 100%; max-width: 480px; min-height: 100dvh; display: flex; flex-direction: column; padding: max(16px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom)); gap: 18px; }
 .phone.strike { background: linear-gradient(#123A2A, transparent 70%); }
 .phone.hurt { background: linear-gradient(#4A1420, transparent 70%); }

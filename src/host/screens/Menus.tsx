@@ -95,6 +95,8 @@ function HowToPlay({ onClose }: { onClose: () => void }) {
   );
 }
 
+const DEV_LINKEDIN = 'https://www.linkedin.com/in/juan-diego-diaz-avenda%C3%B1o-a10129368';
+
 // Third-party art, sound and music (design/assets/CREDITS.md). JDSherbert's licence requires this credit.
 const CREDITS = [
   ['UI sound effects', 'JDSherbert — Ultimate UI SFX Pack'],
@@ -109,10 +111,22 @@ const CREDITS = [
 ];
 
 function Credits({ onClose }: { onClose: () => void }) {
+  const [more, setMore] = useState(false); // the third-party list is long: it opens on demand
   return (
-    <Dialog label="Credits" onClose={onClose}>
+    <Dialog label="Credits" onClose={onClose} actions={
+      <button className="btn btn-light credits-more" aria-expanded={more} aria-controls="credits-list"
+        onClick={() => { playSfx(more ? 'back' : 'popup'); setMore(!more); }}>{more ? 'VIEW LESS ▲' : 'VIEW MORE ▼'}</button>
+    }>
       <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>CREDITS</div>
-      <dl className="credits">
+      <section className="dev" aria-label="Developer">
+        <div className="col" style={{ gap: 10 }}>
+          <span className="disp muted dev-role">GAME BY</span>
+          <span className="disp outline-sm dev-name">MONO DEV</span>
+        </div>
+        <a className="btn btn-primary dev-link" href={DEV_LINKEDIN} target="_blank" rel="noopener noreferrer"
+          aria-label="Mono Dev on LinkedIn (opens in a new tab)" onClick={() => playSfx('select')}>LINKEDIN ↗</a>
+      </section>
+      <dl id="credits-list" className="credits" hidden={!more}>
         {CREDITS.map(([what, who]) => (
           <div key={what} style={{ display: 'contents' }}>
             <dt className="muted" style={{ fontWeight: 500 }}>{what}</dt>
@@ -124,7 +138,8 @@ function Credits({ onClose }: { onClose: () => void }) {
   );
 }
 
-function Dialog({ label, onClose, children }: { label: string; onClose: () => void; children: React.ReactNode }) {
+/** Modal with GOT IT; `actions` go on its left, in the same row. */
+function Dialog({ label, onClose, actions, children }: { label: string; onClose: () => void; actions?: React.ReactNode; children: React.ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);
   useEffect(() => {
@@ -150,7 +165,10 @@ function Dialog({ label, onClose, children }: { label: string; onClose: () => vo
     <div ref={box} className="dialog" role="dialog" aria-modal="true" aria-label={label}>
       <div className="panel pxframe col dialog-box">
         {children}
-        <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, alignSelf: 'flex-end' }} onClick={onClose} autoFocus>GOT IT</button>
+        <div className="row dialog-actions">
+          {actions}
+          <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, marginLeft: 'auto' }} onClick={onClose} autoFocus>GOT IT</button>
+        </div>
       </div>
     </div>
   );

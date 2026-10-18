@@ -329,9 +329,9 @@ function Answer({ head, code, room, onAnswer }: { head: React.ReactNode; code: s
       {head}
       <div className="col" style={{ gap: 10 }}>
         <div className="p-label">{q.attempt > 0 ? 'TRY AGAIN · ANSWERS SHUFFLED' : `UNIT ${q.unit}`}</div>
-        <div className="panel" style={{ padding: '16px 18px', fontWeight: 700, fontSize: 22, lineHeight: '28px' }}>{q.text}</div>
+        <div className="panel" translate="no" style={{ padding: '16px 18px', fontWeight: 700, fontSize: 22, lineHeight: '28px' }}>{q.text}</div>
       </div>
-      <div className="col" style={{ gap: 16 }}>
+      <div className="col" style={{ gap: 16 }} translate="no">
         {q.options.map((text, i) => {
           const s = ANSWER_STYLES[i]!;
           return (
@@ -353,7 +353,7 @@ function Locked({ head, option, text }: { head: React.ReactNode; option: number;
       {head}
       <div className="center-col">
         <div className="disp" style={{ fontSize: 20 }} role="status">LOCKED IN</div>
-        <div className={`p-btn ${s.color}`} style={{ justifyContent: 'center', minHeight: 120, fontSize: 34 }}>
+        <div className={`p-btn ${s.color}`} translate="no" style={{ justifyContent: 'center', minHeight: 120, fontSize: 34 }}>
           <img src={s.icon} width={52} height={52} alt={s.shape} />{text}
         </div>
         <p className="muted" style={{ fontSize: 18, fontWeight: 500 }}>Waiting for the others… Eyes on the projector.</p>

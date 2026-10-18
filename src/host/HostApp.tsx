@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { music } from '../audio/music';
 import { setSfxMuted } from '../audio/sfx';
 import { Stage } from '../ui/Stage';
@@ -20,8 +20,9 @@ export default function HostApp() {
     el.classList.add('shake');
   }, []);
 
-  // the lobby and the battle are made for the projector; the menus reflow on phones and portrait tablets
-  const fluid = useCompactScreen() && screen !== 'room';
+  // the battle and the end screens are made for the projector; the menus and the lobby reflow on phones and tablets
+  const [roomStatus, setRoomStatus] = useState<string | null>(null);
+  const fluid = useCompactScreen() && (screen !== 'room' || roomStatus === 'lobby');
 
   // after a screen change the pressed button is gone: move focus to the new screen's heading
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function HostApp() {
         {screen === 'course' && <CourseScreen />}
         {screen === 'units' && <UnitsScreen />}
         {screen === 'difficulty' && <DifficultyScreen />}
-        {screen === 'room' && code && <RoomScreen code={code} onShake={shake} />}
+        {screen === 'room' && code && <RoomScreen code={code} onShake={shake} onStatus={setRoomStatus} />}
       </div>
       <button className="abs tag edge-br" style={{ padding: '10px 12px', fontSize: 14, zIndex: 5 }} onClick={() => setMuted(!muted)} aria-label="Sound" aria-pressed={!muted}>
         {muted ? 'SOUND OFF' : 'SOUND ON'}
