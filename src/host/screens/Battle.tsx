@@ -52,15 +52,17 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
   useEffect(() => {
     if (!reveal || lastReveal.current === reveal.key) return;
     lastReveal.current = reveal.key;
+    const timers: Array<ReturnType<typeof setTimeout>> = [];
     if (reveal.outcome === 'strike') {
       playSfx('swing');
-      setTimeout(() => playSfx('enemyHit'), 180);
-      if (state.combo >= 2) setTimeout(() => playSfx('combo'), 500);
-      if (state.enemyHp === 0) setTimeout(() => playSfx('enemyDefeated'), 900);
+      timers.push(setTimeout(() => playSfx('enemyHit'), 180));
+      if (state.combo >= 2) timers.push(setTimeout(() => playSfx('combo'), 500));
+      if (state.enemyHp === 0) timers.push(setTimeout(() => playSfx('enemyDefeated'), 900));
     } else {
       playSfx(state.lives <= 1 ? 'shieldBreak' : 'clank');
     }
     onShake();
+    return () => timers.forEach(clearTimeout);
   }, [reveal, state.combo, state.enemyHp, state.lives, onShake]);
 
   const walking = room.status === 'walking';
@@ -113,9 +115,9 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
         <ShieldRow lives={state.lives} maxLives={DIFFICULTY[difficulty].lives} />
       </div>
       <div className="abs hud-right">
-        <div className="tag" style={{ padding: '10px 16px', fontSize: 14 }}>STOP {state.stop + 1}/5 · {stop.scene}</div>
-        {question && <div className="tag" style={{ padding: '8px 14px', fontSize: 12, background: 'var(--dino)' }}>UNIT {question.unit}</div>}
-        {state.combo >= 2 && <div className="tag pop-in" style={{ padding: '8px 14px', fontSize: 12, background: 'var(--yellow)', color: 'var(--ink)' }}>COMBO x{state.combo}</div>}
+        <div className="tag" style={{ padding: '10px 16px', fontSize: 18 }}>STOP {state.stop + 1}/5 · {stop.scene}</div>
+        {question && <div className="tag" style={{ padding: '8px 14px', fontSize: 16, background: 'var(--dino-dark)' }}>UNIT {question.unit}</div>}
+        {state.combo >= 2 && <div className="tag pop-in" style={{ padding: '8px 14px', fontSize: 16, background: 'var(--yellow)', color: 'var(--ink)' }}>COMBO x{state.combo}</div>}
       </div>
       {room.status === 'question' && <div className="abs" style={{ left: 744, top: 20 }}><TimerRing seconds={seconds} total={total} panic={panic} /></div>}
 
@@ -145,7 +147,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
           {lastChance && (
             <div className="abs col" style={{ left: 0, top: 110, width: 1600, alignItems: 'center', gap: 22 }}>
               <div className="disp outline-lg pop-in" style={{ fontSize: 84, lineHeight: '92px', color: 'var(--red)', transform: 'rotate(-3deg)' }}>LAST CHANCE</div>
-              <div className="tag" style={{ padding: '10px 18px', fontSize: 14 }}>ONE MORE MISS AND IT'S OVER</div>
+              <div className="tag" style={{ padding: '10px 18px', fontSize: 18, background: 'var(--red-dark)' }}>ONE MORE MISS AND IT'S OVER</div>
             </div>
           )}
         </>
@@ -194,7 +196,7 @@ function QuestionPanel({ text, options, state, answered, eligible, retry }: { te
   return (
     <div className="abs panel pxframe col pop-in" style={{ left: 330, top: 558, width: 940, gap: 18, padding: '22px 28px 28px' }}>
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <div className="disp" style={{ fontSize: 12, letterSpacing: '.08em', color: retry ? 'var(--yellow)' : 'var(--dino-light)' }}>
+        <div className="disp" style={{ fontSize: 16, letterSpacing: '.06em', color: retry ? 'var(--yellow)' : 'var(--dino-light)' }}>
           {retry ? 'TRY AGAIN · ANSWERS SHUFFLED' : `HIT ${state.enemyMaxHp - state.enemyHp + 1} OF ${state.enemyMaxHp}`}
         </div>
         <div className="row" style={{ gap: 10 }} aria-live="polite">
@@ -212,7 +214,7 @@ function StrikePanel({ text, options, votes, correct, percent, strikers, more }:
   return (
     <div className="abs panel col" style={{ left: 330, top: 558, width: 940, gap: 18, padding: '22px 28px 28px' }}>
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <div className="disp" style={{ fontSize: 14, letterSpacing: '.06em', color: 'var(--green)' }}>CORRECT · {percent}% GOT IT</div>
+        <div className="disp" style={{ fontSize: 16, letterSpacing: '.06em', color: 'var(--green)' }}>CORRECT · {percent}% GOT IT</div>
         <div className="row" style={{ gap: 10 }}>
           <div className="bar" style={{ width: 120 }}><div style={{ width: `${percent}%`, background: 'var(--green)' }} /></div>
           {strikers.length > 0 && <div style={{ fontWeight: 700, fontSize: 20 }}>{strikers.join(', ')}{more ? ` + ${more} more` : ''} struck</div>}
@@ -234,7 +236,7 @@ function ShieldPanel({ percent, lastChance, lost }: { percent: number; lastChanc
     <div className="abs panel row" style={{ left: 400, top: 640, width: 800, gap: 28, padding: '26px 30px 30px' }}>
       <div className="col" style={{ alignItems: 'center', gap: 8, flexShrink: 0 }}>
         <div className="disp" style={{ fontSize: 44, color: 'var(--red)' }}>{percent}%</div>
-        <div className="disp muted" style={{ fontSize: 11, letterSpacing: '.08em' }}>GOT IT</div>
+        <div className="disp muted" style={{ fontSize: 14, letterSpacing: '.06em' }}>GOT IT</div>
       </div>
       <div className="col" style={{ gap: 10, flex: 1 }}>
         <div style={{ fontWeight: 700, fontSize: 34, lineHeight: '38px' }}>{lost ? 'The shield is gone…' : 'Not enough. Try again.'}</div>
@@ -244,7 +246,7 @@ function ShieldPanel({ percent, lastChance, lost }: { percent: number; lastChanc
       </div>
       {!lost && (
         <div className="btn btn-primary col" style={{ flexShrink: 0, padding: '16px 18px', gap: 6 }}>
-          <span style={{ fontSize: 11 }}>RETRY IN</span><span style={{ fontSize: 32, lineHeight: '32px' }}>{count}</span>
+          <span style={{ fontSize: 14 }}>RETRY IN</span><span style={{ fontSize: 32, lineHeight: '32px' }}>{count}</span>
         </div>
       )}
     </div>

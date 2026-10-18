@@ -5,7 +5,7 @@ const A = '/assets';
 /** Road from the dino to the castle: one marker per stop. */
 export function Road({ stop, dim = false }: { stop: number; dim?: boolean }) {
   return (
-    <div className="road tag" aria-label={`Stop ${stop + 1} of ${STOP_COUNT}`}>
+    <div className="road tag" role="img" aria-label={`Stop ${stop + 1} of ${STOP_COUNT}`}>
       <img src={`${A}/dinos/avatar_sena.png`} width={30} height={34} alt="" />
       {Array.from({ length: STOP_COUNT }, (_, i) => (
         <span key={i} className="row" style={{ gap: 8 }}>
@@ -25,7 +25,7 @@ export function ShieldRow({ lives, maxLives }: { lives: number; maxLives: number
   const full = Math.max(0, lives - 1);
   const noShield = lives <= 1;
   return (
-    <div className="shield-row tag" style={noShield ? { background: 'var(--red)' } : undefined} aria-label={noShield ? 'No shield left' : `Shield: ${full} of ${slots}`}>
+    <div className="shield-row tag" role="img" style={noShield ? { background: 'var(--red-dark)' } : undefined} aria-label={noShield ? 'No shield left' : `Shield: ${full} of ${slots}`}>
       {noShield ? 'NO SHIELD' : 'SHIELD'}
       {Array.from({ length: slots }, (_, i) => (
         <img key={i} className="crest" src={`${A}/ui/${i < full ? 'crest_full' : 'crest_empty'}.png`} alt="" />
@@ -36,7 +36,7 @@ export function ShieldRow({ lives, maxLives }: { lives: number; maxLives: number
 
 export function HpBars({ hp, max }: { hp: number; max: number }) {
   return (
-    <div className="row" style={{ gap: 6 }} aria-label={`${hp} of ${max} hits left`}>
+    <div className="row" style={{ gap: 6 }} role="img" aria-label={`${hp} of ${max} hits left`}>
       {Array.from({ length: max }, (_, i) => <span key={i} className={`hpbar ${i < hp ? '' : 'empty'}`} />)}
     </div>
   );
@@ -46,7 +46,7 @@ export function HpBars({ hp, max }: { hp: number; max: number }) {
 export function TimerRing({ seconds, total, panic }: { seconds: number; total: number; panic: boolean }) {
   const step = Math.min(4, Math.max(0, 4 - Math.floor((seconds / total) * 5)));
   return (
-    <div className={`ring tag ${panic ? 'panic' : ''}`} style={{ backgroundImage: `url(${A}/ui/timer_${step}.png)` }} aria-live="off" aria-label={`${seconds} seconds left`}>
+    <div className={`ring tag ${panic ? 'panic' : ''}`} style={{ backgroundImage: `url(${A}/ui/timer_${step}.png)` }} role="timer" aria-label={`${seconds} seconds left`}>
       <span className="disp" style={{ fontSize: 34, color: panic ? 'var(--red)' : 'var(--yellow)' }}>{seconds}</span>
     </div>
   );

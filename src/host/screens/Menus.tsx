@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { music } from '../../audio/music';
 import { playSfx } from '../../audio/sfx';
 import { createRoom } from '../../data/room';
@@ -68,8 +68,25 @@ export function StartScreen() {
 }
 
 function HowToPlay({ onClose }: { onClose: () => void }) {
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'Tab') {
+        // keep focus inside the dialog
+        const items = box.current?.querySelectorAll<HTMLElement>('button, [href], [tabindex]:not([tabindex="-1"])');
+        if (!items?.length) return;
+        const first = items[0]!, last = items[items.length - 1]!;
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => { window.removeEventListener('keydown', onKey); opener?.focus(); };
+  }, [onClose]);
   return (
-    <div className="abs" style={{ inset: 0, background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label="How to play">
+    <div ref={box} className="abs" style={{ inset: 0, background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label="How to play">
       <div className="panel pxframe col" style={{ width: 900, padding: '36px 44px', gap: 18 }}>
         <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>HOW TO PLAY</div>
         <ol style={{ fontSize: 26, lineHeight: '36px', paddingLeft: 30 }}>
@@ -103,7 +120,7 @@ export function CourseScreen() {
             <span style={{ fontWeight: 500, fontSize: 18, opacity: 0.85 }}>{unitsWithQuestions(6).length} units ready</span>
           </button>
         ) : (
-          <div key={n} aria-disabled="true" className="col" style={{ width: 290, height: 170, justifyContent: 'center', gap: 14, padding: '0 24px', background: 'rgba(14,10,30,.82)', border: '4px dashed rgba(242,238,255,.22)', color: 'rgba(242,238,255,.45)' }}>
+          <div key={n} className="col" style={{ width: 290, height: 170, justifyContent: 'center', gap: 14, padding: '0 24px', background: 'rgba(14,10,30,.82)', border: '4px dashed rgba(242,238,255,.22)', color: 'rgba(242,238,255,.45)' }}>
             <div className="row" style={{ justifyContent: 'space-between' }}><span className="disp" style={{ fontSize: 20 }}>COURSE {n}</span><span className="lock" /></div>
             <span className="disp" style={{ alignSelf: 'flex-start', padding: '6px 10px', background: 'rgba(242,238,255,.12)', fontSize: 11 }}>COMING SOON</span>
           </div>

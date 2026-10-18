@@ -11,6 +11,10 @@ import { ANSWER_STYLES } from '../ui/answers';
 
 const A = '/assets';
 const PROFILE_KEY = 'purple-dino:profile';
+const DINO_COLORS: Record<string, string> = {
+  sena: 'Purple', olaf: 'Green', tard: 'Orange', loki: 'Blue', kira: 'Pink', cole: 'Lavender',
+  mort: 'Red', doux: 'Teal', nico: 'Brown', vita: 'Olive', mono: 'White', kuro: 'Black',
+};
 const JOINED_KEY = (code: string) => `purple-dino:joined:${code}`;
 
 interface Profile { name: string; avatar: string }
@@ -62,8 +66,10 @@ function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string,
   const name = cleanName(profile.name);
   const validCode = /^\d{4}$/.test(typedCode);
 
+  const [tried, setTried] = useState(false);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setTried(true);
     if (!validCode || !name) return;
     setBusy(true);
     setError(null);
@@ -84,20 +90,24 @@ function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string,
       <h1 className="disp" style={{ fontSize: 22, lineHeight: '30px', textAlign: 'center', fontWeight: 400, marginTop: 8 }}>JOIN THE PACK</h1>
       <label className="col" style={{ gap: 10 }}>
         <span className="p-label">ROOM CODE</span>
-        <input className="input digit-input" inputMode="numeric" autoComplete="off" maxLength={4} pattern="\d{4}" value={typedCode}
-          onChange={e => setTypedCode(e.target.value.replace(/\D/g, '').slice(0, 4))} aria-describedby="code-hint" />
-        {code && <span id="code-hint" style={{ fontWeight: 500, fontSize: 16, color: 'var(--green)' }}>Filled in from the QR code</span>}
+        <input className="input digit-input" name="code" inputMode="numeric" autoComplete="off" spellCheck={false} enterKeyHint="next" maxLength={4} value={typedCode}
+          onChange={e => setTypedCode(e.target.value.replace(/\D/g, '').slice(0, 4))} aria-invalid={tried && !validCode} aria-describedby="code-hint" />
+        <span id="code-hint" style={{ fontWeight: 500, fontSize: 16, color: tried && !validCode ? '#FF9AA0' : 'var(--green)' }}>
+          {tried && !validCode ? 'The room code has 4 digits (look at the projector).' : code ? 'Filled in from the QR code' : '4 digits, shown on the projector'}
+        </span>
       </label>
       <label className="col" style={{ gap: 10 }}>
         <span className="p-label">YOUR FIRST NAME</span>
-        <input className="input" maxLength={16} autoComplete="given-name" autoCapitalize="words" value={profile.name}
-          onChange={e => setProfile(p => ({ ...p, name: e.target.value.slice(0, 16) }))} placeholder="Ana" />
+        <input className="input" name="nickname" maxLength={16} autoComplete="nickname" autoCapitalize="words" enterKeyHint="go" value={profile.name}
+          onChange={e => setProfile(p => ({ ...p, name: e.target.value.slice(0, 16) }))} placeholder="Ana"
+          aria-invalid={tried && !name} aria-describedby={tried && !name ? 'name-hint' : undefined} />
+        {tried && !name && <span id="name-hint" style={{ fontWeight: 500, fontSize: 16, color: '#FF9AA0' }}>Type your first name.</span>}
       </label>
       <div className="col" style={{ gap: 10 }}>
         <span className="p-label" id="dino-label">PICK YOUR DINO</span>
         <div className="swatches" role="group" aria-labelledby="dino-label">
           {AVATARS.map(a => (
-            <button key={a} type="button" className="swatch" aria-pressed={profile.avatar === a} aria-label={`Dino ${a}`} onClick={() => setProfile(p => ({ ...p, avatar: a }))}>
+            <button key={a} type="button" className="swatch" aria-pressed={profile.avatar === a} aria-label={`${DINO_COLORS[a]} dino`} onClick={() => setProfile(p => ({ ...p, avatar: a }))}>
               <img src={`${A}/dinos/avatar_${a}.png`} width={30} height={34} alt="" />
             </button>
           ))}
@@ -105,7 +115,7 @@ function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string,
       </div>
       {error && <p className="error-text" role="alert">{error}</p>}
       <div style={{ marginTop: 'auto' }}>
-        <button className="btn btn-primary" style={{ width: '100%', height: 76, fontSize: 20 }} disabled={!validCode || !name || busy}>
+        <button className="btn btn-primary" style={{ width: '100%', height: 76, fontSize: 20 }} disabled={busy}>
           {busy ? 'JOINING…' : 'JOIN ▶'}
         </button>
       </div>
@@ -201,13 +211,13 @@ function InRoom({ code, uid }: { code: string; uid: string }) {
 function Head({ room, name, avatar }: { room: Room; name: string; avatar: string }) {
   const seconds = useSecondsLeft(room.status === 'question' ? room.question?.endsAt : undefined);
   return (
-    <div className="p-head">
+    <div className="p-head p-sticky">
       <div className="card row" style={{ gap: 10, padding: '6px 14px 6px 8px', borderWidth: 3 }}>
         <img src={`${A}/dinos/avatar_${avatar}.png`} width={30} height={34} alt="" />
         <span style={{ fontWeight: 700, fontSize: 20 }}>{name}</span>
       </div>
       {room.status === 'question' && (
-        <div className="disp" style={{ minWidth: 64, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', background: seconds <= 5 ? 'var(--red)' : 'var(--yellow)', border: '3px solid var(--edge)', boxShadow: '0 4px 0 var(--edge)', fontSize: 22, color: 'var(--ink)' }} aria-label={`${seconds} seconds left`}>
+        <div className="disp" style={{ minWidth: 64, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', background: seconds <= 5 ? 'var(--red)' : 'var(--yellow)', border: '3px solid var(--edge)', boxShadow: '0 4px 0 var(--edge)', fontSize: 22, color: 'var(--ink)' }} role="timer" aria-label={`${seconds} seconds left`}>
           {String(seconds).padStart(2, '0')}
         </div>
       )}
@@ -226,7 +236,7 @@ function Waiting({ code, room, ready, name, avatar }: { code: string; room: Room
   };
   return (
     <div className="phone">
-      <div className="p-head"><span className="p-label">ROOM {code}</span><span className="p-label">UNITS {room.config.units.join(' · ')}</span></div>
+      <div className="p-head"><span className="p-label">ROOM {code}</span><span className="p-label">{room.config.units.length > 4 ? `${room.config.units.length} UNITS` : `UNITS ${room.config.units.join(' · ')}`}</span></div>
       <div className="center-col">
         <div style={{ padding: 22, background: 'var(--panel-2)', border: '4px solid var(--edge)', boxShadow: 'inset 0 0 0 2px var(--line)' }}>
           <img src={`${A}/dinos/avatar_${avatar}.png`} width={105} height={119} alt="Your dino" />
@@ -251,7 +261,7 @@ function Info({ head, title, text, sprite, frames }: { head: React.ReactNode; ti
       {head}
       <div className="center-col">
         <div className="spr" style={{ '--n': frames, '--fw': '144px', '--fh': '144px', '--t': '.8s', backgroundImage: `url(${A}/dinos/${sprite}.png)` } as React.CSSProperties} aria-hidden="true" />
-        <div className="disp" style={{ fontSize: 20 }}>{title}</div>
+        <div className="disp" style={{ fontSize: 20 }} role="status">{title}</div>
         <p className="muted" style={{ fontSize: 20, fontWeight: 500 }}>{text}</p>
       </div>
     </div>
@@ -262,15 +272,18 @@ function Answer({ head, code, room, onAnswer }: { head: React.ReactNode; code: s
   const q = room.question!;
   const seconds = useSecondsLeft(q.endsAt);
   const [error, setError] = useState<string | null>(null);
-  const [sending, setSending] = useState(false);
+  const [picked, setPicked] = useState<number | null>(null);
   const pick = async (option: number) => {
-    if (sending) return;
-    setSending(true);
+    if (picked != null) return;
+    setPicked(option); // instant feedback while the answer travels
+    setError(null);
     try {
       await submitAnswer(code, q.key, option);
       onAnswer(option);
-    } catch {
-      setError('Too late! Your answer did not count.');
+    } catch (err) {
+      const denied = /permission/i.test(String((err as { code?: string })?.code ?? err));
+      setError(denied ? 'Too late! Your answer did not count.' : 'Connection problem. Tap your answer again.');
+      if (!denied) setPicked(null);
     }
   };
   if (seconds === 0) {
@@ -295,7 +308,7 @@ function Answer({ head, code, room, onAnswer }: { head: React.ReactNode; code: s
         {q.options.map((text, i) => {
           const s = ANSWER_STYLES[i]!;
           return (
-            <button key={i} className={`p-btn ${s.color}`} onClick={() => void pick(i)} disabled={sending}>
+            <button key={i} className={`p-btn ${s.color} ${picked === i ? 'picked' : ''}`} onClick={() => void pick(i)} disabled={picked != null} aria-pressed={picked === i}>
               <img src={s.icon} width={44} height={44} alt={s.shape} />{text}
             </button>
           );
@@ -312,7 +325,7 @@ function Locked({ head, option, text }: { head: React.ReactNode; option: number;
     <div className="phone">
       {head}
       <div className="center-col">
-        <div className="disp" style={{ fontSize: 20 }}>LOCKED IN</div>
+        <div className="disp" style={{ fontSize: 20 }} role="status">LOCKED IN</div>
         <div className={`p-btn ${s.color}`} style={{ justifyContent: 'center', minHeight: 120, fontSize: 34 }}>
           <img src={s.icon} width={52} height={52} alt={s.shape} />{text}
         </div>
@@ -332,7 +345,7 @@ function Result({ head, reveal, mine, lives, streak }: { head: React.ReactNode; 
         {strike
           ? <img src={`${A}/sprites/enemy_raptor_hit.svg`} width={240} height={168} alt="" />
           : <img src={`${A}/pov/shield_shards.png`} width={267} height={240} alt="" />}
-        <div className="disp outline-sm" style={{ fontSize: 28, lineHeight: '36px', color: strike ? 'var(--yellow)' : 'var(--red)' }}>
+        <div className="disp outline-sm" role="status" style={{ fontSize: 28, lineHeight: '36px', color: strike ? 'var(--yellow)' : 'var(--red)' }}>
           {strike ? <>SWORD<br />STRIKE!</> : lives === 0 ? <>SHIELD<br />DESTROYED</> : <>SHIELD<br />HIT</>}
         </div>
         {strike && (

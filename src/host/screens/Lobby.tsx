@@ -71,7 +71,7 @@ export function Lobby({ code, room, online, onStart, onBack }: { code: string; r
           <div className="muted" style={{ fontWeight: 500, fontSize: 20, textAlign: 'center' }}>
             or go to <b style={{ color: 'var(--text)' }}>{window.location.host}/join</b> and type
           </div>
-          <div className="row" style={{ gap: 10 }} aria-label={`Room code ${code.split('').join(' ')}`}>
+          <div className="row" style={{ gap: 10 }} role="img" aria-label={`Room code ${code.split('').join(' ')}`}>
             {code.split('').map((d, i) => (
               <div key={i} className="disp" style={{ width: 68, height: 76, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dino)', border: '4px solid var(--edge)', boxShadow: 'inset 0 -6px 0 var(--dino-dark)', fontSize: 36 }}>{d}</div>
             ))}

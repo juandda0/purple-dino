@@ -19,6 +19,15 @@ export default function HostApp() {
     el.classList.add('shake');
   }, []);
 
+  // after a screen change the pressed button is gone: move focus to the new screen's heading
+  useEffect(() => {
+    const h = shaker.current?.querySelector<HTMLElement>('h1');
+    if (h) {
+      h.tabIndex = -1;
+      h.focus({ preventScroll: true });
+    }
+  }, [screen]);
+
   // the sound preference is remembered between sessions
   useEffect(() => {
     music.setMuted(muted);
@@ -34,7 +43,7 @@ export default function HostApp() {
         {screen === 'difficulty' && <DifficultyScreen />}
         {screen === 'room' && code && <RoomScreen code={code} onShake={shake} />}
       </div>
-      <button className="abs tag edge-br" style={{ padding: '8px 10px', fontSize: 10, zIndex: 5 }} onClick={() => setMuted(!muted)} aria-pressed={muted}>
+      <button className="abs tag edge-br" style={{ padding: '10px 12px', fontSize: 14, zIndex: 5 }} onClick={() => setMuted(!muted)} aria-label="Sound" aria-pressed={!muted}>
         {muted ? 'SOUND OFF' : 'SOUND ON'}
       </button>
     </Stage>
