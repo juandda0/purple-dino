@@ -44,6 +44,7 @@ export interface PublicQuestion {
   attempt: number; // 0 = first try, 1+ = repeated after a miss
   startedAt: number; // server ms
   endsAt: number; // server ms
+  eligible: number; // players who count for this question (connected and joined before it started)
 }
 
 /** Result of a round (rooms/{code}/reveal). `correct` only exists when the majority got it right. */
@@ -51,7 +52,7 @@ export interface Reveal {
   key: string;
   outcome: Outcome;
   percent: number; // 0..100
-  votes: number[]; // per option
+  votes?: number[]; // per option — strike only (on a miss they would give the answer away)
   correct?: number;
   answered: number;
   eligible: number;

@@ -259,6 +259,7 @@ function Info({ head, title, text, sprite, frames }: { head: React.ReactNode; ti
 
 function Answer({ head, code, room, onAnswer }: { head: React.ReactNode; code: string; room: Room; onAnswer: (o: number) => void }) {
   const q = room.question!;
+  const seconds = useSecondsLeft(q.endsAt);
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const pick = async (option: number) => {
@@ -271,6 +272,17 @@ function Answer({ head, code, room, onAnswer }: { head: React.ReactNode; code: s
       setError('Too late! Your answer did not count.');
     }
   };
+  if (seconds === 0) {
+    return (
+      <div className="phone">
+        {head}
+        <div className="center-col" role="status">
+          <div className="disp" style={{ fontSize: 22 }}>TIME'S UP</div>
+          <p className="muted" style={{ fontSize: 18, fontWeight: 500 }}>No answer this time. Eyes on the projector!</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="phone">
       {head}

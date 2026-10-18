@@ -36,7 +36,7 @@ async function seedQuestion(over: Record<string, unknown> = {}) {
   const now = Date.now();
   await seed(`rooms/${CODE}`, room({
     status: 'question',
-    question: { key: 'kx9a2b-s0q1a0', text: 'If I ___ more time…', options: ['have', 'had', 'will have', 'having'], unit: 7, attempt: 0, startedAt: now - 5_000, endsAt: now + 15_000, ...over },
+    question: { key: 'kx9a2b-s0q1a0', text: 'If I ___ more time…', options: ['have', 'had', 'will have', 'having'], unit: 7, attempt: 0, startedAt: now - 5_000, endsAt: now + 15_000, eligible: 1, ...over },
     players: { ana: player(), late: player(now - 1_000) },
   }));
 }
@@ -71,11 +71,13 @@ describe('rooms: the teacher owns her room', () => {
     await assertSucceeds(update(ref(db('teacher'), `rooms/${CODE}`), { status: 'reveal' }));
     await assertFails(set(ref(db('teacher'), `rooms/${CODE}/question/answer`), 1));
   });
-  it('a reveal only carries the right answer on a sword strike', async () => {
+  it('a reveal only carries the right answer and the votes on a sword strike (R3/R4)', async () => {
     await seedQuestion();
-    const reveal = { key: 'kx9a2b-s0q1a0', percent: 30, votes: [1, 1, 0, 0], answered: 2, eligible: 3 };
+    const reveal = { key: 'kx9a2b-s0q1a0', percent: 30, answered: 2, eligible: 3 };
     await assertFails(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'shield', correct: 1 }));
-    await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1 }));
+    await assertFails(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'shield', votes: [1, 1, 0, 0] }));
+    await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'shield' }));
+    await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1, votes: [0, 2, 0, 0] }));
   });
   it('only the host deletes the room; anyone may clean up an abandoned one', async () => {
     await seed(`rooms/${CODE}`, room());

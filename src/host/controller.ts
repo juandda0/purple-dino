@@ -3,19 +3,24 @@
 import { serverNow } from '../lib/firebase';
 import { readAnswers, updateRoom, watchAnswers, watchPresence, watchRoom } from '../data/room';
 import { QuestionDeck } from '../game/questions';
-import {
-  DIFFICULTY, initialState, isMajority, newGameId, nextStop, reshuffleDifferent, resolveRound, roundKey, shuffleOptions, tally,
-} from '../game/rules';
-import type { BattleState, GameConfig, Player, PublicQuestion, Question, Reveal } from '../game/types';
+import { decideRound } from '../game/round';
+import { DIFFICULTY, initialState, newGameId, nextStop, reshuffleDifferent, roundKey, shuffleOptions } from '../game/rules';
+import type { BattleState, GameConfig, Player, PublicQuestion, Question } from '../game/types';
 
 export const TIMING = {
   walkMs: 3600,
   strikeMs: 4200, // reveal on a sword strike before the next question
   shieldMs: 4600, // reveal + "retry in 3"
   defeatedMs: 5200, // enemy defeated -> walk to the next stop
-  graceMs: 400, // after the deadline, before counting (lets in-flight answers land)
+  graceMs: 1500, // after the deadline, before counting: same margin the database rules accept answers for
   allAnsweredMs: 700, // everybody answered -> close early
+  nobodyMs: 2500, // nobody could answer -> ask the same question again after this pause
+  readTimeoutMs: 2500, // max wait for the final read of the answers
+  retryMs: 1500, // pause before retrying a failed write
 };
+
+const withTimeout = <T,>(p: Promise<T>, ms: number) =>
+  Promise.race([p, new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))]);
 
 export interface HostStats {
   questions: number;
@@ -35,6 +40,7 @@ interface Round {
   endsAt: number;
   eligible: Set<string>;
   finished: boolean;
+  latest: Record<string, number>; // last snapshot from the live listener (fallback if the final read fails)
   stopAnswers: () => void;
 }
 
@@ -83,7 +89,10 @@ export class GameController {
   }
 
   private write(patch: Record<string, unknown>) {
-    return updateRoom(this.code, patch).catch(err => console.error('Could not update the room', err));
+    return updateRoom(this.code, patch).then(() => true, err => {
+      console.error('Could not update the room', err);
+      return false;
+    });
   }
 
   /** Who counts for this question: connected players who joined before it started. */
@@ -93,12 +102,17 @@ export class GameController {
       .map(([uid]) => uid));
   }
 
-  private ask(repeat: boolean) {
+  /** `repeat`: same question with options reshuffled (after a miss); `again`: same question, same attempt (nobody could answer). */
+  private ask(repeat: boolean, again = false) {
     const prev = this.round;
     let question: Question;
     let shuffled: { options: string[]; answer: number };
     let attempt = 0;
-    if (repeat && prev) {
+    if (again && prev) {
+      question = prev.question;
+      shuffled = { options: prev.options, answer: prev.answer };
+      attempt = prev.attempt;
+    } else if (repeat && prev) {
       question = prev.question;
       shuffled = reshuffleDifferent(prev.options, prev.answer);
       attempt = prev.attempt + 1;
@@ -113,17 +127,38 @@ export class GameController {
     const eligible = this.eligibleAt(startedAt);
 
     const round: Round = {
-      question, ...shuffled, attempt, key, startedAt, endsAt, eligible, finished: false,
-      stopAnswers: watchAnswers(this.code, key, answers => {
-        const answered = Object.keys(answers).filter(uid => eligible.has(uid)).length;
-        if (eligible.size > 0 && answered >= eligible.size) this.later(TIMING.allAnsweredMs, () => void this.finish(round));
-      }),
+      question, ...shuffled, attempt, key, startedAt, endsAt, eligible, finished: false, latest: {},
+      stopAnswers: () => {},
     };
+    let closing = false;
+    round.stopAnswers = watchAnswers(this.code, key, answers => {
+      round.latest = answers;
+      const answered = Object.keys(answers).filter(uid => eligible.has(uid)).length;
+      if (!closing && eligible.size > 0 && answered >= eligible.size) {
+        closing = true;
+        this.later(TIMING.allAnsweredMs, () => void this.finish(round));
+      }
+    });
     this.round = round;
 
-    const publicQuestion: PublicQuestion = { key, text: question.question, options: shuffled.options, unit: question.unit, attempt, startedAt, endsAt };
-    void this.write({ status: 'question', question: publicQuestion, reveal: null, state: this.state });
-    this.later(endsAt - serverNow() + TIMING.graceMs, () => void this.finish(round));
+    const publicQuestion: PublicQuestion = {
+      key, text: question.question, options: shuffled.options, unit: question.unit, attempt, startedAt, endsAt, eligible: eligible.size,
+    };
+    void this.publish(round, { status: 'question', question: publicQuestion, reveal: null, state: this.state });
+  }
+
+  /** The timer only starts once the question is really on everybody's screen; a failed write is retried. */
+  private async publish(round: Round, patch: Record<string, unknown>) {
+    if (!(await this.write(patch))) {
+      round.stopAnswers();
+      if (!this.disposed && round === this.round) {
+        this.state = { ...this.state, questionNumber: this.state.questionNumber - 1 };
+        this.later(TIMING.retryMs, () => this.ask(false, true));
+      }
+      return;
+    }
+    if (this.disposed || round !== this.round) return;
+    this.later(round.endsAt - serverNow() + TIMING.graceMs, () => void this.finish(round));
   }
 
   private async finish(round: Round) {
@@ -131,32 +166,23 @@ export class GameController {
     round.finished = true;
     round.stopAnswers();
 
-    const answers = await readAnswers(this.code, round.key).catch(() => ({}));
-    const t = tally(answers, round.eligible, round.answer);
-    const majority = isMajority(t.correct, round.eligible.size);
-    const result = resolveRound(this.state, majority ? 'strike' : 'shield', round.attempt === 0);
-    this.state = result.state;
-    this.track(round, t.correct);
+    // final read from the server; if it fails or hangs, use what the live listener already saw
+    // (a network hiccup on the teacher's laptop must not cost the class a life)
+    const fetched = await withTimeout(readAnswers(this.code, round.key), TIMING.readTimeoutMs).catch(() => null);
+    if (this.disposed || round !== this.round) return;
+    const answers = { ...round.latest, ...(fetched ?? {}) };
 
-    const reveal: Reveal = {
-      key: round.key,
-      outcome: result.outcome,
-      percent: round.eligible.size ? Math.round((t.correct / round.eligible.size) * 100) : 0,
-      votes: t.votes,
-      answered: t.answered,
-      eligible: round.eligible.size,
-    };
-    if (result.outcome === 'strike') {
-      // the right answer is only revealed when the majority got it (design §3.3)
-      reveal.correct = round.answer;
-      const names = Object.entries(answers)
-        .filter(([uid, opt]) => round.eligible.has(uid) && opt === round.answer)
-        .map(([uid]) => this.players[uid]?.name)
-        .filter((n): n is string => Boolean(n));
-      reveal.strikers = names.slice(0, 2);
-      reveal.moreStrikers = Math.max(0, names.length - 2);
+    const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: round.eligible, answers, players: this.players, state: this.state });
+    if (decision.kind === 'nobody') {
+      // nobody could answer (e.g. the Wi-Fi dropped): no penalty, same question again
+      this.later(TIMING.nobodyMs, () => this.ask(false, true));
+      return;
     }
+    const { result, reveal } = decision;
+    this.state = result.state;
+    this.track(round, decision.correct);
     await this.write({ status: 'reveal', reveal, state: this.state });
+    if (this.disposed) return;
 
     if (result.outcome === 'strike') {
       if (result.won) return this.later(TIMING.defeatedMs, () => void this.write({ status: 'won' }));

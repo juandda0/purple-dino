@@ -26,7 +26,7 @@
           "$field": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" }
         },
         "question": {
-          ".validate": "newData.hasChildren(['key', 'text', 'options', 'unit', 'attempt', 'startedAt', 'endsAt'])",
+          ".validate": "newData.hasChildren(['key', 'text', 'options', 'unit', 'attempt', 'startedAt', 'endsAt', 'eligible'])",
           "key": { ".validate": "newData.isString() && newData.val().matches(/^[0-9a-z]{4,12}-s[0-9]+q[0-9]+a[0-9]+$/)" },
           "text": { ".validate": "newData.isString() && newData.val().length <= 200" },
           "options": { "$i": { ".validate": "$i.matches(/^[0-3]$/) && newData.isString() && newData.val().length <= 80" } },
@@ -34,11 +34,13 @@
           "attempt": { ".validate": "newData.isNumber()" },
           "startedAt": { ".validate": "newData.isNumber()" },
           "endsAt": { ".validate": "newData.isNumber() && newData.val() > newData.parent().child('startedAt').val()" },
+          "eligible": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200" },
           "answer": { ".validate": false },
           "$other": { ".validate": false }
         },
         "reveal": {
-          ".validate": "newData.hasChildren(['key', 'outcome', 'percent', 'votes', 'answered', 'eligible'])",
+          ".validate": "newData.hasChildren(['key', 'outcome', 'percent', 'answered', 'eligible'])",
+          "votes": { ".validate": "newData.parent().child('outcome').val() === 'strike'" },
           "outcome": { ".validate": "newData.isString() && newData.val().matches(/^(strike|shield)$/)" },
           "correct": { ".validate": "newData.isNumber() && newData.parent().child('outcome').val() === 'strike'" }
         },

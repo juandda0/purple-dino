@@ -26,6 +26,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
   // live "11/15 answered"
   useEffect(() => {
     if (!questionKey) return;
+    setAnsweredCount(0);
     return watchAnswers(code, questionKey, a => setAnsweredCount(Object.keys(a).length));
   }, [code, questionKey]);
 
@@ -82,9 +83,8 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
     );
   }
 
-  const eligible = room.question
-    ? Object.entries(room.players ?? {}).filter(([uid, p]) => online.has(uid) && p.joinedAt < room.question!.startedAt).length
-    : 0;
+  // same eligible set the controller decides with (published with the question)
+  const eligible = room.question?.eligible ?? 0;
 
   switch (room.status) {
     case 'lobby':

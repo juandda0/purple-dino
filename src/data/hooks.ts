@@ -21,11 +21,19 @@ export function useRoom(code: string | null): RoomState {
 
 /** Seconds left until a server timestamp, refreshed a few times per second. */
 export function useSecondsLeft(endsAt: number | undefined): number {
-  const [now, setNow] = useState(serverNow);
+  const left = () => (endsAt ? Math.max(0, Math.ceil((endsAt - serverNow()) / 1000)) : 0);
+  const [seconds, setSeconds] = useState(left);
+  const [forEndsAt, setForEndsAt] = useState(endsAt);
+  if (forEndsAt !== endsAt) {
+    // new question: show its real time from the first render (not the previous question's value)
+    setForEndsAt(endsAt);
+    setSeconds(left());
+  }
   useEffect(() => {
     if (!endsAt) return;
-    const id = setInterval(() => setNow(serverNow()), 200);
+    // whole seconds in state: React skips the re-renders where the number did not change
+    const id = setInterval(() => setSeconds(Math.max(0, Math.ceil((endsAt - serverNow()) / 1000))), 200);
     return () => clearInterval(id);
   }, [endsAt]);
-  return endsAt ? Math.max(0, Math.ceil((endsAt - now) / 1000)) : 0;
+  return endsAt ? seconds : 0;
 }

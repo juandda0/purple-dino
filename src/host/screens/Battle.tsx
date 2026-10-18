@@ -123,7 +123,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
         <QuestionPanel text={question.text} options={question.options} state={state} answered={answered} eligible={eligible} retry={question.attempt > 0} />
       )}
       {reveal && question && (striking
-        ? <StrikePanel text={question.text} options={question.options} votes={reveal.votes} correct={reveal.correct ?? -1} percent={reveal.percent} strikers={reveal.strikers ?? []} more={reveal.moreStrikers ?? 0} />
+        ? <StrikePanel text={question.text} options={question.options} votes={reveal.votes ?? [0, 0, 0, 0]} correct={reveal.correct ?? -1} percent={reveal.percent} strikers={reveal.strikers ?? []} more={reveal.moreStrikers ?? 0} />
         : <ShieldPanel percent={reveal.percent} lastChance={lastChance} lost={state.lives === 0} />)}
 
       {/* swing in front of the panel, raised above it */}
@@ -198,7 +198,7 @@ function QuestionPanel({ text, options, state, answered, eligible, retry }: { te
         </div>
         <div className="row" style={{ gap: 10 }} aria-live="polite">
           <div className="bar" style={{ width: 120 }}><div style={{ width: `${eligible ? (answered / eligible) * 100 : 0}%`, background: 'var(--dino-light)' }} /></div>
-          <div style={{ fontWeight: 700, fontSize: 20 }}>{answered}/{eligible} answered</div>
+          <div style={{ fontWeight: 700, fontSize: 20 }}>{eligible ? `${answered}/${eligible} answered` : 'Waiting for the pack to connect…'}</div>
         </div>
       </div>
       <div style={{ fontWeight: 700, fontSize: 40, lineHeight: '46px' }}>{text}</div>
