@@ -57,10 +57,13 @@ npm run test:rules    # database.rules.json against the emulator
 
 ## Deploy (done by the project owner)
 
-1. Create a Firebase project, enable **Anonymous** sign-in and **Realtime Database**.
-2. Put the web app config in `.env.production.local` (real `VITE_FIREBASE_*` values; the database URL is `https://<project>-default-rtdb.<region>.firebasedatabase.app`). Do not use the demo values from `.env.example`.
-3. `npx firebase use --add` to select the project.
-4. `npm run deploy`: runs `check:env` (refuses demo/emulator config), `build`, and `firebase deploy --only database,hosting`.
+Live: **https://purple-dino-juandda0.web.app** (Firebase project `purple-dino-juandda0`, Spark plan, Realtime Database in `us-central1`).
+
+- `.firebaserc`: `default` is the offline demo project (dev scripts and tests); `prod` is the real one. `npm run deploy` always passes `--project prod`, so a bare `firebase` command in this folder never touches production.
+- `.env.production.local` (git-ignored) holds the real web config; the database URL is `https://purple-dino-juandda0-default-rtdb.firebaseio.com`. Do not use the demo values from `.env.example`.
+- `npm run deploy`: runs `check:env` (refuses demo/emulator config), `build`, and `firebase deploy --only database,hosting --project prod`.
+- Anonymous sign-in is declared in `firebase.json` (`auth.providers.anonymous`). The local firebase-tools 14 cannot deploy that target; it was applied once with the Firebase MCP server's deploy (`only: auth`), which set Auth up as Identity Platform (free tier: up to 3,000 daily active users). Only redeploy it if the providers change.
+- Setting up a new project from scratch: create it, add a web app, create the default Realtime Database instance (first time: `firebase init database` or the console), enable Anonymous sign-in, fill `.env.production.local`, add it as the `prod` alias.
 
 Source maps are built as `hidden` and are not deployed (`firebase.json` ignores `**/*.map`).
 

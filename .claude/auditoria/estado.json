@@ -146,7 +146,8 @@
     "verificacionManual": [
       {
         "item": "proyecto Firebase real (Auth anónima, RTDB, región)",
-        "hecho": false
+        "hecho": true,
+        "nota": "purple-dino-juandda0, us-central1, desplegado 2026-10-18"
       },
       {
         "item": "API key restringida",
@@ -806,5 +807,12 @@
       "descripcion": "BACK en cada paso de crear partida y en la pantalla de unirse (solo desde el inicio); JOIN A GAME en el inicio",
       "origen": "pedido del usuario en el chat"
     }
-  ]
+  ],
+  "despliegue": {
+    "proyecto": "purple-dino-juandda0",
+    "alias": "prod",
+    "url": "https://purple-dino-juandda0.web.app",
+    "fecha": "2026-10-18",
+    "commit": "05870bb (código de la app)"
+  }
 }

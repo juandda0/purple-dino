@@ -12,7 +12,7 @@ Quiz cooperativo de inglés para clase: la profe proyecta la batalla (`/`) y los
 | `npm test` | Tests de la lógica del juego (Vitest) |
 | `npm run test:rules` | Tests de `database.rules.json` contra el emulador |
 | `npm run assets` | Copia `design/assets` + sprites a `public/assets` (corre solo antes de dev/build) |
-| `npm run deploy` | `check:env` (rechaza config demo) + build + deploy de database y hosting; la config real va en `.env.production.local` |
+| `npm run deploy` | `check:env` (rechaza config demo) + build + deploy de database y hosting al alias `prod` (`purple-dino-juandda0`, https://purple-dino-juandda0.web.app); la config real va en `.env.production.local` |
 | `cd design && npm run assets` / `npm run music` | Regenera sprites/fondos/UI y la música desde `design/assets-src/` |
 
 Puertos: Vite 5173, Auth emulator 9099, Database emulator 9000, Emulator UI 4000 (`firebase.json`). Requisitos: Node 22+ y Java 21+ (firebase-tools).

@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "demo-purple-dino"
+    "default": "demo-purple-dino",
+    "prod": "purple-dino-juandda0"
   }
 }

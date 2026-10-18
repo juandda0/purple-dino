@@ -58,7 +58,7 @@ Detalle en `historial.md`.
 
 ### Verificación manual (fuera del repositorio)
 
-- [ ] Crear el proyecto Firebase real: Auth anónima activada, Realtime Database (anotar la región), dominios autorizados.
+- [x] Crear el proyecto Firebase real (2026-10-18): `purple-dino-juandda0`, Auth anónima activada (Identity Platform), Realtime Database en `us-central1`, dominios `web.app`/`firebaseapp.com` autorizados. Desplegado en https://purple-dino-juandda0.web.app y probado de punta a punta.
 - [ ] Restringir la API key web en Google Cloud Console al dominio de Hosting y a las APIs que usa.
 - [ ] MFA en la cuenta Google dueña del proyecto Firebase.
 - [ ] Si se pasa a Blaze: presupuesto con alertas 50/90/100 % y App Check en modo "enforce".
