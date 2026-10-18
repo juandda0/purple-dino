@@ -18,13 +18,17 @@ export const TIMING = {
   allAnsweredMs: 700, // everybody answered -> close early
   nobodyMs: 2500, // nobody could answer -> ask the same question again after this pause
   syncTimeoutMs: 2500, // max wait for the server to confirm the end-of-round sync write
+  syncRepeatTimeoutMs: 10_000, // same, on a question already repeated for the network (it is counted either way)
   retryMs: 1500, // pause before retrying a failed write
   lateMs: 2000, // a question that reached the database later than this gets its full time again (once, no re-ask)
   troubleAfter: 3, // rejected writes in a row before the teacher sees a warning
 };
 
-const withTimeout = <T,>(p: Promise<T>, ms: number) =>
-  Promise.race([p, new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))]);
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => (timer = setTimeout(() => reject(new Error('timeout')), ms)));
+  return Promise.race([p, timeout]).finally(() => clearTimeout(timer));
+}
 
 export interface HostStats {
   questions: number;
@@ -201,7 +205,9 @@ export class GameController {
 
     // sync barrier: once the server confirms this (idempotent) write, the live listener has every answer that reached
     // the server before it. A cached read would not prove that (with a listener on the path, get() answers from cache).
-    const synced = await withTimeout(updateRoom(this.code, { 'question/endsAt': round.endsAt }), TIMING.syncTimeoutMs).then(() => true, () => false);
+    // (offline there is nothing to wait for; on a repeat for the network, a slow link gets more time)
+    const wait = round.repeatedForNetwork ? TIMING.syncRepeatTimeoutMs : TIMING.syncTimeoutMs;
+    const synced = this.connected && await withTimeout(updateRoom(this.code, { 'question/endsAt': round.endsAt }), wait).then(() => true, () => false);
     round.stopAnswers();
     if (this.disposed || round !== this.round) return;
     // a network problem on the teacher's laptop must not cost the class a life

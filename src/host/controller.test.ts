@@ -67,9 +67,16 @@ describe('GameController (Lote 11)', () => {
     await startGame();
     await vi.advanceTimersByTimeAsync(3000);
     const [q] = questions();
-    expect(fake.writes).toContainEqual({ 'question/endsAt': q!.startedAt + 3000 + SECONDS });
+    const extended = q!.startedAt + 3000 + SECONDS;
+    expect(fake.writes).toContainEqual({ 'question/endsAt': extended });
+    fake.writeDelay = 0; // the network is fine again
     await vi.advanceTimersByTimeAsync(10_000);
     expect(questions()).toHaveLength(1); // still the same question, not asked again
+    // the host also waits for the new deadline: nothing is decided at the old one
+    await vi.advanceTimersByTimeAsync(SECONDS - 10_000 + TIMING.graceMs);
+    expect(reveals()).toHaveLength(0);
+    await vi.advanceTimersByTimeAsync(3000 + 10); // past the extended deadline + grace (+ the sync write)
+    expect(reveals()).toHaveLength(1);
   });
 
   it('11.1 a question on time keeps its deadline', async () => {
@@ -92,6 +99,8 @@ describe('GameController (Lote 11)', () => {
     // the repeat cannot be synced either: on a slow but "connected" network it is counted with what arrived
     fake.writeDelay = 'never';
     await vi.advanceTimersByTimeAsync(SECONDS + TIMING.graceMs + TIMING.syncTimeoutMs);
+    expect(reveals()).toHaveLength(0); // the repeat waits longer for the server before counting
+    await vi.advanceTimersByTimeAsync(TIMING.syncRepeatTimeoutMs - TIMING.syncTimeoutMs);
     expect(reveals()).toHaveLength(1);
     expect(reveals()[0]!.reveal).toMatchObject({ outcome: 'shield', answered: 0 });
   });
@@ -99,22 +108,19 @@ describe('GameController (Lote 11)', () => {
   it('11.3 offline at the end: never counted, not even on the repeat', async () => {
     await startGame();
     fake.connection!(false);
-    fake.writeDelay = 'never';
-    for (let i = 0; i < 2; i++) {
-      await vi.advanceTimersByTimeAsync(SECONDS + TIMING.graceMs + TIMING.syncTimeoutMs);
-      fake.writeDelay = 0;
-      await vi.advanceTimersByTimeAsync(TIMING.nobodyMs);
-      fake.writeDelay = 'never';
-    }
+    await vi.advanceTimersByTimeAsync(2 * (SECONDS + TIMING.graceMs + TIMING.nobodyMs) + 10);
     expect(reveals()).toHaveLength(0);
-    expect(questions()).toHaveLength(3);
+    expect(questions()).toHaveLength(3); // asked, repeated, repeated again: no life lost
   });
 
-  it('11.3 synced at the end: the answers are counted', async () => {
+  it('11.3 synced at the end: the answers are counted, including those that arrive before the sync is confirmed', async () => {
     await startGame();
     const q = questions()[0]!;
-    fake.answers.get(q.key)!({ a: 0, b: 1 });
-    await vi.advanceTimersByTimeAsync(SECONDS + TIMING.graceMs + 10); // + the sync write's round trip
+    fake.answers.get(q.key)!({ a: 0 });
+    fake.writeDelay = 500; // the sync write takes a moment
+    await vi.advanceTimersByTimeAsync(SECONDS + TIMING.graceMs + 100);
+    fake.answers.get(q.key)!({ a: 0, b: 1 }); // reached the server before the sync write: must count
+    await vi.advanceTimersByTimeAsync(500);
     expect(reveals()).toHaveLength(1);
     expect(reveals()[0]!.reveal).toMatchObject({ answered: 2, eligible: 3 });
   });
