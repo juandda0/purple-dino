@@ -15,3 +15,6 @@ design/assets-src/music/191_loop.wav
 # Playwright / test output
 test-results/
 playwright-report/
+
+# audit tool output (local only)
+.claude/auditoria/logs/
