@@ -100,7 +100,7 @@ Revelación: "72% acertó"  →  ¿más del 50%?
 
 | Regla | Decisión |
 |---|---|
-| **Mayoría** | Más del 50% de los alumnos conectados acierta. Quien no responde a tiempo cuenta como fallo. |
+| **Mayoría** | Más del 50% de los alumnos conectados acierta (50% exacto es fallo). Quien no responde a tiempo cuenta como fallo; quien se desconecta durante la pregunta sin responder no cuenta para esa pregunta (R11). |
 | **Vidas = escudo** | El escudo se va rompiendo con cada fallo. **Sin escudo = última vida**: un fallo más y pierden. |
 | **Repetición** | Si fallan, se repite **la misma pregunta**, con las opciones **en otro orden**. |
 | **No revelar al fallar** | Si la mayoría falla **no se muestra la respuesta correcta**, solo "Solo 38% acertó… ¡otra vez!". La correcta se muestra cuando la mayoría acierta. |

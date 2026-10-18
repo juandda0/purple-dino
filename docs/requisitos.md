@@ -47,6 +47,7 @@ Quiz cooperativo de inglés para la clase (tipo Kahoot) en el que toda la clase 
 | R8 | Sin ranking público: el celular muestra solo el aporte propio. | Cooperativo. | C |
 | R9 | Solo se guarda el **nombre de pila** del alumno; no se guarda historial. | Privacidad (no hay datos reales sensibles). | C |
 | R10 | Si **nadie** puede responder una pregunta (nadie conectado, p. ej. se cae el Wi-Fi), no se quita vida: se repite la misma pregunta. | No castigar a la clase por la red. | C (2026-10-18) |
+| R11 | Un alumno que **se desconecta durante la pregunta sin haber respondido** deja de contar para esa pregunta (ni en el total ni como fallo); una respuesta ya enviada siempre cuenta. Si eran los únicos que faltaban, la pregunta se cierra antes. Ej.: 10 alumnos, 1 se va sin responder, 5 aciertan → 5 de 9, espadazo. Exactamente 50 % sigue siendo fallo (mayoría estricta). | Que una red inestable no hunda a la clase. Límite: Firebase puede tardar hasta ~1 min en notar un celular que perdió la señal de golpe; mientras tanto ese alumno sigue contando. | C (2026-10-18) |
 
 ## Requisitos no funcionales
 
@@ -59,7 +60,7 @@ Quiz cooperativo de inglés para la clase (tipo Kahoot) en el que toda la clase 
 | Privacidad y datos | Nombre de pila y respuestas viven solo mientras dura la partida; se borran al salir. Salas abandonadas: borrar a las 24 h (C) — hoy solo se pueden reutilizar a las 24 h, el borrado automático necesita una función programada (plan Blaze). | C |
 | Accesibilidad | Respuestas con color + forma + texto; texto grande legible en proyector; contraste AA en la interfaz (S). | C/S |
 | Plataformas | Proyector: Chrome/Edge actuales. Celulares: Safari iOS 16+ y Chrome Android de los últimos 2 años. | S |
-| Conectividad | Funciona con Wi-Fi escolar; si un celular se desconecta, deja de contar hasta que vuelve. Si el proyector pierde la red: aviso visible tras 3 s; la pregunta que llegó tarde recupera su tiempo completo, y una ronda que no se pudo contar (sin red, o con una red que parece conectada pero no deja pasar nada) se repite sin quitar vida (R10); si la red parece conectada, solo una vez por pregunta, para que una red lenta no deje a la clase repitiendo sin fin. | S |
+| Conectividad | Funciona con Wi-Fi escolar; si un celular se desconecta, deja de contar hasta que vuelve (R11). Si el proyector pierde la red: aviso visible tras 3 s; la pregunta que llegó tarde recupera su tiempo completo, y una ronda que no se pudo contar (sin red, o con una red que parece conectada pero no deja pasar nada) se repite sin quitar vida (R10); si la red parece conectada, solo una vez por pregunta, para que una red lenta no deje a la clase repitiendo sin fin. | S |
 | Idiomas | Toda la interfaz del juego en inglés; la documentación interna en español. | C |
 
 ## Fuera de alcance (v1)
@@ -71,7 +72,6 @@ Quiz cooperativo de inglés para la clase (tipo Kahoot) en el que toda la clase 
 
 ## Preguntas abiertas
 
-0. Un alumno que se desconecta a mitad de pregunta, ¿cuenta como fallo? Hoy sí (cuentan los conectados al empezar la pregunta).
 1. ¿Cuántas clases podrían jugar a la vez en el colegio? (define si basta el plan gratuito).
 2. ¿Pasar a plan Blaze para borrar salas abandonadas a las 24 h automáticamente?
 3. ¿Qué navegadores y celulares tienen realmente los alumnos?

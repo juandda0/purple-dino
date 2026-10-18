@@ -5,7 +5,7 @@ import { currentUid, serverNow } from '../lib/firebase';
 import { updateRoom, watchAnswers, watchConnection, watchPresence, watchRoom } from '../data/room';
 import { QuestionDeck } from '../game/questions';
 import { hostOwnsRoom } from '../game/ownership';
-import { decideRound, extendedDeadline, roundCountable } from '../game/round';
+import { countedAtEnd, decideRound, everyoneAnswered, extendedDeadline, roundCountable } from '../game/round';
 import { DIFFICULTY, initialState, newGameId, nextStop, reshuffleDifferent, roundKey, shuffleOptions } from '../game/rules';
 import type { BattleState, GameConfig, Player, PublicQuestion, Question } from '../game/types';
 
@@ -50,6 +50,7 @@ interface Round {
   finished: boolean;
   latest: Record<string, number>; // live snapshot of the answers (complete once the end-of-round sync is confirmed)
   repeatedForNetwork: boolean; // already asked again once because a round could not be counted (network)
+  closing: boolean; // everybody who counts answered: finishing early
   stopAnswers: () => void;
 }
 
@@ -76,7 +77,10 @@ export class GameController {
     this.deck = new QuestionDeck(config.course, config.units);
     this.state = initialState(config.difficulty);
     this.unsubs.push(
-      watchPresence(code, online => (this.online = online)),
+      watchPresence(code, online => {
+        this.online = online;
+        if (this.round) this.closeIfEveryoneAnswered(this.round); // the last one still missing may just have left
+      }),
       watchConnection(connected => (this.connected = connected)),
       watchRoom(code, room => {
         // the room vanished or changed hands (e.g. a new room from a second tab): stop writing into it
@@ -161,16 +165,11 @@ export class GameController {
 
     const round: Round = {
       question, ...shuffled, attempt, key, startedAt, endsAt, eligible, finished: false, latest: {},
-      repeatedForNetwork: forNetwork, stopAnswers: () => {},
+      repeatedForNetwork: forNetwork, closing: false, stopAnswers: () => {},
     };
-    let closing = false;
     round.stopAnswers = watchAnswers(this.code, key, answers => {
       round.latest = answers;
-      const answered = Object.keys(answers).filter(uid => eligible.has(uid)).length;
-      if (!closing && eligible.size > 0 && answered >= eligible.size) {
-        closing = true;
-        this.later(TIMING.allAnsweredMs, () => void this.finish(round));
-      }
+      this.closeIfEveryoneAnswered(round);
     });
     this.round = round;
 
@@ -178,6 +177,12 @@ export class GameController {
       key, text: question.question, options: shuffled.options, unit: question.unit, attempt, startedAt, endsAt, eligible: eligible.size,
     };
     void this.publish(round, { status: 'question', question: publicQuestion, reveal: null, state: this.state });
+  }
+
+  private closeIfEveryoneAnswered(round: Round) {
+    if (round.closing || round.finished || !everyoneAnswered(round.eligible, round.latest, this.online)) return;
+    round.closing = true;
+    this.later(TIMING.allAnsweredMs, () => void this.finish(round));
   }
 
   /** The timer only starts once the question is really on everybody's screen; a failed write is retried. */
@@ -216,8 +221,10 @@ export class GameController {
       return;
     }
     const answers = round.latest;
+    // R11: whoever left during the question without answering does not count (if nobody is left: "nobody", no life lost)
+    const counted = countedAtEnd(round.eligible, answers, this.online);
 
-    const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: round.eligible, answers, players: this.players, state: this.state });
+    const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: counted, answers, players: this.players, state: this.state });
     if (decision.kind === 'nobody') {
       // nobody could answer (e.g. the Wi-Fi dropped): no penalty, same question again
       this.later(TIMING.nobodyMs, () => this.ask(false, true));
@@ -225,7 +232,7 @@ export class GameController {
     }
     const { result, reveal } = decision;
     this.state = result.state;
-    this.track(round, decision.correct);
+    this.track(round, decision.correct, counted.size);
     await this.write({ status: 'reveal', reveal, state: this.state });
     if (this.disposed) return;
 
@@ -244,15 +251,15 @@ export class GameController {
     this.later(TIMING.shieldMs, () => this.ask(true));
   }
 
-  private track(round: Round, correct: number) {
+  private track(round: Round, correct: number, counted: number) {
     const s = this.stats;
     s.questions += 1;
     s.correct += correct;
-    s.possible += round.eligible.size;
+    s.possible += counted;
     s.bestCombo = Math.max(s.bestCombo, this.state.combo);
     const u = (s.byUnit[round.question.unit] ??= { correct: 0, possible: 0 });
     u.correct += correct;
-    u.possible += round.eligible.size;
+    u.possible += counted;
     this.onStats({ ...s, byUnit: { ...s.byUnit } });
   }
 }

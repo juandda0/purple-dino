@@ -65,3 +65,17 @@ export function roundCountable({ synced, connected, repeatedForNetwork }: { sync
   if (!connected) return false;
   return synced || repeatedForNetwork;
 }
+
+/**
+ * Who counts at the end of a round (R2 + R11): the players eligible when the question started, minus whoever
+ * disconnected during the question without answering (an answer already sent always counts).
+ */
+export function countedAtEnd(eligible: ReadonlySet<string>, answers: Record<string, number>, online: ReadonlySet<string>): Set<string> {
+  return new Set([...eligible].filter(uid => uid in answers || online.has(uid)));
+}
+
+/** Everybody who still counts has answered: the round can close early. */
+export function everyoneAnswered(eligible: ReadonlySet<string>, answers: Record<string, number>, online: ReadonlySet<string>): boolean {
+  const counted = countedAtEnd(eligible, answers, online);
+  return counted.size > 0 && [...counted].every(uid => uid in answers);
+}

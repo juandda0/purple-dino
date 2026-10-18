@@ -125,6 +125,18 @@ describe('GameController (Lote 11)', () => {
     expect(reveals()[0]!.reveal).toMatchObject({ answered: 2, eligible: 3 });
   });
 
+  it('R11 a student who leaves without answering stops counting: the round closes early and they are not in the total', async () => {
+    await startGame();
+    const q = questions()[0]!;
+    fake.answers.get(q.key)!({ a: 0, b: 1 });
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(reveals()).toHaveLength(0); // still waiting for Sofia
+    fake.presence!(new Set(['a', 'b'])); // Sofia's phone disconnects
+    await vi.advanceTimersByTimeAsync(TIMING.allAnsweredMs + 10);
+    expect(reveals()).toHaveLength(1);
+    expect(reveals()[0]!.reveal).toMatchObject({ answered: 2, eligible: 2 });
+  });
+
   it.each([
     ['deleted', null],
     ['a partial local copy without config', { status: 'question' }],

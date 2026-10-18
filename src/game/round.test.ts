@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { decideRound, extendedDeadline, roundCountable, type RoundInput } from './round';
+import { countedAtEnd, decideRound, everyoneAnswered, extendedDeadline, roundCountable, type RoundInput } from './round';
 import { initialState } from './rules';
 import type { Player } from './types';
 
@@ -74,5 +74,29 @@ describe('roundCountable (Lote 11.3)', () => {
   it('"connected" but nothing gets through (half-open link) -> repeat once, then count what arrived', () => {
     expect(roundCountable({ synced: false, connected: true, repeatedForNetwork: false })).toBe(false);
     expect(roundCountable({ synced: false, connected: true, repeatedForNetwork: true })).toBe(true);
+  });
+});
+
+describe('who counts at the end (R11)', () => {
+  const ten = new Set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']);
+  it('someone who left without answering does not count; an answer already sent always does', () => {
+    const online = new Set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']); // j left
+    expect(countedAtEnd(ten, {}, online).has('j')).toBe(false);
+    expect(countedAtEnd(ten, { j: 2 }, new Set()).has('j')).toBe(true); // answered, then the phone died
+  });
+  it('10 students, 1 leaves without answering, 5 right: 5 of 9 is a majority -> strike', () => {
+    const online = new Set([...ten].filter(u => u !== 'j'));
+    const answers = { a: 1, b: 1, c: 1, d: 1, e: 1, f: 0, g: 0, h: 0, i: 0 };
+    const d = decideRound(base({ eligible: countedAtEnd(ten, answers, online), answers }));
+    expect(d.kind === 'resolved' && d.reveal).toMatchObject({ outcome: 'strike', eligible: 9, percent: 56 });
+  });
+  it('everybody left without answering -> nobody (no life lost)', () => {
+    expect(decideRound(base({ eligible: countedAtEnd(ten, {}, new Set()) })).kind).toBe('nobody');
+  });
+  it('closes early once everybody who still counts has answered', () => {
+    const three = new Set(['a', 'b', 'c']);
+    expect(everyoneAnswered(three, { a: 0, b: 1 }, three)).toBe(false);
+    expect(everyoneAnswered(three, { a: 0, b: 1 }, new Set(['a', 'b']))).toBe(true); // c left
+    expect(everyoneAnswered(three, {}, new Set())).toBe(false); // nobody left: wait for the deadline
   });
 });
