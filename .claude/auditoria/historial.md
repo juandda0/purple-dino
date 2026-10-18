@@ -2,6 +2,46 @@
 
 Lo resuelto, descartado o fallido de las corridas anteriores, para consulta. `AUDITORIA.md` no lo repite y las corridas siguientes no lo vuelven a leer.
 
+## Iteración 2 → 3, 2026-10-18
+
+Rama `auditoria/2026-10-18` (sin push ni merge, HEAD `a623503`). El usuario aprobó el Lote 11 en el chat ("Aplica el lote 11 con sus tests y una revisión adversarial nueva"). Se aplicó en `ef161c3`; los arreglos de la ronda 1 de la revisión adversarial, en `567d564`; las sugerencias de la ronda 2, en `a623503`.
+
+| Lote | Commit | Resultado |
+|---|---|---|
+| 11.1 | `ef161c3` | Una pregunta que llega tarde recupera su tiempo completo (el plazo se extiende una vez, con la misma clave, sin bucle de re-preguntar). |
+| 11.2 | `ef161c3` | Banner "NO CONNECTION" tras 3 s sin conexión (`.info/connected`) y aviso tras 3 escrituras rechazadas. |
+| 11.3 | `ef161c3` + `567d564` + `a623503` | Barrera de sincronización al final de la ronda: el host espera una escritura confirmada antes de contar (una lectura de la caché no probaba nada). Sin conexión nunca se cuenta (no se pierde vida); sin confirmar estando "conectado" (enlace medio abierto) se repite una vez, la repetición espera hasta 10 s y luego se cuenta. |
+| 11.4 | `ef161c3` + `567d564` | El host se detiene y muestra "The room is gone" si su sala desaparece, es una copia local parcial o cambia de dueño. |
+| 11.5 | `ef161c3` | Los tests de reglas usan su propio espacio `demo-purple-dino-rules`. |
+| 11.6 | `ef161c3` | Lobby: × siempre visible con confirmación "REMOVE NAME?"; alumnos desconectados al final; el celular muestra "THE ROOM WAS CLOSED" si el código cambia de dueño. |
+
+**Tests agregados:** `src/game/ownership.test.ts`, `extendedDeadline` y `roundCountable` en `src/game/round.test.ts`, y `src/host/controller.test.ts` (8 tests con la capa de datos simulada; comprobados por mutación).
+
+**Verificación (`a623503`):** typecheck ok, lint ok, 43 tests unitarios, 33 tests de reglas, build ok; pruebas en el navegador descritas en `AUDITORIA.md`.
+
+### Revisión adversarial del Lote 11
+
+- **Ronda 1** (diff `e5be0bb..ef161c3`): RECHAZADO. Bloqueante M1 (MEDIO): con un enlace medio abierto (`.info/connected` en `true`) la lectura final "del servidor" se respondía desde la caché del SDK, así que una ronda podía costar una vida; los requisitos prometían lo contrario. Menores: B1 la música seguía en "panic" tras extender el plazo; B2 comentario equivocado en el lobby; B3 la documentación aún mencionaba el anillo del temporizador quitado; B4 el banner "could not be saved" quedaba sobre "The room is gone"; nota: solo se probaban ayudantes puros. Todo corregido en `567d564` (barrera de sincronización y tests del controlador).
+- **Ronda 2** (diff `a47c652..567d564`): APROBADO CON SUGERENCIAS. Aplicadas en `a623503`: tests que detectan detener el listener antes de la barrera y decidir con el plazo viejo; la repetición espera hasta 10 s; `withTimeout` limpia su temporizador; además (decisión propia) no se espera la barrera sin conexión. El compromiso restante pasó a 12.1.
+
+### Otros cambios de esta corrida (pedidos del usuario en el chat, no son lotes)
+
+- `ed36d35`: el cronómetro de la batalla muestra solo los segundos en una caja con marco (se quitó el anillo de puntos; las imágenes del cronómetro ya no se publican).
+- `a47c652`: botón BACK en cada paso de crear partida y en la pantalla de unirse (solo si se abrió desde el inicio), y JOIN A GAME en la pantalla de inicio para que los alumnos puedan jugar desde un computador.
+
+### Lote 11 (texto original) — Conexión inestable y sala que desaparece · MEDIO · no seguro · estado: resuelto (`ef161c3` + `567d564` + `a623503`)
+
+- [x] Aprobado en el chat (2026-10-18)
+
+| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
+|---|---|---|---|---|---|
+| 11.1 | `src/host/controller.ts` `publish()` | F3, R1; revisión adversarial ronda 2 | MEDIO. Una pregunta que llega tarde a la base (portátil sin red o con red lenta) deja a los alumnos con menos tiempo o sin él. El re-preguntar de `bc353fc` se revirtió: en red lenta sostenida entraba en bucle. | No re-preguntar: extender el plazo (`round.endsAt = serverNow() + duración`, escribir solo `question`/`endsAt`; la regla de respuestas ya lee `endsAt` de la base). Test unitario/del controlador. | medio / medio |
+| 11.2 | `src/host/`, `src/data/` | observabilidad (área 7); revisión adversarial ronda 2 | MEDIO. Sin aviso cuando el portátil de la profe pierde la conexión: `update()` sin red se encola y no falla, así que el banner de `bc353fc` (revertido) nunca aparecía. | Banner con `onValue(ref(db, '.info/connected'))` desde `src/data/` (se muestra tras >3 s desconectado) más contador de escrituras rechazadas. | medio / bajo |
+| 11.3 | `src/host/controller.ts` `finish` ~193-195 (ya existía) | R: "si nadie pudo responder no se pierde vida" | MEDIO. Si `readAnswers` final vence por tiempo (profe sin red), la ronda se decide solo con el snapshot en vivo y puede costar una vida. | `fetched === null` cuenta como "nadie": se repite sin castigo. Test. | bajo / bajo |
+| 11.4 | `RoomScreen.tsx`, `src/host/controller.ts` | robustez | MEDIO. El proyector se cae (ErrorBoundary, "Cannot destructure 'difficulty' of room.config") si su sala se borra a mitad de partida mientras el controlador sigue escribiendo: la escritura optimista local recrea una sala parcial. Caso real: la profe crea sala en una segunda pestaña (una sala por profe borra la primera). Se descubrió porque los tests de reglas vaciaron el emulador de desarrollo. | `RoomScreen` trata una sala sin `config`/`hostUid` como cerrada; el controlador se destruye cuando `watchRoom` entrega `null`. Test. | bajo / bajo |
+| 11.5 | `tests/rules/` | aislamiento de pruebas | BAJO. Usan el proyecto `demo-purple-dino` y `clearDatabase()`: correrlos contra el emulador de desarrollo (como sugieren README/CLAUDE.md con `dev:emu` activo) borra las salas vivas. | Otro `projectId` (por ejemplo `demo-purple-dino-rules`) para los tests de reglas. | bajo / nulo |
+| 11.6 | `src/host/screens/Lobby.tsx`, `src/play/` | web-design-guidelines; revisión adversarial | BAJO. El botón × del lobby es invisible hasta el hover y no pide confirmación (difícil de descubrir en una pizarra táctil); los alumnos ocultos en "+N MORE" no se pueden quitar; un alumno expulsado con la pestaña dormida vuelve a entrar al recargar (aceptable: expulsar no es vetar); alumnos de una sala tomada por otra profe ven "YOU LEFT THE PACK" en vez de "THE ROOM WAS CLOSED". | × visible, confirmación, forma de quitar a los ocultos y mensaje distinto según el motivo. | bajo / bajo |
+
 ## Iteración 1 → 2, 2026-10-18
 
 Rama `auditoria/2026-10-18` (base `main`, sin push ni merge). El usuario aprobó los lotes 1–9 en el chat el 2026-10-18; cada uno se aplicó en un commit propio. Los resultados resumen lo aplicado según el arreglo propuesto; el texto de cada lote es el de la iteración 1.
@@ -26,7 +66,9 @@ Rama `auditoria/2026-10-18` (base `main`, sin push ni merge). El usuario aprobó
 | ¿Cuántas salas por profe? | Una. | 4.5: índice `hostRooms/{uid}`; crear otra sala borra la anterior. |
 | Si nadie pudo responder, ¿se pierde vida? | No: no se quita vida y la pregunta se repite. | Regla ya implementada en el controlador; el caso de timeout de lectura sigue abierto como 11.3. |
 
-### Revisión adversarial: intentos revertidos
+### Revisión adversarial de la iteración 2: intentos revertidos
+
+Rondas: 2 · diff `main..35eb9e5` (ronda 1) y `35eb9e5..bc353fc` (ronda 2) · veredicto RECHAZADO (revertido parcialmente) · revertido en `d594d61`. Bloqueantes de la ronda 1 (corregidos en `bc353fc`): el índice `hostRooms` podía borrarse para saltarse "una sala por profe"; el celular conservaba `picked` entre una pregunta y su repetición; una pregunta publicada tarde con la profe sin red penalizaba a los alumnos. Hallazgo propio: un `focus()` desplazaba el escenario de 1600 px (corregido con `overflow: clip`; respaldo `hidden` en `d594d61`). Bloqueantes de la ronda 2 (revertidos, ver abajo): R2A y R2B.
 
 - `bc353fc` agregó "re-preguntar si la pregunta llegó tarde a la base" y un banner de conexión basado en escrituras rechazadas. La ronda 2 los marcó como fallo (bucle con red lenta sostenida; el banner no se muestra con Wi-Fi caído porque `update()` se encola). Revertidos en `d594d61`, estado **falló**; el problema real pasó a 11.1 y 11.2.
 

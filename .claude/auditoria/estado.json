@@ -5,7 +5,9 @@
   "etapa": {
     "actual": "prototipo",
     "objetivo": "produccion",
-    "datosSensibles": ["nombre de pila de alumnos de 16-17 años, borrado al terminar (sin régimen especial, confirmado)"],
+    "datosSensibles": [
+      "nombre de pila de alumnos de 16-17 años, borrado al terminar (sin régimen especial, confirmado)"
+    ],
     "multiTenant": false,
     "cobraDinero": false,
     "usuarios": "interno",
@@ -21,9 +23,16 @@
       "rendimiento": "respuesta en proyector <1 s; celular <3 s en 4G (S)",
       "privacidad": "borrar al salir; abandonadas a las 24 h (C)"
     },
-    "preguntasAbiertas": ["desconexión a mitad de pregunta: ¿cuenta?", "clases simultáneas", "¿plan Blaze?"],
+    "preguntasAbiertas": [
+      "desconexión a mitad de pregunta: ¿cuenta? (hoy cuenta y la respuesta ausente es fallo; propuesta ofrecida: no contar a quien se va sin responder; pendiente del usuario)",
+      "clases simultáneas",
+      "¿plan Blaze?"
+    ],
     "motivoRechazo": null,
-    "decisiones": ["sin elegibles: no se pierde vida y se repite la pregunta (2026-10-18)"]
+    "decisiones": [
+      "sin elegibles: no se pierde vida y se repite la pregunta (2026-10-18)",
+      "exactamente 50 % es fallo: mayoría estricta, comportamiento confirmado (2026-10-18)"
+    ]
   },
   "modeloAcceso": {
     "aplica": true,
@@ -31,51 +40,136 @@
     "estado": "confirmado",
     "confirmadoEl": "2026-10-18",
     "commitRevisado": "0c3bef0",
-    "roles": ["host", "alumno", "visitante"],
+    "roles": [
+      "host",
+      "alumno",
+      "visitante"
+    ],
     "preguntasAbiertas": [],
-    "decisiones": ["la profe puede expulsar alumnos (2026-10-18)", "una sala por profe (2026-10-18)"]
+    "decisiones": [
+      "la profe puede expulsar alumnos (2026-10-18)",
+      "una sala por profe (2026-10-18)"
+    ]
   },
   "documentacion": {
-    "ultimaSincronizacion": "2026-10-18T22:00:00Z",
-    "commitSincronizado": "d594d61",
+    "ultimaSincronizacion": "2026-10-18T23:30:00Z",
+    "commitSincronizado": "a623503",
     "archivos": [
-      { "ruta": "README.md", "estado": "al-dia" },
-      { "ruta": "CLAUDE.md", "estado": "al-dia" },
-      { "ruta": ".env.example", "estado": "al-dia" },
-      { "ruta": "GAME_DESIGN.md", "estado": "al-dia" },
-      { "ruta": "design/SUNO_PROMPTS.md", "estado": "al-dia" },
-      { "ruta": "design/assets/CREDITS.md", "estado": "al-dia" },
-      { "ruta": "docs/requisitos.md", "estado": "al-dia" },
-      { "ruta": "docs/modelo-de-acceso.md", "estado": "al-dia" },
-      { "ruta": "docs/operacion.md", "estado": "falta" }
+      {
+        "ruta": "README.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "CLAUDE.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": ".env.example",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "GAME_DESIGN.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "design/SUNO_PROMPTS.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "design/assets/CREDITS.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "docs/requisitos.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "docs/modelo-de-acceso.md",
+        "estado": "al-dia"
+      },
+      {
+        "ruta": "docs/operacion.md",
+        "estado": "falta"
+      }
     ],
     "pendientesDeAprobacion": []
   },
   "preparacionProduccion": {
     "veredicto": "no-lanzar",
     "areas": [
-      { "area": "seguridad", "estado": "a-medias", "motivo": "lotes 3 y 4 resueltos; falta op. B" },
-      { "area": "cadena de suministro", "estado": "a-medias", "motivo": "lotes 5 y 8 resueltos; lote 10, op. D, 11.5" },
-      { "area": "privacidad", "estado": "a-medias", "motivo": "lote 8.3 resuelto; op. E" },
-      { "area": "escalabilidad", "estado": "a-medias", "motivo": "lote 1 resuelto; pregunta abierta de clases simultáneas (plan Spark)" },
-      { "area": "confiabilidad", "estado": "a-medias", "motivo": "lotes 3 y 5 resueltos; lote 11.1, 11.3, 11.4, op. F, op. I" },
-      { "area": "observabilidad", "estado": "falta", "motivo": "11.2, op. F" },
-      { "area": "testing", "estado": "a-medias", "motivo": "op. C; 11.1 pide test del controlador" },
-      { "area": "ci-cd", "estado": "falta", "motivo": "op. A" },
-      { "area": "documentacion", "estado": "a-medias", "motivo": "lote 9 resuelto; op. G (docs/operacion.md)" }
+      {
+        "area": "seguridad",
+        "estado": "a-medias",
+        "motivo": "lotes 3 y 4 resueltos; falta op. B"
+      },
+      {
+        "area": "cadena de suministro",
+        "estado": "a-medias",
+        "motivo": "lotes 5, 8 y 11.5 resueltos; lote 10, op. D"
+      },
+      {
+        "area": "privacidad",
+        "estado": "a-medias",
+        "motivo": "lote 8.3 resuelto; op. E"
+      },
+      {
+        "area": "escalabilidad",
+        "estado": "a-medias",
+        "motivo": "lote 1 resuelto; pregunta abierta de clases simultáneas (plan Spark)"
+      },
+      {
+        "area": "confiabilidad",
+        "estado": "a-medias",
+        "motivo": "lotes 3, 5 y 11 resueltos (11.1, 11.3, 11.4); 12.1, op. F, op. I"
+      },
+      {
+        "area": "observabilidad",
+        "estado": "a-medias",
+        "motivo": "11.2 resuelto (banner de conexión); op. F (reporte de errores)"
+      },
+      {
+        "area": "testing",
+        "estado": "a-medias",
+        "motivo": "43 tests unitarios + 33 de reglas; controller.test.ts con 8 tests; op. C para ampliar"
+      },
+      {
+        "area": "ci-cd",
+        "estado": "falta",
+        "motivo": "op. A"
+      },
+      {
+        "area": "documentacion",
+        "estado": "a-medias",
+        "motivo": "lote 9 resuelto; op. G (docs/operacion.md)"
+      }
     ],
     "verificacionManual": [
-      { "item": "proyecto Firebase real (Auth anónima, RTDB, región)", "hecho": false},
-      { "item": "API key restringida", "hecho": false},
-      { "item": "MFA cuenta Google", "hecho": false},
-      { "item": "licencias de packs confirmadas", "hecho": false},
-      { "item": "remoto privado", "hecho": false}
+      {
+        "item": "proyecto Firebase real (Auth anónima, RTDB, región)",
+        "hecho": false
+      },
+      {
+        "item": "API key restringida",
+        "hecho": false
+      },
+      {
+        "item": "MFA cuenta Google",
+        "hecho": false
+      },
+      {
+        "item": "licencias de packs confirmadas",
+        "hecho": false
+      },
+      {
+        "item": "remoto privado",
+        "hecho": false
+      }
     ],
-    "condicionesVeredicto": "lote 11 (11.1-11.4), oportunidades A, B y C, verificación manual"
+    "condicionesVeredicto": "oportunidades A, B y C, verificación manual"
   },
-  "iteracion": 2,
-  "ultimaEjecucion": "2026-10-18T22:00:00Z",
-  "commitAuditado": "d594d61",
+  "iteracion": 3,
+  "ultimaEjecucion": "2026-10-18T23:30:00Z",
+  "commitAuditado": "a623503",
   "mapa": {
     "ruta": ".claude/auditoria/mapa.md",
     "commit": "0c3bef0",
@@ -85,61 +179,213 @@
   "ramaArreglos": "auditoria/2026-10-18",
   "worktree": null,
   "herramientas": [
-    { "nombre": "secretos", "estado": "corrio", "resumen": "git grep de patrones: 0 hallazgos (gitleaks/trufflehog no instalados)" },
-    { "nombre": "dependencias", "estado": "corrio", "resumen": "prod 4 high no explotables (Firestore no usado); dev 3 críticas + 8 high (firebase-tools 14, vitest 3)" },
-    { "nombre": "lint-typecheck", "estado": "corrio", "resumen": "0 errores, 0 avisos" },
-    { "nombre": "variables-entorno", "estado": "corrio", "resumen": "falta VITE_EMULATOR_HOST en .env.example" }
+    {
+      "nombre": "secretos",
+      "estado": "corrio",
+      "resumen": "git grep de patrones: 0 hallazgos (gitleaks/trufflehog no instalados)"
+    },
+    {
+      "nombre": "dependencias",
+      "estado": "corrio",
+      "resumen": "prod 4 high no explotables (Firestore no usado); dev 3 críticas + 8 high (firebase-tools 14, vitest 3)"
+    },
+    {
+      "nombre": "lint-typecheck",
+      "estado": "corrio",
+      "resumen": "0 errores, 0 avisos"
+    },
+    {
+      "nombre": "variables-entorno",
+      "estado": "corrio",
+      "resumen": "falta VITE_EMULATOR_HOST en .env.example"
+    }
   ],
   "revisionAdversarial": {
-    "veredicto": "rechazado-revertido",
+    "iteracion": 3,
+    "veredicto": "aprobado-con-sugerencias",
     "rondas": 2,
-    "diff": "35eb9e5..bc353fc",
+    "diff": "e5be0bb..a623503",
     "ronda1": {
-      "diff": "main-start..35eb9e5",
+      "diff": "e5be0bb..ef161c3",
       "veredicto": "rechazado",
-      "bloqueantes": ["hostRooms borrable: salta una sala por profe", "Answer conservaba picked entre preguntas repetidas", "pregunta tardía con la profe sin red penalizaba a los alumnos"],
-      "corregidoEn": "bc353fc"
+      "bloqueantes": [
+        "M1 lectura final desde caché con enlace medio abierto"
+      ],
+      "menores": [
+        "B1 música en panic tras extender plazo",
+        "B2 comentario equivocado en el lobby",
+        "B3 docs con el anillo del temporizador",
+        "B4 banner 'could not be saved' sobre 'The room is gone'"
+      ],
+      "corregidoEn": "567d564"
+    },
+    "ronda2": {
+      "diff": "a47c652..567d564",
+      "veredicto": "aprobado-con-sugerencias",
+      "sugerencias": [
+        "tests que detecten detener el listener antes de la barrera y decidir con el plazo viejo",
+        "la repetición espera hasta 10 s",
+        "withTimeout limpia su temporizador",
+        "(propia) no esperar la barrera sin conexión"
+      ],
+      "aplicadoEn": "a623503"
     },
     "bloqueantes": [
-      "A: re-preguntar una pregunta tardía entra en bucle con red lenta sostenida",
-      "B: el banner solo contaba escrituras rechazadas; con RTDB sin red update() se encola y no se muestra"
+      "M1 lectura final desde caché con enlace medio abierto (resuelto 567d564)"
     ],
-    "revertido": "d594d61",
-    "sugerenciasPendientes": ["11.6"]
+    "sugerenciasPendientes": [
+      "12.1",
+      "12.2",
+      "12.3"
+    ]
   },
   "ejecucion": [
-    { "subagente": "seguridad", "modelo": "opus", "archivos": 11, "duracionMs": 376669, "tokens": 120341},
-    { "subagente": "logica-requisitos", "modelo": "opus", "archivos": 20, "duracionMs": 275912, "tokens": 134224},
-    { "subagente": "cliente", "modelo": "sonnet", "archivos": 25, "duracionMs": 892425, "tokens": 228891},
-    { "subagente": "documentacion-operacion", "modelo": "sonnet", "archivos": 18, "duracionMs": 328925, "tokens": 158378},
-    { "subagente": "revisor-adversarial-ronda-1", "modelo": "opus", "archivos": null, "duracionMs": null, "tokens": null},
-    { "subagente": "revisor-adversarial-ronda-2", "modelo": "opus", "archivos": 1, "duracionMs": 228000, "tokens": 113000},
-    { "subagente": "actualizacion-informe", "modelo": "sonnet", "archivos": 3, "duracionMs": null, "tokens": null}
+    {
+      "subagente": "seguridad",
+      "modelo": "opus",
+      "archivos": 11,
+      "duracionMs": 376669,
+      "tokens": 120341
+    },
+    {
+      "subagente": "logica-requisitos",
+      "modelo": "opus",
+      "archivos": 20,
+      "duracionMs": 275912,
+      "tokens": 134224
+    },
+    {
+      "subagente": "cliente",
+      "modelo": "sonnet",
+      "archivos": 25,
+      "duracionMs": 892425,
+      "tokens": 228891
+    },
+    {
+      "subagente": "documentacion-operacion",
+      "modelo": "sonnet",
+      "archivos": 18,
+      "duracionMs": 328925,
+      "tokens": 158378
+    },
+    {
+      "subagente": "revisor-adversarial-ronda-1",
+      "modelo": "opus",
+      "archivos": null,
+      "duracionMs": null,
+      "tokens": null
+    },
+    {
+      "subagente": "revisor-adversarial-ronda-2",
+      "modelo": "opus",
+      "archivos": 1,
+      "duracionMs": 228000,
+      "tokens": 113000
+    },
+    {
+      "subagente": "actualizacion-informe",
+      "modelo": "sonnet",
+      "archivos": 3,
+      "duracionMs": null,
+      "tokens": null
+    },
+    {
+      "subagente": "revisor-adversarial-lote-11-ronda-1",
+      "modelo": "opus",
+      "archivos": null,
+      "duracionMs": 402000,
+      "tokens": 161000,
+      "nota": "delta de 2 commits (e5be0bb..ef161c3)"
+    },
+    {
+      "subagente": "revisor-adversarial-lote-11-ronda-2",
+      "modelo": "opus",
+      "archivos": null,
+      "duracionMs": 180000,
+      "tokens": 95000,
+      "nota": "delta de 1 commit (a47c652..567d564)"
+    },
+    {
+      "subagente": "actualizacion-informe-iteracion-3",
+      "modelo": "sonnet",
+      "archivos": 3,
+      "duracionMs": null,
+      "tokens": null
+    }
   ],
   "stack": {
-    "lenguajes": ["TypeScript"],
-    "frameworks": ["React 19.3", "Vite 7.3", "Zustand 5", "Vitest 3.2"],
-    "servicios": ["Firebase Realtime Database", "Firebase Auth (anónima)", "Firebase Hosting"],
+    "lenguajes": [
+      "TypeScript"
+    ],
+    "frameworks": [
+      "React 19.3",
+      "Vite 7.3",
+      "Zustand 5",
+      "Vitest 3.2"
+    ],
+    "servicios": [
+      "Firebase Realtime Database",
+      "Firebase Auth (anónima)",
+      "Firebase Hosting"
+    ],
     "huella": "react@19.3.1 vite@7.3.7 firebase@12.19.0 typescript@5.9.3"
   },
   "skills": {
     "aplicadas": [
-      { "skill": "vercel-react-best-practices", "area": "cliente" },
-      { "skill": "vercel-composition-patterns", "area": "cliente" },
-      { "skill": "web-design-guidelines", "area": "ui-accesibilidad" },
-      { "skill": "firebase-security-rules-auditor", "area": "seguridad (principios)" },
-      { "skill": "firebase-auth-basics", "area": "seguridad" },
-      { "skill": "firebase-hosting-basics", "area": "seguridad-operacion" },
-      { "skill": "firebase-basics", "area": "operacion" },
-      { "skill": "engineering:testing-strategy", "area": "testing" },
-      { "skill": "engineering:documentation", "area": "documentacion" }
+      {
+        "skill": "vercel-react-best-practices",
+        "area": "cliente"
+      },
+      {
+        "skill": "vercel-composition-patterns",
+        "area": "cliente"
+      },
+      {
+        "skill": "web-design-guidelines",
+        "area": "ui-accesibilidad"
+      },
+      {
+        "skill": "firebase-security-rules-auditor",
+        "area": "seguridad (principios)"
+      },
+      {
+        "skill": "firebase-auth-basics",
+        "area": "seguridad"
+      },
+      {
+        "skill": "firebase-hosting-basics",
+        "area": "seguridad-operacion"
+      },
+      {
+        "skill": "firebase-basics",
+        "area": "operacion"
+      },
+      {
+        "skill": "engineering:testing-strategy",
+        "area": "testing"
+      },
+      {
+        "skill": "engineering:documentation",
+        "area": "documentacion"
+      }
     ],
     "descartadas": [
-      { "skill": "firestore-rules-creation / firebase-firestore", "motivo": "usa Realtime Database" },
-      { "skill": "firebase-app-hosting-basics", "motivo": "SPA estática" },
-      { "skill": "expo-* / react-native-*", "motivo": "no es app nativa" }
+      {
+        "skill": "firestore-rules-creation / firebase-firestore",
+        "motivo": "usa Realtime Database"
+      },
+      {
+        "skill": "firebase-app-hosting-basics",
+        "motivo": "SPA estática"
+      },
+      {
+        "skill": "expo-* / react-native-*",
+        "motivo": "no es app nativa"
+      }
     ],
-    "areasSinSkill": ["Realtime Database"],
+    "areasSinSkill": [
+      "Realtime Database"
+    ],
     "recomendadas": [
       {
         "area": "testing",
@@ -160,9 +406,24 @@
     ]
   },
   "lineaBase": {
-    "comandos": { "typecheck": "npm run typecheck", "lint": "npm run lint", "test": "npm test", "rules": "npm run test:rules", "build": "npm run build" },
-    "fallosPrevios": ["npm run verify falla si dev:emu ya ocupa el puerto 9000 (no es fallo del código)"],
-    "despuesDeArreglos": { "typecheck": "ok", "lint": "ok", "test": "27 ok", "rules": "33 ok (emulador ya levantado)", "build": "ok", "commit": "d594d61" }
+    "comandos": {
+      "typecheck": "npm run typecheck",
+      "lint": "npm run lint",
+      "test": "npm test",
+      "rules": "npm run test:rules",
+      "build": "npm run build"
+    },
+    "fallosPrevios": [
+      "npm run verify falla si dev:emu ya ocupa el puerto 9000 (no es fallo del código)"
+    ],
+    "despuesDeArreglos": {
+      "typecheck": "ok",
+      "lint": "ok",
+      "test": "43 ok",
+      "rules": "33 ok",
+      "build": "ok",
+      "commit": "a623503"
+    }
   },
   "lotes": [
     {
@@ -172,7 +433,9 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "4784de9",
-      "hallazgos": ["src/host/screens/Lobby.tsx:47"],
+      "hallazgos": [
+        "src/host/screens/Lobby.tsx:47"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -182,7 +445,10 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "379ef6b",
-      "hallazgos": ["src/play/PlayApp.tsx:119", "src/game/rules.ts:121"],
+      "hallazgos": [
+        "src/play/PlayApp.tsx:119",
+        "src/game/rules.ts:121"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -192,7 +458,11 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "98240b2",
-      "hallazgos": ["src/host/controller.ts:142", "src/host/controller.ts:130", "src/data/hooks.ts:24"],
+      "hallazgos": [
+        "src/host/controller.ts:142",
+        "src/host/controller.ts:130",
+        "src/data/hooks.ts:24"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -202,7 +472,12 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "69411f1",
-      "hallazgos": ["database.rules.json:9", "database.rules.json:13", "database.rules.json:26", "database.rules.json:50"],
+      "hallazgos": [
+        "database.rules.json:9",
+        "database.rules.json:13",
+        "database.rules.json:26",
+        "database.rules.json:50"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -212,7 +487,11 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "7e4dafa",
-      "hallazgos": ["src/lib/firebase.ts:9", "vite.config.ts:7", "firebase.json"],
+      "hallazgos": [
+        "src/lib/firebase.ts:9",
+        "vite.config.ts:7",
+        "firebase.json"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -222,7 +501,9 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "ddeb671",
-      "hallazgos": ["src/audio/music.ts:64"],
+      "hallazgos": [
+        "src/audio/music.ts:64"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -232,7 +513,11 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "3529754",
-      "hallazgos": ["src/styles/game.css:114", "src/host/screens/Battle.tsx:115", "src/play/PlayApp.tsx:245"],
+      "hallazgos": [
+        "src/styles/game.css:114",
+        "src/host/screens/Battle.tsx:115",
+        "src/play/PlayApp.tsx:245"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -242,7 +527,11 @@
       "seguro": false,
       "estado": "resuelto",
       "commit": "14d578a + df62356",
-      "hallazgos": ["design/assets/CREDITS.md:17", "scripts/sync-assets.mjs:12", "index.html:9"],
+      "hallazgos": [
+        "design/assets/CREDITS.md:17",
+        "scripts/sync-assets.mjs:12",
+        "index.html:9"
+      ],
       "aprobadoEl": "2026-10-18"
     },
     {
@@ -252,17 +541,31 @@
       "seguro": true,
       "estado": "resuelto",
       "commit": "35eb9e5",
-      "hallazgos": ["README.md:27", "GAME_DESIGN.md §7", "design/SUNO_PROMPTS.md"],
+      "hallazgos": [
+        "README.md:27",
+        "GAME_DESIGN.md §7",
+        "design/SUNO_PROMPTS.md"
+      ],
       "aprobadoEl": "2026-10-18"
     },
-    { "id": 10, "titulo": "Dependencias de desarrollo", "severidad": "BAJO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["package.json"]},
+    {
+      "id": 10,
+      "titulo": "Dependencias de desarrollo",
+      "severidad": "BAJO",
+      "seguro": false,
+      "estado": "pendiente",
+      "commit": null,
+      "hallazgos": [
+        "package.json"
+      ]
+    },
     {
       "id": 11,
       "titulo": "Conexión inestable y sala que desaparece",
       "severidad": "MEDIO",
       "seguro": false,
-      "estado": "pendiente",
-      "commit": null,
+      "estado": "resuelto",
+      "commit": "ef161c3 + 567d564 + a623503",
       "hallazgos": [
         "src/host/controller.ts publish() · pregunta tardía (11.1)",
         "src/host + src/data · aviso de conexión (11.2)",
@@ -270,14 +573,46 @@
         "RoomScreen.tsx + controller.ts · sala borrada a mitad de partida (11.4)",
         "tests/rules · projectId propio (11.5, BAJO)",
         "Lobby.tsx · botón × descubrible y confirmación (11.6, BAJO)"
+      ],
+      "commits": [
+        "ef161c3",
+        "567d564",
+        "a623503"
+      ],
+      "aprobadoEl": "2026-10-18",
+      "resultado": "11.1 plazo extendido una vez; 11.2 banner NO CONNECTION; 11.3 barrera de sincronización; 11.4 'The room is gone'; 11.5 espacio demo-purple-dino-rules; 11.6 lobby × y sala cerrada"
+    },
+    {
+      "id": 12,
+      "titulo": "Detalles de red y lobby",
+      "severidad": "BAJO",
+      "seguro": false,
+      "estado": "pendiente",
+      "commit": null,
+      "hallazgos": [
+        "controller.ts · red lenta >10 s: la repetición se cuenta con lo recibido (12.1)",
+        "Lobby.tsx · alumnos ocultos en '+N MORE' no se pueden quitar con >49 entradas (12.2)",
+        "reingreso automático de un alumno quitado con la pestaña dormida (12.3, informativo, aceptado)"
       ]
     }
   ],
   "oportunidades": {
     "areasRevisadas": [
-      { "area": "seo", "aplica": false, "motivo": "solo noindex" },
-      { "area": "i18n", "aplica": false, "motivo": "producto monolingüe" },
-      { "area": "analitica", "aplica": false, "motivo": "fuera de alcance v1" }
+      {
+        "area": "seo",
+        "aplica": false,
+        "motivo": "solo noindex"
+      },
+      {
+        "area": "i18n",
+        "aplica": false,
+        "motivo": "producto monolingüe"
+      },
+      {
+        "area": "analitica",
+        "aplica": false,
+        "motivo": "fuera de alcance v1"
+      }
     ],
     "items": [
       {
@@ -287,7 +622,9 @@
         "prioridad": "AHORA",
         "estado": "pendiente",
         "commit": null,
-        "requiereUsuario": ["remoto privado"],
+        "requiereUsuario": [
+          "remoto privado"
+        ],
         "motivoDescarte": null
       },
       {
@@ -297,7 +634,10 @@
         "prioridad": "AHORA",
         "estado": "pendiente",
         "commit": null,
-        "requiereUsuario": ["registrar App Check", "clave reCAPTCHA"],
+        "requiereUsuario": [
+          "registrar App Check",
+          "clave reCAPTCHA"
+        ],
         "motivoDescarte": null
       },
       {
@@ -317,7 +657,9 @@
         "prioridad": "AHORA",
         "estado": "pendiente",
         "commit": null,
-        "requiereUsuario": ["crear remoto"],
+        "requiereUsuario": [
+          "crear remoto"
+        ],
         "motivoDescarte": null
       },
       {
@@ -327,7 +669,9 @@
         "prioridad": "PRONTO",
         "estado": "pendiente",
         "commit": null,
-        "requiereUsuario": ["plan Blaze"],
+        "requiereUsuario": [
+          "plan Blaze"
+        ],
         "motivoDescarte": null
       },
       {
@@ -397,7 +741,9 @@
         "prioridad": "DESPUES",
         "estado": "pendiente",
         "commit": null,
-        "requiereUsuario": ["plan Blaze"],
+        "requiereUsuario": [
+          "plan Blaze"
+        ],
         "motivoDescarte": null
       },
       {
@@ -422,5 +768,43 @@
       }
     ]
   },
-  "descartados": []
+  "descartados": [],
+  "revisionesAnteriores": [
+    {
+      "veredicto": "rechazado-revertido",
+      "rondas": 2,
+      "diff": "35eb9e5..bc353fc",
+      "ronda1": {
+        "diff": "main-start..35eb9e5",
+        "veredicto": "rechazado",
+        "bloqueantes": [
+          "hostRooms borrable: salta una sala por profe",
+          "Answer conservaba picked entre preguntas repetidas",
+          "pregunta tardía con la profe sin red penalizaba a los alumnos"
+        ],
+        "corregidoEn": "bc353fc"
+      },
+      "bloqueantes": [
+        "A: re-preguntar una pregunta tardía entra en bucle con red lenta sostenida",
+        "B: el banner solo contaba escrituras rechazadas; con RTDB sin red update() se encola y no se muestra"
+      ],
+      "revertido": "d594d61",
+      "sugerenciasPendientes": [
+        "11.6"
+      ],
+      "iteracion": 2
+    }
+  ],
+  "otrosCambios": [
+    {
+      "commit": "ed36d35",
+      "descripcion": "cronómetro de la batalla solo con segundos en caja con marco; anillo de puntos quitado; imágenes del cronómetro ya no se publican",
+      "origen": "pedido del usuario en el chat"
+    },
+    {
+      "commit": "a47c652",
+      "descripcion": "BACK en cada paso de crear partida y en la pantalla de unirse (solo desde el inicio); JOIN A GAME en el inicio",
+      "origen": "pedido del usuario en el chat"
+    }
+  ]
 }
