@@ -4,7 +4,7 @@ import { serverNow } from '../lib/firebase';
 import { readAnswers, updateRoom, watchAnswers, watchPresence, watchRoom } from '../data/room';
 import { QuestionDeck } from '../game/questions';
 import {
-  DIFFICULTY, initialState, isMajority, nextStop, reshuffleDifferent, resolveRound, roundKey, shuffleOptions, tally,
+  DIFFICULTY, initialState, isMajority, newGameId, nextStop, reshuffleDifferent, resolveRound, roundKey, shuffleOptions, tally,
 } from '../game/rules';
 import type { BattleState, GameConfig, Player, PublicQuestion, Question, Reveal } from '../game/types';
 
@@ -47,6 +47,7 @@ export class GameController {
   private timers = new Set<ReturnType<typeof setTimeout>>();
   private unsubs: Array<() => void> = [];
   private disposed = false;
+  private gameId = '';
   readonly stats: HostStats = { questions: 0, correct: 0, possible: 0, bestCombo: 0, byUnit: {} };
 
   constructor(private readonly code: string, private readonly config: GameConfig, private readonly onStats: (s: HostStats) => void = () => {}) {
@@ -59,6 +60,7 @@ export class GameController {
   }
 
   start() {
+    this.gameId = newGameId(serverNow());
     this.state = initialState(this.config.difficulty);
     void this.write({ status: 'walking', state: this.state, question: null, reveal: null });
     this.later(TIMING.walkMs, () => this.ask(false));
@@ -107,7 +109,7 @@ export class GameController {
     this.state = { ...this.state, questionNumber: this.state.questionNumber + 1 };
     const startedAt = serverNow();
     const endsAt = startedAt + DIFFICULTY[this.config.difficulty].seconds * 1000;
-    const key = roundKey(this.state.stop, this.state.questionNumber, attempt);
+    const key = roundKey(this.gameId, this.state.stop, this.state.questionNumber, attempt);
     const eligible = this.eligibleAt(startedAt);
 
     const round: Round = {

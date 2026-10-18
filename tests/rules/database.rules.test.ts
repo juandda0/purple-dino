@@ -36,7 +36,7 @@ async function seedQuestion(over: Record<string, unknown> = {}) {
   const now = Date.now();
   await seed(`rooms/${CODE}`, room({
     status: 'question',
-    question: { key: 's0q1a0', text: 'If I ___ more time…', options: ['have', 'had', 'will have', 'having'], unit: 7, attempt: 0, startedAt: now - 5_000, endsAt: now + 15_000, ...over },
+    question: { key: 'kx9a2b-s0q1a0', text: 'If I ___ more time…', options: ['have', 'had', 'will have', 'having'], unit: 7, attempt: 0, startedAt: now - 5_000, endsAt: now + 15_000, ...over },
     players: { ana: player(), late: player(now - 1_000) },
   }));
 }
@@ -73,7 +73,7 @@ describe('rooms: the teacher owns her room', () => {
   });
   it('a reveal only carries the right answer on a sword strike', async () => {
     await seedQuestion();
-    const reveal = { key: 's0q1a0', percent: 30, votes: [1, 1, 0, 0], answered: 2, eligible: 3 };
+    const reveal = { key: 'kx9a2b-s0q1a0', percent: 30, votes: [1, 1, 0, 0], answered: 2, eligible: 3 };
     await assertFails(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'shield', correct: 1 }));
     await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1 }));
   });
@@ -122,38 +122,42 @@ describe('players: each student only writes about themself', () => {
 describe('answers: one locked answer per student, never visible to classmates', () => {
   it('answers once while the question is open', async () => {
     await seedQuestion();
-    await assertSucceeds(set(ref(db('ana'), `answers/${CODE}/s0q1a0/ana`), 1));
-    await assertFails(set(ref(db('ana'), `answers/${CODE}/s0q1a0/ana`), 2)); // locked in
+    await assertSucceeds(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`), 1));
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`), 2)); // locked in
   });
   it('cannot answer for someone else, an old round, an invalid option or after time', async () => {
     await seedQuestion();
-    await assertFails(set(ref(db('ana'), `answers/${CODE}/s0q1a0/luis`), 1));
-    await assertFails(set(ref(db('ana'), `answers/${CODE}/s0q0a0/ana`), 1));
-    await assertFails(set(ref(db('ana'), `answers/${CODE}/s0q1a0/ana`), 7));
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/luis`), 1));
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q0a0/ana`), 1));
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`), 7));
     await env.clearDatabase();
     await seedQuestion({ startedAt: Date.now() - 30_000, endsAt: Date.now() - 5_000 });
-    await assertFails(set(ref(db('ana'), `answers/${CODE}/s0q1a0/ana`), 1));
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`), 1));
+  });
+  it('an answer for the same round of a previous game in this room is rejected', async () => {
+    await seedQuestion();
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/old000-s0q1a0/ana`), 1));
   });
   it('a student who joined after the question started waits for the next one', async () => {
     await seedQuestion();
-    await assertFails(set(ref(db('late'), `answers/${CODE}/s0q1a0/late`), 1));
+    await assertFails(set(ref(db('late'), `answers/${CODE}/kx9a2b-s0q1a0/late`), 1));
   });
   it('cannot answer outside the question phase', async () => {
     await seedQuestion();
     await seed(`rooms/${CODE}/status`, 'reveal');
-    await assertFails(set(ref(db('ana'), `answers/${CODE}/s0q1a0/ana`), 1));
+    await assertFails(set(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`), 1));
   });
   it('only the host reads all answers; a student reads only their own', async () => {
     await seedQuestion();
-    await seed(`answers/${CODE}/s0q1a0`, { ana: 1, luis: 2 });
+    await seed(`answers/${CODE}/kx9a2b-s0q1a0`, { ana: 1, luis: 2 });
     await assertSucceeds(get(ref(db('teacher'), `answers/${CODE}`)));
-    await assertFails(get(ref(db('ana'), `answers/${CODE}/s0q1a0`)));
-    await assertFails(get(ref(db('ana'), `answers/${CODE}/s0q1a0/luis`)));
-    await assertSucceeds(get(ref(db('ana'), `answers/${CODE}/s0q1a0/ana`)));
+    await assertFails(get(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0`)));
+    await assertFails(get(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/luis`)));
+    await assertSucceeds(get(ref(db('ana'), `answers/${CODE}/kx9a2b-s0q1a0/ana`)));
   });
   it('only the host clears answers, or anyone once the room is gone', async () => {
     await seedQuestion();
-    await seed(`answers/${CODE}/s0q1a0`, { ana: 1 });
+    await seed(`answers/${CODE}/kx9a2b-s0q1a0`, { ana: 1 });
     await assertFails(remove(ref(db('ana'), `answers/${CODE}`)));
     await assertSucceeds(remove(ref(db('teacher'), `answers/${CODE}`)));
   });

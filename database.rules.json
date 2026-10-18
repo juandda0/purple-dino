@@ -27,7 +27,7 @@
         },
         "question": {
           ".validate": "newData.hasChildren(['key', 'text', 'options', 'unit', 'attempt', 'startedAt', 'endsAt'])",
-          "key": { ".validate": "newData.isString() && newData.val().matches(/^s[0-9]+q[0-9]+a[0-9]+$/)" },
+          "key": { ".validate": "newData.isString() && newData.val().matches(/^[0-9a-z]{4,12}-s[0-9]+q[0-9]+a[0-9]+$/)" },
           "text": { ".validate": "newData.isString() && newData.val().length <= 200" },
           "options": { "$i": { ".validate": "$i.matches(/^[0-3]$/) && newData.isString() && newData.val().length <= 80" } },
           "unit": { ".validate": "newData.isNumber()" },

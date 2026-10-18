@@ -118,4 +118,8 @@ export function reshuffleDifferent(options: readonly string[], answer: number, r
   return { options: [...options.slice(1), options[0]!], answer: (answer + 3) % 4 };
 }
 
-export const roundKey = (stop: number, questionNumber: number, attempt: number) => `s${stop}q${questionNumber}a${attempt}`;
+/** Round key = answers bucket. Includes the game id so a "PLAY AGAIN" in the same room never reuses keys. */
+export const roundKey = (game: string, stop: number, questionNumber: number, attempt: number) => `${game}-s${stop}q${questionNumber}a${attempt}`;
+
+/** Short id for one game (base36 server time). */
+export const newGameId = (now: number) => Math.floor(now).toString(36);

@@ -113,28 +113,45 @@ function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string,
 }
 
 interface Personal { struck: number; strikes: number; streak: number; bestStreak: number; percents: number[] }
+const EMPTY_PERSONAL: Personal = { struck: 0, strikes: 0, streak: 0, bestStreak: 0, percents: [] };
 
 function InRoom({ code, uid }: { code: string; uid: string }) {
   const roomState = useRoom(code);
   const room = roomState.status === 'ready' ? roomState.room : null;
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [personal, setPersonal] = useState<Personal>({ struck: 0, strikes: 0, streak: 0, bestStreak: 0, percents: [] });
+  const [personal, setPersonal] = useState<Personal>(EMPTY_PERSONAL);
   const counted = useRef(new Set<string>());
 
   const key = room?.question?.key;
-  // after a reload, find out whether this round was already answered
+  const checked = useRef(new Set<string>());
+  // after a reload, find out whether this round was already answered (once per round, not on every snapshot)
   useEffect(() => {
-    if (!key || answers[key] != null) return;
+    if (!key || checked.current.has(key)) return;
+    checked.current.add(key);
     let alive = true;
-    readMyAnswer(code, key).then(a => { if (alive && a != null) setAnswers(m => ({ ...m, [key]: a })); }).catch(() => undefined);
+    readMyAnswer(code, key).then(a => { if (alive && a != null) setAnswers(m => (m[key] != null ? m : { ...m, [key]: a })); }).catch(() => undefined);
     return () => { alive = false; };
-  }, [code, key, answers]);
+  }, [code, key]);
+
+  // back in the lobby (PLAY AGAIN): a new game starts from zero on this phone too
+  const inLobby = room?.status === 'lobby';
+  useEffect(() => {
+    if (!inLobby) return;
+    setAnswers({});
+    setPersonal(EMPTY_PERSONAL);
+    counted.current.clear();
+    checked.current.clear();
+  }, [inLobby]);
 
   // personal stats, once per result
   const reveal = room?.status === 'reveal' ? room.reveal ?? null : null;
+  const joinedAt = room?.players?.[uid]?.joinedAt;
+  const startedAt = room?.question?.startedAt;
   useEffect(() => {
     if (!reveal || counted.current.has(reveal.key)) return;
     counted.current.add(reveal.key);
+    // rounds that started before this student joined do not count for them (R2, R8)
+    if (joinedAt == null || startedAt == null || joinedAt >= startedAt) return;
     const mine = answers[reveal.key];
     setPersonal(p => {
       const percents = [...p.percents, reveal.percent];
@@ -143,7 +160,7 @@ function InRoom({ code, uid }: { code: string; uid: string }) {
       const streak = right ? p.streak + 1 : 0;
       return { struck: p.struck + (right ? 1 : 0), strikes: p.strikes + 1, streak, bestStreak: Math.max(p.bestStreak, streak), percents };
     });
-  }, [reveal, answers]);
+  }, [reveal, answers, joinedAt, startedAt]);
 
   if (roomState.status === 'loading') return <div className="phone"><div className="center-col disp">Connecting…</div></div>;
   if (!room) {

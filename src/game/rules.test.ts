@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   DIFFICULTY, initialState, isMajority, nextStop, questionsToWin, reshuffleDifferent, resolveRound, shieldFor,
-  shuffleOptions, tally, isLastChance,
+  shuffleOptions, tally, isLastChance, roundKey, newGameId,
 } from './rules';
 
 // tiny deterministic PRNG for repeatable shuffles
@@ -97,5 +97,14 @@ describe('option shuffling', () => {
       expect(options).not.toEqual(opts);
       expect(options[answer]).toBe('had');
     }
+  });
+});
+
+describe('round keys', () => {
+  it('differ between two games in the same room (PLAY AGAIN never reuses an answers bucket)', () => {
+    const a = roundKey(newGameId(1_700_000_000_000), 0, 1, 0);
+    const b = roundKey(newGameId(1_700_000_090_000), 0, 1, 0);
+    expect(a).not.toBe(b);
+    expect(a).toMatch(/^[0-9a-z]{4,12}-s[0-9]+q[0-9]+a[0-9]+$/); // same pattern as database.rules.json
   });
 });
