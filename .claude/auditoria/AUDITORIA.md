@@ -1,44 +1,63 @@
 # Auditoría — Purple Dino
 
-**Iteración:** 1 · **Fecha:** 2026-10-18 · **Commit auditado:** `0c3bef0` (+ `eeb874b`, pantalla completa y espada, revisado a mano) · **Modo:** fundación + auditoría completa
+**Iteración:** 2 · **Fecha:** 2026-10-18 · **Commit auditado:** `d594d61` · **Modo:** arreglar (lotes 1–9) + revisión adversarial
 
-Este informe muestra solo lo que sigue abierto. Lo resuelto, descartado o fallido irá a `historial.md`.
+Este informe muestra solo lo que sigue abierto. Lo resuelto, descartado o fallido está en `historial.md`.
 
 ## Resumen
 
-Primera versión jugable de punta a punta (proyector + celular, victoria y derrota verificadas con alumnos simulados). La base es sólida: las reglas de seguridad cumplen el modelo de acceso en lo esencial (22 tests en el emulador), la lógica del juego está probada (18 tests), la respuesta correcta nunca llega a la base y el celular pesa ~0,3 MB.
+Los lotes 1–9 están aplicados en la rama `auditoria/2026-10-18` (un commit cada uno; nada subido ni mezclado) y verificados: typecheck, lint, 27 tests unitarios, 33 tests de reglas y build en verde, más pruebas en el navegador con 4 y 40 alumnos simulados. La revisión adversarial (2 rondas) rechazó el cambio; sus bloqueantes de la ronda 1 están cerrados y los dos de la ronda 2 se revirtieron. Con ellos y con hallazgos nuevos se abre el Lote 11.
 
-**Lo más grave:**
-- Con más de ~24 alumnos el botón START sale de la pantalla.
-- Tras "PLAY AGAIN" los celulares quedan bloqueados.
-- En un fallo, los votos publicados permiten deducir la respuesta correcta antes del reintento.
-- La música ocupa ~300 MB de memoria.
-- Falta la pantalla de créditos que exige la licencia de JDSherbert.
+**Lo más grave que sigue abierto:**
+- Una pregunta que llega tarde a la base (profe sin red o con red lenta) deja a los alumnos con menos tiempo o sin él (11.1).
+- No hay aviso visible cuando el portátil de la profe pierde la conexión (11.2).
+- Un timeout al leer las respuestas puede costar una vida injustamente (11.3).
+- Si se borra la sala a mitad de partida (segunda pestaña de la profe), el proyector se cae (11.4).
 
 | Severidad | Nuevos | Pendientes | Resueltos |
 |---|---|---|---|
-| CRÍTICO | 1 | 1 | 0 |
-| ALTO | 5 | 5 | 0 |
-| MEDIO | 19 | 19 | 0 |
-| BAJO | 22 | 22 | 0 |
-| Oportunidades AHORA | 4 | 4 | 0 |
-| Oportunidades PRONTO / DESPUÉS | 10 | 10 | 0 |
+| CRÍTICO | 0 | 0 | 1 |
+| ALTO | 0 | 0 | 5 |
+| MEDIO | 7 | 4 | 22 |
+| BAJO | 2 | 3 | 21 |
+| Oportunidades AHORA | 0 | 4 | 0 |
+| Oportunidades PRONTO / DESPUÉS | 0 | 10 | 0 |
+
+Nuevos MEDIO: 11.1–11.4 (pendientes) y 3 bloqueantes de la ronda 1 ya corregidos. Los resueltos de MEDIO/BAJO se reparten por lote porque las severidades por fila no se registraron; se asume que el Lote 10 era el único hallazgo BAJO pendiente de la iteración 1.
+
+### Resueltos en esta corrida
+
+Detalle en `historial.md`.
+
+| Lote | Commit |
+|---|---|
+| 1 Lobby para 40 alumnos | `4784de9` |
+| 2 Partidas repetidas | `379ef6b` |
+| 3 Integridad de ronda | `98240b2` |
+| 4 Reglas de seguridad | `69411f1` |
+| 5 Despliegue seguro | `7e4dafa` |
+| 6 Música más liviana | `ddeb671` |
+| 7 Accesibilidad | `3529754` |
+| 8 Créditos, assets y fuentes locales | `14d578a` + `df62356` |
+| 9 Documentación | `35eb9e5` |
+| Revisión adversarial, ronda 1 | `bc353fc` |
+| Revisión adversarial, ronda 2 (revierte parte de `bc353fc`) | `d594d61` |
 
 ## Preparación para producción
 
 | Área | Estado | Por qué |
 |---|---|---|
-| Seguridad de la aplicación | a medias | Reglas correctas en lo esencial, pero faltan validaciones de tamaño/tipo (L4) y la fuga de votos en el escudo (L3). App Check (Op. B). |
-| Ciberseguridad operativa y cadena de suministro | a medias | Sin secretos; dependencias de desarrollo con avisos (L10); build puede salir apuntando al emulador y sourcemaps públicos (L5); falta remoto privado (Op. D). |
-| Privacidad y datos sensibles | a medias | Solo nombres de pila, pero las salas abandonadas no se borran solas (Op. E); fuentes de Google exponen la IP de alumnos (L8). |
-| Escalabilidad | a medias | El diseño escala; el lobby no muestra a 40 alumnos (L1); plan Spark = ~2 clases a la vez (pregunta abierta). |
-| Confiabilidad y recuperación | a medias | Un fallo de red de la profe puede costar una vida (L3); sin aviso de conexión ni ErrorBoundary (L5, Op. F). |
-| Observabilidad | falta | Sin reporte de errores ni indicador de conexión (Op. F). |
-| Testing | a medias | Reglas y lógica pura con tests; el controlador de la partida (F3, R1–R3) sin tests (Op. C). |
+| Seguridad de la aplicación | a medias | Reglas validadas, votos ya no delatan la respuesta y una sala por profe (L3, L4 resueltos). Falta App Check (Op. B). |
+| Ciberseguridad operativa y cadena de suministro | a medias | Build seguro, sourcemaps ocultos, CSP y fuentes locales (L5, L8 resueltos). Dependencias de desarrollo con avisos (L10); falta remoto privado (Op. D); los tests de reglas borran el emulador de desarrollo (11.5). |
+| Privacidad y datos sensibles | a medias | Fuentes alojadas en el sitio (L8). Las salas abandonadas siguen sin borrarse solas (Op. E). |
+| Escalabilidad | a medias | Lobby verificado con 40 alumnos (L1). Plan Spark = ~2 clases a la vez (pregunta abierta). |
+| Confiabilidad y recuperación | a medias | ErrorBoundary y rondas íntegras (L3, L5 resueltos). Preguntas tardías (11.1), timeout de lectura (11.3) y sala borrada a mitad de partida (11.4). |
+| Observabilidad | falta | Sin aviso de conexión de la profe (11.2) ni reporte de errores (Op. F). |
+| Testing | a medias | 27 tests unitarios y 33 de reglas. El controlador de la partida sigue sin tests (Op. C; 11.1 pide uno). |
 | CI/CD | falta | Sin pipeline ni remoto (Op. A). |
-| Documentación y contexto | a medias | Docs base completas; varios datos desactualizados (L9). |
+| Documentación y contexto | a medias | Docs sincronizadas (L9). Falta `docs/operacion.md` (Op. G). |
 
-**Veredicto:** no lanzar a clases reales hasta resolver los lotes 1, 2, 3 y 8 (y la licencia de los créditos). El resto puede ir en las siguientes versiones.
+**Veredicto:** todavía no lanzar a clases reales. Resolver primero el Lote 11 (11.1–11.4), las Oportunidades A, B y C y la verificación manual de abajo. Los lotes 1–9 cubrían lo bloqueante de la iteración 1.
 
 ### Verificación manual (fuera del repositorio)
 
@@ -55,57 +74,49 @@ Primera versión jugable de punta a punta (proyector + celular, victoria y derro
 **Estado:** borrador con puntos confirmados (2026-10-18) · **Archivo:** `docs/requisitos.md`
 
 - **Reglas de negocio:**
-  - R1–R9 se cumplen en el caso normal.
-  - Dos fallan en casos borde: R1/F3 tras PLAY AGAIN (L2), y R3/R4, porque los votos delatan la respuesta (L3).
-  - El controlador no tiene tests (Op. C).
+  - R1–R9 se cumplen; los casos borde de R1/F3 (PLAY AGAIN) y R3/R4 (votos) están resueltos (L2, L3).
+  - Abierto: con la red de la profe caída, la regla "si nadie pudo responder no se pierde vida" no se cumple (11.3).
+  - El controlador sigue sin tests (Op. C).
 - **Flujos críticos:**
-  - F1–F4 verificados a mano con alumnos simulados.
-  - F1 falla con más de 24 alumnos (L1).
+  - F1–F4 verificados a mano; F1 con 40 alumnos simulados.
   - Sin tests automáticos de punta a punta.
 - **Metas no funcionales:**
-  - Cumplidas: carga del celular y contraste de la mayoría de colores.
-  - En riesgo: 40 alumnos por sala (L1), contraste del verde (L7), retención de 24 h (Op. E).
+  - Cumplidas: 40 alumnos por sala, carga del celular, contraste.
+  - En riesgo: retención de 24 h (Op. E), conexión inestable de la profe (11.1, 11.2).
   - Supuestas (sin confirmar): escala, plataformas y conectividad.
 - **Fuera de alcance:** ningún desvío.
 
 ### Preguntas sobre requisitos
 
-1. Si **nadie** puede responder (se cae el Wi-Fi del salón), ¿el juego debe castigar quitando vida (hoy) o esperar y repetir la pregunta sin castigo?
-2. Un alumno que se **desconecta a mitad de pregunta** (pantalla bloqueada), ¿cuenta como fallo (hoy) o deja de contar en esa pregunta?
-3. ¿Cuántas clases podrían jugar a la vez en el colegio? (el plan gratuito aguanta ~2).
-4. ¿Pasar a plan Blaze para borrar las salas abandonadas a las 24 h y validar en el servidor?
+1. Un alumno que se **desconecta a mitad de pregunta** (pantalla bloqueada), ¿cuenta como fallo (hoy) o deja de contar en esa pregunta?
+2. ¿Cuántas clases podrían jugar a la vez en el colegio? (el plan gratuito aguanta ~2).
+3. ¿Pasar a plan Blaze para borrar las salas abandonadas a las 24 h y validar en el servidor?
 
 ## Modelo de acceso
 
-**Estado:** confirmado en lo esencial (2026-10-18) · **Archivo:** `docs/modelo-de-acceso.md`
+**Estado:** confirmado (2026-10-18) · **Archivo:** `docs/modelo-de-acceso.md`
 
 - **Roles:** profe (host de su sala), alumno, visitante con sesión anónima.
-- **Diferencias con el código:**
-  - 2 permiten más que el modelo: el host puede renombrar o inventar alumnos (L4.3); cualquiera puede ocupar todos los códigos (L4.5).
-  - 0 permiten menos.
-  - 1 sin cubrir por el modelo: la profe puede borrar alumnos, ¿es "expulsar"?
-- **Hallazgos pendientes de confirmar el modelo:** 0 (la pregunta de abajo solo afecta a L4.3).
+- **Diferencias con el código:** 0 permiten más · 0 permiten menos · 0 sin cubrir por el modelo (L4 cerró los dos casos; la profe puede expulsar y hay una sala por profe).
+- **Hallazgos pendientes de confirmar el modelo:** 0.
 
-### Preguntas abiertas sobre el negocio
-
-1. ¿La profe debe poder **expulsar** a un alumno (por ejemplo, por un nombre inapropiado)? Hoy las reglas se lo permiten (puede borrar su entrada), aunque la interfaz no tiene botón.
-2. ¿Cuántas salas puede tener abiertas una profe a la vez? El código asume una; limitarlo a una por sesión frena a quien quiera ocupar todos los códigos (L4.5).
+Sin preguntas abiertas; las respuestas del 2026-10-18 están en `historial.md`. Comprobar que `docs/modelo-de-acceso.md` recoja "la profe puede expulsar" y "una sala por profe".
 
 ## Documentación y contexto
 
 | Documento | Estado | Qué falta o dejó de ser cierto |
 |---|---|---|
-| `README.md` | desactualizado | El comando para probar con celulares en la red local no pasa `--host` a Vite (no funciona); dice Java 11+ (es 21+); faltan scripts (`lint`, `typecheck`, `preview`); no dice que `verify` choca con `dev:emu`. |
-| `CLAUDE.md` | desactualizado (menor) | Faltan puertos, Java/Node, "qué no tocar a mano" (`public/assets`, `design/assets` son generados) y el choque `verify`/`dev:emu`. |
-| `.env.example` | desactualizado | Falta `VITE_EMULATOR_HOST`; menciona `npm run emulators` en vez de `dev:emu`; sin plantilla de producción. |
-| `GAME_DESIGN.md` | desactualizado | §7 modelo de datos viejo; música dice "mitad del tiempo / último 25 %" (es un solo umbral, último tercio); "×4/×6" (es ×5); "música de Landlord" (ya es Suno); §4 "vidas = fallos que aguanta" (se pierde con el fallo N). |
-| `design/SUNO_PROMPTS.md` | desactualizado | Flujo de integración viejo (`~/Downloads`, editar `music.json`); nombres de archivo; umbrales de música. |
-| `design/assets/CREDITS.md` | desactualizado | Landlord ya no aporta música; falta URL/fecha en tres licencias; copia duplicada en `assets-src/`. |
+| `README.md` | al día | — |
+| `CLAUDE.md` | al día | — |
+| `.env.example` | al día | — |
+| `GAME_DESIGN.md` | al día | — |
+| `design/SUNO_PROMPTS.md` | al día | — |
+| `design/assets/CREDITS.md` | al día | — |
 | `docs/requisitos.md` | al día (borrador) | — |
-| `docs/modelo-de-acceso.md` | al día | Agregar el caso "votos en el escudo" y la pregunta de expulsar. |
+| `docs/modelo-de-acceso.md` | al día | Anotar las decisiones del 2026-10-18 si faltan (ver arriba). |
 | `docs/operacion.md` | falta | Deploy, rollback, qué hacer si Firebase cae (Op. G). |
 
-**Actualizado en esta corrida:** README, CLAUDE.md, docs/requisitos.md, docs/modelo-de-acceso.md (creados en la fundación, commit `0c3bef0`). **Pendiente de aprobación:** lote 9.
+**Actualizado en esta corrida:** README, CLAUDE.md, `.env.example`, GAME_DESIGN, SUNO_PROMPTS, CREDITS (lote 9, `35eb9e5`; nota de despliegue conjunto en `bc353fc`) · **Pendiente de aprobación:** ninguno.
 
 ## Stack y skills
 
@@ -115,7 +126,7 @@ Primera versión jugable de punta a punta (proyector + celular, victoria y derro
   - No es multi-tenant, no cobra dinero.
   - Usuarios: profes y alumnos de una institución.
 - **Stack:** React 19.3, Vite 7.3, TypeScript 5.9, Zustand 5, Firebase JS SDK 12.19 (RTDB + Auth anónima), Firebase Hosting, Vitest 3.2, ESLint 9.
-- **Copia de trabajo:** carpeta principal (proyecto nuevo, sin trabajo de otros) · **Rama de arreglos:** `auditoria/2026-10-18` desde `main@4a62448` (se crea al aplicar el primer lote)
+- **Copia de trabajo:** carpeta principal (proyecto nuevo, sin trabajo de otros) · **Rama de arreglos:** `auditoria/2026-10-18` desde `main@4a62448`, con los lotes 1–9 y la revisión adversarial aplicados (sin push ni merge)
 
 | Skill | Área | ¿Aplica? | Motivo |
 |---|---|---|---|
@@ -138,6 +149,8 @@ Primera versión jugable de punta a punta (proyector + celular, victoria y derro
 
 ### Herramientas corridas
 
+Resultados de la línea base (iteración 1); no se repitieron en la iteración 2.
+
 | Herramienta | Resultado | Log |
 |---|---|---|
 | Escáner de secretos | corrió (`git grep` de patrones de claves; gitleaks/trufflehog no instalados): 0 hallazgos | — |
@@ -156,113 +169,28 @@ Para instalarlas, pídelo en el chat (no basta con marcarlas aquí).
 
 ## Lotes
 
-Marca `[x]` en **Aprobar** para que se aplique (o apruébalo en el chat). Cada lote es un commit propio en la rama `auditoria/2026-10-18`, con sus tests, y se puede revertir solo.
+Marca `[x]` en **Aprobar** para que se aplique (o apruébalo en el chat). Cada lote es un commit propio en la rama `auditoria/2026-10-18`, con sus tests, y se puede revertir solo. Los lotes 1–9 están resueltos (ver arriba).
 
-### Lote 1 — Lobby para 40 alumnos · CRÍTICO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 1.1 | `src/host/screens/Lobby.tsx:47,76` | Content Handling (`web-design-guidelines`); requisito 40 alumnos, F1 | Medido: con 24 alumnos START queda cortado, con 27 queda fuera de pantalla; con 40 solo se ven 27 tarjetas y la profe no puede empezar. | Panel de alto fijo con pie (BACK/START) fuera de la lista; densidad por tramos (≤15: 3 columnas; >15: 5 columnas compactas). | medio / bajo |
-
-### Lote 2 — Partidas repetidas en la misma sala · ALTO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 2.1 | `src/play/PlayApp.tsx:119-172`, `src/game/rules.ts:121`, `src/host/controller.ts:62` | R1, F3 | Tras PLAY AGAIN las claves de ronda se repiten (`s0q1a0`…). El celular muestra "LOCKED IN" con la respuesta de la partida anterior, no deja responder y cuenta como fallo. Las estadísticas se acumulan entre partidas. | Agregar un número de partida a la clave (`g{n}s…`), ampliar la regex en las reglas y reiniciar el estado del celular al volver al lobby; con tests (reglas y lógica). | bajo / bajo |
-| 2.2 | `src/play/PlayApp.tsx:134-144` | R8 | Las estadísticas personales cuentan rondas en las que el alumno no participaba (entró tarde). | Ignorar los resultados de rondas que empezaron antes de que el alumno entrara. | bajo / bajo |
-
-### Lote 3 — Integridad de cada ronda · ALTO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 3.1 | `src/host/controller.ts:142-145` | R3/R4 + modelo de acceso | En un fallo se publican `votes`, `percent` y `eligible`: cualquiera los lee y deduce cuál opción era la correcta antes del reintento. | En el escudo publicar solo el porcentaje; los votos solo con espadazo. Test. | bajo / bajo |
-| 3.2 | `controller.ts:16` vs `database.rules.json` (+1500 ms), `PlayApp.tsx:242-255` | F3, R1 | Las respuestas que llegan entre +0,4 s y +1,5 s se aceptan y el celular dice "LOCKED IN", pero no se cuentan. Los botones siguen activos con el contador en 00. | El celular se bloquea en 00 ("TIME'S UP") y se alinean las ventanas (gracia del host = margen de las reglas). | bajo / bajo |
-| 3.3 | `controller.ts:123,130-132` | checklist 7 (llamadas de red sin manejo de error) | Si falla la lectura de respuestas de la profe se toma 0 respuestas y se pierde una vida injustamente; si se queda colgada, la partida se congela; si falla publicar la pregunta, igual corre el tiempo. | Usar el último snapshot del listener como fuente (con timeout de la lectura) y reintentar la publicación antes de arrancar el tiempo. | medio / bajo |
-| 3.4 | `controller.ts:132-157` | robustez | Después del `await` no revisa si la partida se cerró. | `if (this.disposed) return`. | bajo / bajo |
-| 3.5 | `src/data/hooks.ts:24-28` | `rerender-derived-state` (`vercel-react-best-practices`) | Medido: al empezar cada pregunta el temporizador muestra 24–25 durante ~220 ms y puede disparar el "panic" mal. | Actualizar la hora al entrar al efecto y guardar el entero. | bajo / bajo |
-| 3.6 | `RoomScreen.tsx:18,27-30,85-87` | `rerender-derived-state-no-effect` | El contador "x/y answered" arranca con el valor anterior y no usa los mismos elegibles que la decisión. | Reiniciarlo con cada pregunta y publicar `eligible` en la pregunta. | bajo / bajo |
-
-### Lote 4 — Reglas de seguridad más estrictas · MEDIO · no seguro (toca autorización) · estado: pendiente
-
-- [ ] Aprobar · requiere responder las preguntas 1 y 2 del modelo de acceso para 4.3 y 4.5
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 4.1 | `database.rules.json:26,18,32-44` | Type safety / storage abuse (`firebase-security-rules-auditor`) | `reveal`, `state`, `config.units` y `question` aceptan campos extra, tamaños enormes y valores fuera de rango (probado: 1 MB en `reveal.percent`). | Validar cada campo con tipo y rango, y `$other: false`. Tests. | bajo / bajo |
-| 4.2 | `database.rules.json:13` + `room.ts:28` | Update bypass | Tomar una sala abandonada no reinicia `createdAt` (se puede retener para siempre) ni limpia respuestas/presencia viejas. | Exigir `createdAt = ahora` al cambiar de dueño y limpiar `answers`/`presence` al crear. Tests. | bajo / bajo |
-| 4.3 | `database.rules.json:9,50-53` | Field-level vs identity (skill) + modelo | El host puede renombrar o inventar alumnos (probado: nombre ofensivo en otro alumno). | Nombre/dino/creación solo por el propio alumno; borrar sigue permitido si se confirma "expulsar". Tests. | bajo / bajo |
-| 4.4 | `database.rules.json:50` | validación de entradas | El nombre acepta caracteres de control y de dirección de texto (puede ocultarse o invertirse en el proyector). | Limpiarlo en el cliente y validarlo en las reglas. | bajo / bajo |
-| 4.5 | `database.rules.json:9` | rate limiting (checklist §1) | Un solo usuario puede ocupar los 10 000 códigos (probado: 300 salas sin rechazo) y bloquear el juego 24 h. | Una sala por sesión (índice `hostRooms/{uid}`) + App Check (Op. B). | medio / medio |
-
-### Lote 5 — Despliegue seguro · MEDIO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 5.1 | `src/lib/firebase.ts:9`, `.env.example:3` | separar config dev/prod (checklist §2) | Un build de producción puede salir apuntando al emulador sin aviso. | Emuladores solo en modo desarrollo; el build falla si el proyecto es `demo-` en producción. | bajo / bajo |
-| 5.2 | `vite.config.ts:7`, `firebase.json:5` | exposición de código (checklist §2) | Los sourcemaps se publican (incluyen el banco de preguntas legible). | `sourcemap: 'hidden'` y no desplegar `*.map`. | bajo / bajo |
-| 5.3 | `firebase.json`, `src/App.tsx:6-21` | caché (área 6), `bundle-dynamic-imports` | `index.html` sin `no-cache` y sin ErrorBoundary: tras un deploy la app puede quedar en blanco (medido en el emulador de Hosting). | `no-cache` para HTML y ErrorBoundary con "Reload". | bajo / bajo |
-| 5.4 | `firebase.json:16-23` | CSP (checklist §1, `firebase-hosting-basics`) | Sin CSP ni Permissions-Policy. | Empezar con `Content-Security-Policy-Report-Only`. | bajo / medio |
-
-### Lote 6 — Música más liviana · ALTO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 6.1 | `src/audio/music.ts:64-82`, `Menus.tsx:43` | `bundle-preload`, `bundle-conditional` | Medido: la memoria del proyector pasa de 131 a 445 MB al crear la partida; se piden 17 MB de música a la vez y la del lobby compite con la de la batalla. | Cargar en orden (lobby → batalla → resto bajo demanda), liberar las que ya no suenan y recortar los MP3 al tramo del loop. | medio / medio |
-| 6.2 | `src/audio/sfx.ts:26-37`, imágenes de la batalla | `bundle-preload` | Efectos y sprites del primer golpe se bajan en el momento; en Wi-Fi escolar pueden llegar tarde. | Precargarlos durante el lobby. | bajo / bajo |
-
-### Lote 7 — Accesibilidad y legibilidad · ALTO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 7.1 | `game.css:65,114` | WCAG 1.4.3 | Texto blanco sobre verde con contraste 2,42:1 (respuesta verde, START, I'M READY); etiquetas pequeñas blancas sobre rojo 3,93:1. | Texto oscuro en el verde; rojo oscuro en etiquetas pequeñas. | bajo / nulo |
-| 7.2 | `Battle.tsx:115-244`, `game.css:73,94` | requisito "legible en proyector" | Etiquetas de 10–14 px: en un proyector 1024×768 quedan en ~8 px. | Subirlas a ≥20 px (fuente Pixelify). | bajo / bajo |
-| 7.3 | `PlayApp.tsx:210,263-271`, `game.css:163-169` | Content Handling | En celulares de 320–360 px: encabezado montado con muchas unidades, el 4.º botón fuera de pantalla y palabras largas desbordan. | Tamaños fluidos, `overflow-wrap` y cronómetro fijo arriba. | bajo / bajo |
-| 7.4 | `PlayApp.tsx:245-253` | Forms (`web-design-guidelines`) | Al tocar una respuesta no hay feedback hasta que responde el servidor, y tras un error los botones quedan bloqueados con un mensaje genérico. | Bloqueo optimista, estilo de botón presionado y mensajes según el error. | bajo / bajo |
-| 7.5 | `PlayApp.tsx`, `Hud.tsx:8,28,39,49` | WCAG 4.1.2, 4.1.3 | Sin regiones vivas en el celular; `aria-label` en `div` sin rol. | `role="status"`, `role="img"`, `role="timer"`. | bajo / bajo |
-| 7.6 | `game.css:153-155` | WCAG 2.2.2 | `prefers-reduced-motion` no cubre sprites en bucle, `pop-in`, enemigo ni bloqueo. | Ampliar la regla. | bajo / nulo |
-| 7.7 | `PlayApp.tsx:85-106`, `Menus.tsx:73-82`, `HostApp.tsx:37` | Forms, WCAG 2.4.3 | Formulario de unión (descripción inexistente, botón deshabilitado sin explicación, error sin asociar), modal sin Escape ni trampa de foco, toggle de sonido confuso para lectores, foco perdido al cambiar de pantalla, swatches <44 px. | Arreglos puntuales. | bajo / bajo |
-
-### Lote 8 — Créditos y assets publicados · ALTO · no seguro · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 8.1 | `design/assets/CREDITS.md:17` | licencia JDSherbert (crédito obligatorio) | No hay pantalla de créditos en el juego. | Botón "CREDITS" en el inicio con el texto de créditos. | bajo / bajo |
-| 8.2 | `scripts/sync-assets.mjs:12-16` | licencias (Pixel1992 prohíbe compartir los archivos sueltos), área 11 | Se publican assets sin uso, algunos de licencia dudosa: Lamora y sus derivados, 5 castillos de reserva, música de Landlord ya reemplazada (~1,5 MB). | Lista blanca de lo que se usa. | bajo / bajo |
-| 8.3 | `index.html:9-11` | privacidad (checklist §3), `rendering-resource-hints` | Las fuentes vienen de Google: la IP de cada alumno va a un tercero y, si la red del colegio lo bloquea, retrasa el primer pintado. | Fuentes alojadas en el sitio con `preload`. | bajo / bajo |
-
-### Lote 9 — Documentación al día · MEDIO · seguro (sincronización factual) · estado: pendiente
-
-- [ ] Aprobar
-
-| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
-|---|---|---|---|---|---|
-| 9.1 | `README.md:27`, `package.json:14` | área 15 | El comando para probar con celulares no funciona. | Script `dev:lan` (emuladores en 0.0.0.0 con config aparte) y README corregido. | bajo / bajo |
-| 9.2 | `README.md:13`, `.env.example`, `CLAUDE.md` | área 15 | Java 21+, `VITE_EMULATOR_HOST`, choque `verify`/`dev:emu`, scripts y puertos faltantes, archivos generados. | Sincronizar. | bajo / nulo |
-| 9.3 | `GAME_DESIGN.md` §4, §6.2, §7, §8; `design/SUNO_PROMPTS.md`; `CREDITS.md` | área 15 | Modelo de datos, umbral de música, escala ×5, música de Landlord, flujo de Suno, URLs de licencias, copia duplicada de créditos. | Sincronizar con el código. | bajo / nulo |
-| 9.4 | `design/package.json:10` | convención "versión exacta" | `^1.2.7`. | Fijar la versión. | bajo / nulo |
-| 9.5 | `unit-05.json` `c6-u05-006` | contenido (R: una sola respuesta correcta) | "keep in ___": `contact` también es válida. | Cambiar el distractor. | bajo / nulo |
-
-### Lote 10 — Dependencias de desarrollo · BAJO · no seguro · estado: pendiente
+### Lote 10 — Dependencias de desarrollo · BAJO · no seguro · estado: pendiente (no aprobado)
 
 - [ ] Aprobar
 
 | # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
 |---|---|---|---|---|---|
 | 10.1 | `package.json` | área 14 | firebase-tools 14 (tar crítico), vitest 3 (tinypool crítico), rules-unit-testing: solo afectan a la máquina de desarrollo, no al sitio. | Subir a firebase-tools 15, vitest 5 y la versión compatible de rules-unit-testing. | medio / medio |
+
+### Lote 11 — Conexión inestable y sala que desaparece · MEDIO · no seguro · estado: pendiente
+
+- [ ] Aprobar
+
+| # | Ubicación | Regla (skill) | Problema | Arreglo | Esfuerzo / riesgo |
+|---|---|---|---|---|---|
+| 11.1 | `src/host/controller.ts` `publish()` | F3, R1; revisión adversarial ronda 2 | MEDIO. Una pregunta que llega tarde a la base (portátil sin red o con red lenta) deja a los alumnos con menos tiempo o sin él. El re-preguntar de `bc353fc` se revirtió: en red lenta sostenida entraba en bucle. | No re-preguntar: extender el plazo (`round.endsAt = serverNow() + duración`, escribir solo `question`/`endsAt`; la regla de respuestas ya lee `endsAt` de la base). Test unitario/del controlador. | medio / medio |
+| 11.2 | `src/host/`, `src/data/` | observabilidad (área 7); revisión adversarial ronda 2 | MEDIO. Sin aviso cuando el portátil de la profe pierde la conexión: `update()` sin red se encola y no falla, así que el banner de `bc353fc` (revertido) nunca aparecía. | Banner con `onValue(ref(db, '.info/connected'))` desde `src/data/` (se muestra tras >3 s desconectado) más contador de escrituras rechazadas. | medio / bajo |
+| 11.3 | `src/host/controller.ts` `finish` ~193-195 (ya existía) | R: "si nadie pudo responder no se pierde vida" | MEDIO. Si `readAnswers` final vence por tiempo (profe sin red), la ronda se decide solo con el snapshot en vivo y puede costar una vida. | `fetched === null` cuenta como "nadie": se repite sin castigo. Test. | bajo / bajo |
+| 11.4 | `RoomScreen.tsx`, `src/host/controller.ts` | robustez | MEDIO. El proyector se cae (ErrorBoundary, "Cannot destructure 'difficulty' of room.config") si su sala se borra a mitad de partida mientras el controlador sigue escribiendo: la escritura optimista local recrea una sala parcial. Caso real: la profe crea sala en una segunda pestaña (una sala por profe borra la primera). Se descubrió porque los tests de reglas vaciaron el emulador de desarrollo. | `RoomScreen` trata una sala sin `config`/`hostUid` como cerrada; el controlador se destruye cuando `watchRoom` entrega `null`. Test. | bajo / bajo |
+| 11.5 | `tests/rules/` | aislamiento de pruebas | BAJO. Usan el proyecto `demo-purple-dino` y `clearDatabase()`: correrlos contra el emulador de desarrollo (como sugieren README/CLAUDE.md con `dev:emu` activo) borra las salas vivas. | Otro `projectId` (por ejemplo `demo-purple-dino-rules`) para los tests de reglas. | bajo / nulo |
+| 11.6 | `src/host/screens/Lobby.tsx`, `src/play/` | web-design-guidelines; revisión adversarial | BAJO. El botón × del lobby es invisible hasta el hover y no pide confirmación (difícil de descubrir en una pizarra táctil); los alumnos ocultos en "+N MORE" no se pueden quitar; un alumno expulsado con la pestaña dormida vuelve a entrar al recargar (aceptable: expulsar no es vetar); alumnos de una sala tomada por otra profe ven "YOU LEFT THE PACK" en vez de "THE ROOM WAS CLOSED". | × visible, confirmación, forma de quitar a los ocultos y mensaje distinto según el motivo. | bajo / bajo |
 
 ## Oportunidades
 
@@ -282,7 +210,7 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 
 ### Oportunidad B — App Check + API key restringida · seguridad · AHORA · pendiente
 - [ ] Aprobar
-- **Problema:** scripts pueden ocupar códigos, recorrer salas y gastar cuota (L4.5).
+- **Problema:** scripts pueden recorrer salas y gastar cuota; el límite de una sala por profe (L4.5) frena la ocupación de códigos solo parcialmente.
 - **Solución:** App Check con reCAPTCHA en RTDB y Auth (código listo, se activa con una clave en `.env`) + restringir la API key. **Alternativa:** solo el límite de una sala por sesión.
 - **Costo:** gratis a esta escala.
 - **Beneficio:** corta el abuso automatizado.
@@ -309,12 +237,12 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 - [ ] Aprobar
 - **Problema:** las salas abandonadas (pestaña cerrada sin salir) guardan nombres indefinidamente; requisito confirmado: borrar a las 24 h.
 - **Solución:** función programada de Firebase (plan Blaze, céntimos al mes). **Alternativa en Spark:** un cron de GitHub Actions con una cuenta de servicio mínima.
-- **Esfuerzo:** medio · **Tú:** decidir Blaze (pregunta 4).
+- **Esfuerzo:** medio · **Tú:** decidir Blaze (pregunta 3).
 
 ### Oportunidad F — Errores y conexión visibles · observabilidad / confiabilidad · PRONTO · pendiente
 - [ ] Aprobar
-- **Problema:** sin ErrorBoundary ni aviso de conexión. "Sala cerrada" y "error de red" se ven igual. Si la profe cierra la pestaña, los celulares quedan en una pregunta muerta.
-- **Solución:** banner "Connection lost" con `.info/connected`, mensajes distintos, timeout al crear la sala, presencia de la profe para avisar a los celulares. **Alternativa:** Sentry (plan gratis, carga diferida, sin datos personales).
+- **Problema:** "sala cerrada" y "error de red" se ven igual. Si la profe cierra la pestaña, los celulares quedan en una pregunta muerta. (El ErrorBoundary ya existe, L5; el banner de conexión de la profe es el 11.2.)
+- **Solución:** mensajes distintos, timeout al crear la sala, presencia de la profe para avisar a los celulares. **Alternativa:** Sentry (plan gratis, carga diferida, sin datos personales).
 - **Esfuerzo:** medio.
 
 ### Oportunidad G — `docs/operacion.md` · documentación · PRONTO · pendiente
@@ -349,13 +277,14 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 
 ## Conflictos por decidir
 
-- Ninguno entre skills. La duda de negocio de "expulsar" (modelo de acceso, pregunta 1) decide si 4.3 deja o quita el borrado de alumnos por la profe.
+- Ninguno. La duda sobre expulsar quedó resuelta (la profe puede expulsar; ver `historial.md`).
 
 ## A verificar
 
-- Memoria y red en un portátil escolar de 4 GB con Wi-Fi real (L6).
+- Memoria y red en un portátil escolar de 4 GB con Wi-Fi real (música, L6 ya aplicado).
 - Cuota de altas anónimas por IP de Firebase Auth con muchas clases tras la misma red del colegio.
 - Qué cabecera de caché gana en el Hosting real (`/assets/**` vs `*.js`).
+- La CSP (L5.4) y los dominios regionales de Realtime Database contra el proyecto Firebase real, mirando violaciones en la consola.
 
 ## Lo que está bien y no hay que tocar
 
@@ -368,7 +297,19 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 
 ## Revisión adversarial
 
-**Veredicto:** no aplica todavía (no se aplicaron lotes de la auditoría).
+**Veredicto:** RECHAZADO (revertido parcialmente) · **Rondas:** 2 (máximo de la skill) · **Diff revisado:** `main..35eb9e5` (ronda 1) y `35eb9e5..bc353fc` (ronda 2) · bloqueantes cerrados o revertidos en `d594d61`
+
+| # | Tipo | Severidad | Evidencia | Qué se hizo |
+|---|---|---|---|---|
+| R1a | bloqueante (ronda 1) | MEDIO | El índice `hostRooms` podía borrarse para saltarse "una sala por profe". | Corregido en `bc353fc`: las reglas usan el estado posterior a la escritura; test nuevo. |
+| R1b | bloqueante (ronda 1) | MEDIO | El celular conservaba `picked` entre una pregunta y su repetición. | Corregido en `bc353fc`: `<Answer key={q.key}>`. |
+| R1c | bloqueante (ronda 1) | MEDIO | Una pregunta publicada tarde con la profe sin red penalizaba a los alumnos. | Intento en `bc353fc` (re-preguntar) → falló en la ronda 2 (R2A). Pasó a 11.1. |
+| R1d | sugerencias (ronda 1) | BAJO | Varias menores. | Aplicadas en `bc353fc`: gracia 2000 ms, `createdAt` se renueva al empezar, sonidos ligados a `revealKey`, CSP con dominios regionales de RTDB, nota en el README de desplegar juntos hosting y reglas. |
+| R1e | hallazgo propio | MEDIO | En pruebas en el navegador, un `focus()` desplazaba el escenario de 1600 px hacia un lado y movía la batalla. | Corregido en `bc353fc` (`.stage-wrap { overflow: clip }`); `d594d61` añade el respaldo `overflow: hidden` para Safari antiguo. |
+| R1f | confirmado por el usuario | — | Función "la profe quita a un alumno del lobby". | Implementada en `bc353fc` (botón ×; el celular muestra "YOU LEFT THE PACK" y puede volver a entrar). |
+| R2A | bloqueante (ronda 2) | MEDIO | El re-preguntar de una pregunta tardía entra en bucle con red lenta sostenida: cada publicación confirmada >2 s tarde repite la pregunta cada ~2 s, descarta respuestas y `questionNumber` sube hasta el límite de 1000 de las reglas. | Parte revertida en `d594d61` (la skill limita a 2 rondas), marcada "falló". Pasó a 11.1. |
+| R2B | bloqueante (ronda 2) | MEDIO | El banner solo contaba escrituras rechazadas, pero un `update()` sin red se encola en vez de fallar: no aparece con el Wi-Fi caído. | Parte revertida en `d594d61`, marcada "falló". Pasó a 11.2. |
+| R2C | sugerencia (revisión ronda 1) | BAJO | × invisible hasta hover, sin confirmación, alumnos ocultos sin acceso, reingreso por recarga, mensaje de sala tomada. | Al informe para la siguiente versión: 11.6. |
 
 ## Ejecución
 
@@ -378,8 +319,12 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 | Lógica: reglas de negocio, controlador, celular, banco, tests | Opus (sesión) | ~20 | 4,6 min | 134 k |
 | Cliente: React, UI, accesibilidad, rendimiento | Sonnet | ~25 | 14,9 min | 229 k |
 | Documentación y operación: docs, CI, costos, higiene | Sonnet | ~18 | 5,5 min | 158 k |
+| Revisor adversarial, ronda 1 | Opus | diff completo (`main..35eb9e5`) | — | — |
+| Revisor adversarial, ronda 2 | Opus | delta de 1 commit (`35eb9e5..bc353fc`) | 3,8 min | 113 k |
+| Actualización del informe (AUDITORIA.md, estado.json, historial.md) | Sonnet | 3 | — | — |
 
 ## Verificación
 
 - **Línea base:** typecheck ok, lint ok, tests ok (18), tests de reglas ok (22, con el emulador ya levantado), build ok.
-- **Tras los arreglos:** pendiente.
+- **Tras los arreglos** (después de `d594d61`): typecheck ok, lint ok, 27 tests unitarios ok, 33 tests de reglas ok (contra el emulador ya levantado), build ok.
+- **Navegador** (con el audio silenciado): partida completa con 40 alumnos simulados (antes de la ronda 1); con 4 alumnos: espadazo, escudo con reintento, game over, PLAY AGAIN reinicia "ready", la profe quita a un alumno (el celular muestra YOU LEFT THE PACK y JOIN AGAIN funciona) y diseño a pantalla completa sin desplazamiento lateral; celular a 320×600.

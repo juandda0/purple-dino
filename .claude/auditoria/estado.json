@@ -16,9 +16,14 @@
     "ruta": "docs/requisitos.md",
     "estado": "borrador",
     "confirmadoEl": "2026-10-18 (parcial: R1-R9, F1-F4, creación sin login, borrado, entrar tarde)",
-    "metasNoFuncionales": { "escala": "<=40 alumnos/sala, pocas salas (S)", "rendimiento": "respuesta en proyector <1 s; celular <3 s en 4G (S)", "privacidad": "borrar al salir; abandonadas a las 24 h (C)" },
-    "preguntasAbiertas": ["sin elegibles: ¿castigar o esperar?", "desconexión a mitad de pregunta: ¿cuenta?", "clases simultáneas", "¿plan Blaze?"],
-    "motivoRechazo": null
+    "metasNoFuncionales": {
+      "escala": "<=40 alumnos/sala, pocas salas (S)",
+      "rendimiento": "respuesta en proyector <1 s; celular <3 s en 4G (S)",
+      "privacidad": "borrar al salir; abandonadas a las 24 h (C)"
+    },
+    "preguntasAbiertas": ["desconexión a mitad de pregunta: ¿cuenta?", "clases simultáneas", "¿plan Blaze?"],
+    "motivoRechazo": null,
+    "decisiones": ["sin elegibles: no se pierde vida y se repite la pregunta (2026-10-18)"]
   },
   "modeloAcceso": {
     "aplica": true,
@@ -27,47 +32,55 @@
     "confirmadoEl": "2026-10-18",
     "commitRevisado": "0c3bef0",
     "roles": ["host", "alumno", "visitante"],
-    "preguntasAbiertas": ["¿la profe puede expulsar alumnos?", "¿cuántas salas por profe?"]
+    "preguntasAbiertas": [],
+    "decisiones": ["la profe puede expulsar alumnos (2026-10-18)", "una sala por profe (2026-10-18)"]
   },
   "documentacion": {
-    "ultimaSincronizacion": "2026-10-18T18:30:00Z",
-    "commitSincronizado": "0c3bef0",
+    "ultimaSincronizacion": "2026-10-18T22:00:00Z",
+    "commitSincronizado": "d594d61",
     "archivos": [
-      { "ruta": "README.md", "estado": "desactualizado" },
-      { "ruta": "CLAUDE.md", "estado": "desactualizado" },
-      { "ruta": ".env.example", "estado": "desactualizado" },
-      { "ruta": "GAME_DESIGN.md", "estado": "desactualizado" },
+      { "ruta": "README.md", "estado": "al-dia" },
+      { "ruta": "CLAUDE.md", "estado": "al-dia" },
+      { "ruta": ".env.example", "estado": "al-dia" },
+      { "ruta": "GAME_DESIGN.md", "estado": "al-dia" },
+      { "ruta": "design/SUNO_PROMPTS.md", "estado": "al-dia" },
+      { "ruta": "design/assets/CREDITS.md", "estado": "al-dia" },
       { "ruta": "docs/requisitos.md", "estado": "al-dia" },
       { "ruta": "docs/modelo-de-acceso.md", "estado": "al-dia" },
       { "ruta": "docs/operacion.md", "estado": "falta" }
     ],
-    "pendientesDeAprobacion": ["lote 9"]
+    "pendientesDeAprobacion": []
   },
   "preparacionProduccion": {
     "veredicto": "no-lanzar",
     "areas": [
-      { "area": "seguridad", "estado": "a-medias", "motivo": "lotes 3.1 y 4, op. B" },
-      { "area": "cadena de suministro", "estado": "a-medias", "motivo": "lotes 5 y 10, op. D" },
-      { "area": "privacidad", "estado": "a-medias", "motivo": "op. E, lote 8.3" },
-      { "area": "escalabilidad", "estado": "a-medias", "motivo": "lote 1" },
-      { "area": "confiabilidad", "estado": "a-medias", "motivo": "lote 3.3, op. F" },
-      { "area": "observabilidad", "estado": "falta", "motivo": "op. F" },
-      { "area": "testing", "estado": "a-medias", "motivo": "op. C" },
+      { "area": "seguridad", "estado": "a-medias", "motivo": "lotes 3 y 4 resueltos; falta op. B" },
+      { "area": "cadena de suministro", "estado": "a-medias", "motivo": "lotes 5 y 8 resueltos; lote 10, op. D, 11.5" },
+      { "area": "privacidad", "estado": "a-medias", "motivo": "lote 8.3 resuelto; op. E" },
+      { "area": "escalabilidad", "estado": "a-medias", "motivo": "lote 1 resuelto; pregunta abierta de clases simultáneas (plan Spark)" },
+      { "area": "confiabilidad", "estado": "a-medias", "motivo": "lotes 3 y 5 resueltos; lote 11.1, 11.3, 11.4, op. F, op. I" },
+      { "area": "observabilidad", "estado": "falta", "motivo": "11.2, op. F" },
+      { "area": "testing", "estado": "a-medias", "motivo": "op. C; 11.1 pide test del controlador" },
       { "area": "ci-cd", "estado": "falta", "motivo": "op. A" },
-      { "area": "documentacion", "estado": "a-medias", "motivo": "lote 9" }
+      { "area": "documentacion", "estado": "a-medias", "motivo": "lote 9 resuelto; op. G (docs/operacion.md)" }
     ],
     "verificacionManual": [
-      { "item": "proyecto Firebase real (Auth anónima, RTDB, región)", "hecho": false },
-      { "item": "API key restringida", "hecho": false },
-      { "item": "MFA cuenta Google", "hecho": false },
-      { "item": "licencias de packs confirmadas", "hecho": false },
-      { "item": "remoto privado", "hecho": false }
-    ]
+      { "item": "proyecto Firebase real (Auth anónima, RTDB, región)", "hecho": false},
+      { "item": "API key restringida", "hecho": false},
+      { "item": "MFA cuenta Google", "hecho": false},
+      { "item": "licencias de packs confirmadas", "hecho": false},
+      { "item": "remoto privado", "hecho": false}
+    ],
+    "condicionesVeredicto": "lote 11 (11.1-11.4), oportunidades A, B y C, verificación manual"
   },
-  "iteracion": 1,
-  "ultimaEjecucion": "2026-10-18T18:30:00Z",
-  "commitAuditado": "0c3bef0",
-  "mapa": { "ruta": ".claude/auditoria/mapa.md", "commit": "0c3bef0", "huellaEstructura": "package.json, design/package.json, firebase.json, database.rules.json, src/{game,data,host,play,ui,audio,lib}" },
+  "iteracion": 2,
+  "ultimaEjecucion": "2026-10-18T22:00:00Z",
+  "commitAuditado": "d594d61",
+  "mapa": {
+    "ruta": ".claude/auditoria/mapa.md",
+    "commit": "0c3bef0",
+    "huellaEstructura": "package.json, design/package.json, firebase.json, database.rules.json, src/{game,data,host,play,ui,audio,lib}"
+  },
   "ramaBase": "main",
   "ramaArreglos": "auditoria/2026-10-18",
   "worktree": null,
@@ -77,12 +90,31 @@
     { "nombre": "lint-typecheck", "estado": "corrio", "resumen": "0 errores, 0 avisos" },
     { "nombre": "variables-entorno", "estado": "corrio", "resumen": "falta VITE_EMULATOR_HOST en .env.example" }
   ],
-  "revisionAdversarial": { "veredicto": "no-aplica", "rondas": 0, "diff": null, "bloqueantes": [], "sugerenciasPendientes": [] },
+  "revisionAdversarial": {
+    "veredicto": "rechazado-revertido",
+    "rondas": 2,
+    "diff": "35eb9e5..bc353fc",
+    "ronda1": {
+      "diff": "main-start..35eb9e5",
+      "veredicto": "rechazado",
+      "bloqueantes": ["hostRooms borrable: salta una sala por profe", "Answer conservaba picked entre preguntas repetidas", "pregunta tardía con la profe sin red penalizaba a los alumnos"],
+      "corregidoEn": "bc353fc"
+    },
+    "bloqueantes": [
+      "A: re-preguntar una pregunta tardía entra en bucle con red lenta sostenida",
+      "B: el banner solo contaba escrituras rechazadas; con RTDB sin red update() se encola y no se muestra"
+    ],
+    "revertido": "d594d61",
+    "sugerenciasPendientes": ["11.6"]
+  },
   "ejecucion": [
-    { "subagente": "seguridad", "modelo": "opus", "archivos": 11, "duracionMs": 376669, "tokens": 120341 },
-    { "subagente": "logica-requisitos", "modelo": "opus", "archivos": 20, "duracionMs": 275912, "tokens": 134224 },
-    { "subagente": "cliente", "modelo": "sonnet", "archivos": 25, "duracionMs": 892425, "tokens": 228891 },
-    { "subagente": "documentacion-operacion", "modelo": "sonnet", "archivos": 18, "duracionMs": 328925, "tokens": 158378 }
+    { "subagente": "seguridad", "modelo": "opus", "archivos": 11, "duracionMs": 376669, "tokens": 120341},
+    { "subagente": "logica-requisitos", "modelo": "opus", "archivos": 20, "duracionMs": 275912, "tokens": 134224},
+    { "subagente": "cliente", "modelo": "sonnet", "archivos": 25, "duracionMs": 892425, "tokens": 228891},
+    { "subagente": "documentacion-operacion", "modelo": "sonnet", "archivos": 18, "duracionMs": 328925, "tokens": 158378},
+    { "subagente": "revisor-adversarial-ronda-1", "modelo": "opus", "archivos": null, "duracionMs": null, "tokens": null},
+    { "subagente": "revisor-adversarial-ronda-2", "modelo": "opus", "archivos": 1, "duracionMs": 228000, "tokens": 113000},
+    { "subagente": "actualizacion-informe", "modelo": "sonnet", "archivos": 3, "duracionMs": null, "tokens": null}
   ],
   "stack": {
     "lenguajes": ["TypeScript"],
@@ -109,25 +141,137 @@
     ],
     "areasSinSkill": ["Realtime Database"],
     "recomendadas": [
-      { "area": "testing", "skill": "vitest", "fuente": "https://github.com/antfu/skills/tree/main/skills/vitest", "ultimoCambio": "2026-09-28", "estado": "recomendada", "motivo": "fake timers y mocks para los tests del controlador" },
-      { "area": "realtime-database", "skill": null, "fuente": null, "ultimoCambio": null, "estado": "ninguna-confiable", "motivo": "no hay skill oficial; la candidata es solo para Flutter" }
+      {
+        "area": "testing",
+        "skill": "vitest",
+        "fuente": "https://github.com/antfu/skills/tree/main/skills/vitest",
+        "ultimoCambio": "2026-09-28",
+        "estado": "recomendada",
+        "motivo": "fake timers y mocks para los tests del controlador"
+      },
+      {
+        "area": "realtime-database",
+        "skill": null,
+        "fuente": null,
+        "ultimoCambio": null,
+        "estado": "ninguna-confiable",
+        "motivo": "no hay skill oficial; la candidata es solo para Flutter"
+      }
     ]
   },
   "lineaBase": {
     "comandos": { "typecheck": "npm run typecheck", "lint": "npm run lint", "test": "npm test", "rules": "npm run test:rules", "build": "npm run build" },
-    "fallosPrevios": ["npm run verify falla si dev:emu ya ocupa el puerto 9000 (no es fallo del código)"]
+    "fallosPrevios": ["npm run verify falla si dev:emu ya ocupa el puerto 9000 (no es fallo del código)"],
+    "despuesDeArreglos": { "typecheck": "ok", "lint": "ok", "test": "27 ok", "rules": "33 ok (emulador ya levantado)", "build": "ok", "commit": "d594d61" }
   },
   "lotes": [
-    { "id": 1, "titulo": "Lobby para 40 alumnos", "severidad": "CRITICO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["src/host/screens/Lobby.tsx:47"] },
-    { "id": 2, "titulo": "Partidas repetidas en la misma sala", "severidad": "ALTO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["src/play/PlayApp.tsx:119", "src/game/rules.ts:121"] },
-    { "id": 3, "titulo": "Integridad de cada ronda", "severidad": "ALTO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["src/host/controller.ts:142", "src/host/controller.ts:130", "src/data/hooks.ts:24"] },
-    { "id": 4, "titulo": "Reglas de seguridad más estrictas", "severidad": "MEDIO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["database.rules.json:9", "database.rules.json:13", "database.rules.json:26", "database.rules.json:50"] },
-    { "id": 5, "titulo": "Despliegue seguro", "severidad": "MEDIO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["src/lib/firebase.ts:9", "vite.config.ts:7", "firebase.json"] },
-    { "id": 6, "titulo": "Música más liviana", "severidad": "ALTO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["src/audio/music.ts:64"] },
-    { "id": 7, "titulo": "Accesibilidad y legibilidad", "severidad": "ALTO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["src/styles/game.css:114", "src/host/screens/Battle.tsx:115", "src/play/PlayApp.tsx:245"] },
-    { "id": 8, "titulo": "Créditos y assets publicados", "severidad": "ALTO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["design/assets/CREDITS.md:17", "scripts/sync-assets.mjs:12", "index.html:9"] },
-    { "id": 9, "titulo": "Documentación al día", "severidad": "MEDIO", "seguro": true, "estado": "pendiente", "commit": null, "hallazgos": ["README.md:27", "GAME_DESIGN.md §7", "design/SUNO_PROMPTS.md"] },
-    { "id": 10, "titulo": "Dependencias de desarrollo", "severidad": "BAJO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["package.json"] }
+    {
+      "id": 1,
+      "titulo": "Lobby para 40 alumnos",
+      "severidad": "CRITICO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "4784de9",
+      "hallazgos": ["src/host/screens/Lobby.tsx:47"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 2,
+      "titulo": "Partidas repetidas en la misma sala",
+      "severidad": "ALTO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "379ef6b",
+      "hallazgos": ["src/play/PlayApp.tsx:119", "src/game/rules.ts:121"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 3,
+      "titulo": "Integridad de cada ronda",
+      "severidad": "ALTO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "98240b2",
+      "hallazgos": ["src/host/controller.ts:142", "src/host/controller.ts:130", "src/data/hooks.ts:24"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 4,
+      "titulo": "Reglas de seguridad más estrictas",
+      "severidad": "MEDIO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "69411f1",
+      "hallazgos": ["database.rules.json:9", "database.rules.json:13", "database.rules.json:26", "database.rules.json:50"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 5,
+      "titulo": "Despliegue seguro",
+      "severidad": "MEDIO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "7e4dafa",
+      "hallazgos": ["src/lib/firebase.ts:9", "vite.config.ts:7", "firebase.json"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 6,
+      "titulo": "Música más liviana",
+      "severidad": "ALTO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "ddeb671",
+      "hallazgos": ["src/audio/music.ts:64"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 7,
+      "titulo": "Accesibilidad y legibilidad",
+      "severidad": "ALTO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "3529754",
+      "hallazgos": ["src/styles/game.css:114", "src/host/screens/Battle.tsx:115", "src/play/PlayApp.tsx:245"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 8,
+      "titulo": "Créditos y assets publicados",
+      "severidad": "ALTO",
+      "seguro": false,
+      "estado": "resuelto",
+      "commit": "14d578a + df62356",
+      "hallazgos": ["design/assets/CREDITS.md:17", "scripts/sync-assets.mjs:12", "index.html:9"],
+      "aprobadoEl": "2026-10-18"
+    },
+    {
+      "id": 9,
+      "titulo": "Documentación al día",
+      "severidad": "MEDIO",
+      "seguro": true,
+      "estado": "resuelto",
+      "commit": "35eb9e5",
+      "hallazgos": ["README.md:27", "GAME_DESIGN.md §7", "design/SUNO_PROMPTS.md"],
+      "aprobadoEl": "2026-10-18"
+    },
+    { "id": 10, "titulo": "Dependencias de desarrollo", "severidad": "BAJO", "seguro": false, "estado": "pendiente", "commit": null, "hallazgos": ["package.json"]},
+    {
+      "id": 11,
+      "titulo": "Conexión inestable y sala que desaparece",
+      "severidad": "MEDIO",
+      "seguro": false,
+      "estado": "pendiente",
+      "commit": null,
+      "hallazgos": [
+        "src/host/controller.ts publish() · pregunta tardía (11.1)",
+        "src/host + src/data · aviso de conexión (11.2)",
+        "src/host/controller.ts:193 · timeout de readAnswers cuenta como nadie (11.3)",
+        "RoomScreen.tsx + controller.ts · sala borrada a mitad de partida (11.4)",
+        "tests/rules · projectId propio (11.5, BAJO)",
+        "Lobby.tsx · botón × descubrible y confirmación (11.6, BAJO)"
+      ]
+    }
   ],
   "oportunidades": {
     "areasRevisadas": [
@@ -136,20 +280,146 @@
       { "area": "analitica", "aplica": false, "motivo": "fuera de alcance v1" }
     ],
     "items": [
-      { "id": "A", "titulo": "CI mínimo", "area": "ci-cd", "prioridad": "AHORA", "estado": "pendiente", "commit": null, "requiereUsuario": ["remoto privado"], "motivoDescarte": null },
-      { "id": "B", "titulo": "App Check + API key restringida", "area": "seguridad", "prioridad": "AHORA", "estado": "pendiente", "commit": null, "requiereUsuario": ["registrar App Check", "clave reCAPTCHA"], "motivoDescarte": null },
-      { "id": "C", "titulo": "Tests del controlador", "area": "testing", "prioridad": "AHORA", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "D", "titulo": "Repo privado y licencias", "area": "cadena-suministro", "prioridad": "AHORA", "estado": "pendiente", "commit": null, "requiereUsuario": ["crear remoto"], "motivoDescarte": null },
-      { "id": "E", "titulo": "Borrado automático 24 h", "area": "privacidad", "prioridad": "PRONTO", "estado": "pendiente", "commit": null, "requiereUsuario": ["plan Blaze"], "motivoDescarte": null },
-      { "id": "F", "titulo": "Errores y conexión visibles", "area": "observabilidad", "prioridad": "PRONTO", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "G", "titulo": "docs/operacion.md", "area": "documentacion", "prioridad": "PRONTO", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "H", "titulo": "jsx-a11y + axe", "area": "accesibilidad", "prioridad": "PRONTO", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "I", "titulo": "Pestaña en segundo plano", "area": "confiabilidad", "prioridad": "DESPUES", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "J", "titulo": "Renovate + npm audit en CI", "area": "dependencias", "prioridad": "DESPUES", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "K", "titulo": "Códigos de 6 dígitos", "area": "seguridad", "prioridad": "DESPUES", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "L", "titulo": "Validar respuestas en servidor", "area": "seguridad", "prioridad": "DESPUES", "estado": "pendiente", "commit": null, "requiereUsuario": ["plan Blaze"], "motivoDescarte": null },
-      { "id": "M", "titulo": "Quitar react-router-dom", "area": "rendimiento", "prioridad": "DESPUES", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null },
-      { "id": "N", "titulo": "Estilos repetidos a clases", "area": "calidad", "prioridad": "DESPUES", "estado": "pendiente", "commit": null, "requiereUsuario": [], "motivoDescarte": null }
+      {
+        "id": "A",
+        "titulo": "CI mínimo",
+        "area": "ci-cd",
+        "prioridad": "AHORA",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": ["remoto privado"],
+        "motivoDescarte": null
+      },
+      {
+        "id": "B",
+        "titulo": "App Check + API key restringida",
+        "area": "seguridad",
+        "prioridad": "AHORA",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": ["registrar App Check", "clave reCAPTCHA"],
+        "motivoDescarte": null
+      },
+      {
+        "id": "C",
+        "titulo": "Tests del controlador",
+        "area": "testing",
+        "prioridad": "AHORA",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "D",
+        "titulo": "Repo privado y licencias",
+        "area": "cadena-suministro",
+        "prioridad": "AHORA",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": ["crear remoto"],
+        "motivoDescarte": null
+      },
+      {
+        "id": "E",
+        "titulo": "Borrado automático 24 h",
+        "area": "privacidad",
+        "prioridad": "PRONTO",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": ["plan Blaze"],
+        "motivoDescarte": null
+      },
+      {
+        "id": "F",
+        "titulo": "Errores y conexión visibles",
+        "area": "observabilidad",
+        "prioridad": "PRONTO",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "G",
+        "titulo": "docs/operacion.md",
+        "area": "documentacion",
+        "prioridad": "PRONTO",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "H",
+        "titulo": "jsx-a11y + axe",
+        "area": "accesibilidad",
+        "prioridad": "PRONTO",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "I",
+        "titulo": "Pestaña en segundo plano",
+        "area": "confiabilidad",
+        "prioridad": "DESPUES",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "J",
+        "titulo": "Renovate + npm audit en CI",
+        "area": "dependencias",
+        "prioridad": "DESPUES",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "K",
+        "titulo": "Códigos de 6 dígitos",
+        "area": "seguridad",
+        "prioridad": "DESPUES",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "L",
+        "titulo": "Validar respuestas en servidor",
+        "area": "seguridad",
+        "prioridad": "DESPUES",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": ["plan Blaze"],
+        "motivoDescarte": null
+      },
+      {
+        "id": "M",
+        "titulo": "Quitar react-router-dom",
+        "area": "rendimiento",
+        "prioridad": "DESPUES",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      },
+      {
+        "id": "N",
+        "titulo": "Estilos repetidos a clases",
+        "area": "calidad",
+        "prioridad": "DESPUES",
+        "estado": "pendiente",
+        "commit": null,
+        "requiereUsuario": [],
+        "motivoDescarte": null
+      }
     ]
   },
   "descartados": []
