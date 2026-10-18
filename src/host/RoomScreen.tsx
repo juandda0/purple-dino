@@ -16,7 +16,6 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
   const controller = useRef<GameController | null>(null);
   const [online, setOnline] = useState<Set<string>>(new Set());
   const [answeredCount, setAnsweredCount] = useState(0);
-  const [connectionOk, setConnectionOk] = useState(true);
 
   useEffect(() => watchPresence(code, setOnline), [code]);
   useEffect(() => () => controller.current?.dispose(), []);
@@ -47,7 +46,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
     playSfx('select');
     controller.current?.dispose();
     setStats(null);
-    controller.current = new GameController(code, room.config, setStats, setConnectionOk);
+    controller.current = new GameController(code, room.config, setStats);
     controller.current.start();
   }, [code, room, setStats]);
 
@@ -104,16 +103,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
           </Centered>
         );
       }
-      return room.state ? (
-        <>
-          <Battle room={room} answered={Math.min(answeredCount, eligible)} eligible={eligible} onShake={onShake} />
-          {!connectionOk && (
-            <div className="abs tag" role="alert" style={{ left: 500, top: 140, width: 600, padding: '14px 18px', fontSize: 16, textAlign: 'center', background: 'var(--red-dark)' }}>
-              CONNECTION PROBLEM — CHECK THE WI-FI. RETRYING…
-            </div>
-          )}
-        </>
-      ) : null;
+      return room.state ? <Battle room={room} answered={Math.min(answeredCount, eligible)} eligible={eligible} onShake={onShake} /> : null;
   }
 }
 

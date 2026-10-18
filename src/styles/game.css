@@ -38,7 +38,7 @@ button:disabled { cursor: not-allowed; }
 /* ---------- projector stage: fixed 1600x900, scaled to the window ---------- */
 /* clip, not hidden: the 1600px layout box is wider than most windows, and with `hidden` a focus()/scrollIntoView
    can still scroll the wrap sideways and shift the whole stage */
-.stage-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--night); overflow: clip; }
+.stage-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--night); overflow: hidden; overflow: clip; }
 /* the 1600x900 safe area; --ox/--oy = extra room up to the real screen edges (see ui/Stage.tsx) */
 .screen { --ox: 0px; --oy: 0px; position: relative; width: 1600px; height: 900px; overflow: visible; flex-shrink: 0; transform-origin: center center; }
 .abs { position: absolute; }

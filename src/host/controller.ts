@@ -18,8 +18,6 @@ export const TIMING = {
   nobodyMs: 2500, // nobody could answer -> ask the same question again after this pause
   readTimeoutMs: 2500, // max wait for the final read of the answers
   retryMs: 1500, // pause before retrying a failed write
-  lateMs: 2000, // a question that reached the database this late (offline teacher laptop) is asked again
-  problemAfter: 3, // failed publishes in a row before the teacher sees a connection warning
 };
 
 const withTimeout = <T,>(p: Promise<T>, ms: number) =>
@@ -59,14 +57,7 @@ export class GameController {
   private gameId = '';
   readonly stats: HostStats = { questions: 0, correct: 0, possible: 0, bestCombo: 0, byUnit: {} };
 
-  private failedPublishes = 0;
-
-  constructor(
-    private readonly code: string,
-    private readonly config: GameConfig,
-    private readonly onStats: (s: HostStats) => void = () => {},
-    private readonly onConnection: (ok: boolean) => void = () => {},
-  ) {
+  constructor(private readonly code: string, private readonly config: GameConfig, private readonly onStats: (s: HostStats) => void = () => {}) {
     this.deck = new QuestionDeck(config.course, config.units);
     this.state = initialState(config.difficulty);
     this.unsubs.push(
@@ -164,20 +155,8 @@ export class GameController {
     if (this.disposed || round !== this.round) return;
     if (!ok) {
       round.stopAnswers();
-      this.failedPublishes += 1;
-      if (this.failedPublishes >= TIMING.problemAfter) this.onConnection(false);
       this.state = { ...this.state, questionNumber: this.state.questionNumber - 1 };
       this.later(TIMING.retryMs, () => this.ask(false, true));
-      return;
-    }
-    if (this.failedPublishes) {
-      this.failedPublishes = 0;
-      this.onConnection(true);
-    }
-    // while offline the write only queues: if it landed late, nobody had time to answer -> ask again (no penalty)
-    if (serverNow() - round.startedAt > TIMING.lateMs) {
-      round.stopAnswers();
-      this.ask(false, true);
       return;
     }
     this.later(round.endsAt - serverNow() + TIMING.graceMs, () => void this.finish(round));
