@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u12-001",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "Look at those dark clouds. It ___ rain.",
+    "options": [
+      "goes to",
+      "is going to",
+      "was going",
+      "is go to"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u12-002",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "I ___ my cousins this weekend. We've bought the tickets.",
+    "options": [
+      "will visiting",
+      "visiting",
+      "have visit",
+      "am visiting"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u12-003",
+    "course": 6,
+    "unit": 12,
+    "skill": "vocabulary",
+    "question": "When you move to a new home, you have to ___ your things in boxes.",
+    "options": [
+      "pack",
+      "pick",
+      "pull",
+      "push"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u12-004",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "The phone is ringing. I ___ it!",
+    "options": [
+      "answering",
+      "answer",
+      "will answer",
+      "answers"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u12-005",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "I think robots ___ many jobs in the future.",
+    "options": [
+      "doing",
+      "did",
+      "will do",
+      "does"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u12-006",
+    "course": 6,
+    "unit": 12,
+    "skill": "expressions",
+    "question": "It's time to hit the ___. Our bus leaves soon.",
+    "options": [
+      "road",
+      "street",
+      "track",
+      "path"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u12-007",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "We ___ a party on Saturday. Do you want to come?",
+    "options": [
+      "having",
+      "had",
+      "has",
+      "are having"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u12-008",
+    "course": 6,
+    "unit": 12,
+    "skill": "vocabulary",
+    "question": "I need to ___ a hotel for our summer holiday.",
+    "options": [
+      "borrow",
+      "book",
+      "bring",
+      "bake"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u12-009",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "She ___ be a vet when she grows up.",
+    "options": [
+      "is going to",
+      "going",
+      "will to",
+      "is go to"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u12-010",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "Don't worry, I ___ you with your luggage.",
+    "options": [
+      "helped",
+      "helping",
+      "will help",
+      "helps"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u12-011",
+    "course": 6,
+    "unit": 12,
+    "skill": "vocabulary",
+    "question": "Our flight was ___ by two hours because of the fog.",
+    "options": [
+      "decided",
+      "delayed",
+      "denied",
+      "delivered"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u12-012",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "___ you doing anything special this weekend?",
+    "options": [
+      "Do",
+      "Will",
+      "Have",
+      "Are"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u12-013",
+    "course": 6,
+    "unit": 12,
+    "skill": "expressions",
+    "question": "I'm going to Rome next week and I'm over the ___!",
+    "options": [
+      "sky",
+      "star",
+      "sun",
+      "moon"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u12-014",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "I promise I ___ late again.",
+    "options": [
+      "wasn't",
+      "won't be",
+      "not be",
+      "didn't be"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u12-015",
+    "course": 6,
+    "unit": 12,
+    "skill": "vocabulary",
+    "question": "At the airport, you show your ___ to the officer.",
+    "options": [
+      "pasta",
+      "postcard",
+      "passport",
+      "parcel"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u12-016",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "Next summer, we ___ to Italy. We booked flights yesterday.",
+    "options": [
+      "are flying",
+      "flew",
+      "have flown",
+      "flying"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u12-017",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "I'm not sure what to wear. Maybe I ___ my blue jacket.",
+    "options": [
+      "wore",
+      "wearing",
+      "will wear",
+      "have worn"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u12-018",
+    "course": 6,
+    "unit": 12,
+    "skill": "expressions",
+    "question": "Our trip is up in the ___ because of the bus strike.",
+    "options": [
+      "air",
+      "sky",
+      "cloud",
+      "wind"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u12-019",
+    "course": 6,
+    "unit": 12,
+    "skill": "vocabulary",
+    "question": "A ___ is a trip on a big ship that visits different ports.",
+    "options": [
+      "crowd",
+      "cruise",
+      "curve",
+      "cargo"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u12-020",
+    "course": 6,
+    "unit": 12,
+    "skill": "grammar",
+    "question": "Be careful! You ___ that glass!",
+    "options": [
+      "dropped",
+      "have dropped",
+      "drops",
+      "are going to drop"
+    ],
+    "answer": 3
+  }
+]

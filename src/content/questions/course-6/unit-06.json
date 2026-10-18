@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u06-001",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "When I arrived, the film ___ already started.",
+    "options": [
+      "has",
+      "was",
+      "have",
+      "had"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u06-002",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "She was upset because she ___ her phone on the train.",
+    "options": [
+      "has left",
+      "had left",
+      "leave",
+      "leaving"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u06-003",
+    "course": 6,
+    "unit": 6,
+    "skill": "vocabulary",
+    "question": "A person who reads the news on TV is a ___.",
+    "options": [
+      "author",
+      "cashier",
+      "newsreader",
+      "lawyer"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u06-004",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "By the time we got to the cinema, the movie ___.",
+    "options": [
+      "had finished",
+      "has finished",
+      "was finishing",
+      "finishes"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u06-005",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "I ___ never seen snow before I visited Canada.",
+    "options": [
+      "had",
+      "have",
+      "was",
+      "did"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u06-006",
+    "course": 6,
+    "unit": 6,
+    "skill": "expressions",
+    "question": "Have you heard? The new school rule is the talk of the ___.",
+    "options": [
+      "city",
+      "street",
+      "town",
+      "house"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u06-007",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "After he ___ the news, he called his mom.",
+    "options": [
+      "has read",
+      "had read",
+      "reads",
+      "have read"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u06-008",
+    "course": 6,
+    "unit": 6,
+    "skill": "vocabulary",
+    "question": "The main ___ in this story is a young girl who loves space.",
+    "options": [
+      "director",
+      "headline",
+      "audience",
+      "character"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u06-009",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "They ___ eaten when we arrived, so we ate alone.",
+    "options": [
+      "have",
+      "were",
+      "had",
+      "did"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u06-010",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "___ you heard the story before the teacher told it?",
+    "options": [
+      "Had",
+      "Have",
+      "Did",
+      "Were"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u06-011",
+    "course": 6,
+    "unit": 6,
+    "skill": "vocabulary",
+    "question": "I read an interesting ___ about the new museum in the newspaper.",
+    "options": [
+      "chapter",
+      "episode",
+      "cartoon",
+      "article"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u06-012",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "He failed the test because he ___ studied.",
+    "options": [
+      "hasn't",
+      "hadn't",
+      "wasn't",
+      "doesn't"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u06-013",
+    "course": 6,
+    "unit": 6,
+    "skill": "expressions",
+    "question": "To cut a long story ___, we missed the bus.",
+    "options": [
+      "small",
+      "short",
+      "quick",
+      "brief"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u06-014",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "I felt nervous because I ___ ever spoken in public.",
+    "options": [
+      "hasn't",
+      "didn't had",
+      "wasn't",
+      "hadn't"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u06-015",
+    "course": 6,
+    "unit": 6,
+    "skill": "vocabulary",
+    "question": "It was on the front page, with a big ___ in large letters.",
+    "options": [
+      "headline",
+      "ending",
+      "plot",
+      "chapter"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u06-016",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "We got to the station late, so the train ___ left.",
+    "options": [
+      "has already",
+      "was already",
+      "had already",
+      "is already"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u06-017",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "The journalist wrote the article after she ___ three people.",
+    "options": [
+      "had interviewed",
+      "interviews",
+      "has interviewed",
+      "was interview"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u06-018",
+    "course": 6,
+    "unit": 6,
+    "skill": "expressions",
+    "question": "Don't believe everything online. Take it with a pinch of ___.",
+    "options": [
+      "sugar",
+      "pepper",
+      "salt",
+      "spice"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u06-019",
+    "course": 6,
+    "unit": 6,
+    "skill": "vocabulary",
+    "question": "What's the ___ of the story? A boy finds a magic door.",
+    "options": [
+      "cover",
+      "author",
+      "rhyme",
+      "plot"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u06-020",
+    "course": 6,
+    "unit": 6,
+    "skill": "grammar",
+    "question": "By the age of 15, he ___ three short stories.",
+    "options": [
+      "has written",
+      "had written",
+      "was writing",
+      "writes"
+    ],
+    "answer": 1
+  }
+]

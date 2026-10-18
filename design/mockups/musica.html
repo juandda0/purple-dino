@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purple Dino · Música</title>
+<link rel="stylesheet" href="mockups.css?v=3">
+<style>
+  .grid { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+  .track { width: 340px; display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+  .track h2 { font-family: var(--display); font-size: 13px; line-height: 20px; }
+  .track p { font-size: 17px; line-height: 22px; color: var(--muted); flex: 1; }
+  .track .src { font-size: 14px; color: var(--dino-light); }
+  .track.on { box-shadow: inset 0 0 0 3px var(--yellow), 0 8px 0 var(--edge); }
+  .btn { padding: 14px 18px; font-size: 13px; cursor: pointer; }
+  .sim { margin-top: 28px; padding: 24px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; max-width: 1100px; }
+  .clock { font-family: var(--display); font-size: 56px; width: 150px; text-align: center; }
+  .meter { display: flex; gap: 8px; }
+  .meter span { padding: 8px 12px; font-family: var(--display); font-size: 11px; border: 3px solid var(--line); color: var(--muted); }
+  .meter span.on { color: var(--white); border-color: var(--edge); }
+  .meter span.on.l0 { background: var(--green); } .meter span.on.l1 { background: var(--yellow); color: var(--ink); } .meter span.on.l2 { background: var(--red); }
+  select { font: inherit; font-size: 18px; padding: 8px; background: var(--panel-2); color: var(--text); border: 3px solid var(--line); }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <h1>PURPLE DINO · MÚSICA</h1>
+  <nav><a href="index.html">ÍNDICE</a><a href="proyector.html">PROYECTOR</a><a href="celular.html">CELULAR</a><a href="sprites.html">SPRITES</a><a href="assets.html">ASSETS</a><a class="on" href="musica.html">MÚSICA</a></nav>
+</header>
+<p class="page-sub">Solo suena en el proyector. Las pistas se leen de <code>assets/audio/music.json</code>: las de Suno reemplazan a estas sin tocar código. Toca una tarjeta para escucharla.</p>
+
+<div class="grid" id="tracks"></div>
+
+<div class="panel sim">
+  <div class="col" style="gap:10px">
+    <div class="disp" style="font-size:13px;color:var(--dino-light)">SIMULADOR DE PREGUNTA</div>
+    <div style="font-size:17px" class="muted">La batalla se va poniendo intensa mientras se acaba el tiempo.</div>
+    <div class="row" style="gap:12px">
+      <select id="diff"><option value="30">Easy · 30 s</option><option value="20" selected>Medium · 20 s</option><option value="15">Hard · 15 s</option></select>
+      <select id="track"><option value="battle">Batalla</option><option value="boss">Jefe (King Dread)</option></select>
+    </div>
+  </div>
+  <div class="clock" id="clock">20</div>
+  <div class="meter"><span class="l0">CALM</span><span class="l2">PANIC</span></div>
+  <div class="row" style="gap:12px">
+    <div class="btn btn-primary" id="start">START QUESTION ▶</div>
+    <div class="btn btn-light" id="stop">STOP</div>
+  </div>
+</div>
+
+<script src="music.js?v=4"></script>
+<script>
+  const music = new Music('../assets/audio/');
+  const TRACKS = [
+    ['lobby', 'LOBBY', 'Mientras los alumnos entran y tocan "I\'m ready". Loop largo y tranquilo.', 'Suno · Castle of Dreams (Re menor, ~100 BPM)'],
+    ['battle', 'BATALLA', 'Durante las preguntas contra los 4 primeros enemigos. Usa el simulador para oír cómo se intensifica.', 'Suno · E Minor Charge (150 BPM) → Alarm Arpeggios (intensa)'],
+    ['boss', 'JEFE · KING DREAD', 'Última parada, en la puerta del castillo. Más épica y pesada.', '191_loop (4:48)'],
+    ['victory', 'GANAR', 'Princesa rescatada. Fanfarria corta y luego vuelve el loop del lobby.', 'Compuesta a partir de la batalla: Mi mayor, 150 BPM, ~11 s'],
+    ['defeat', 'PERDER', 'Game over. Triste, sin ser infantil.', 'Suno · 16-bit game over (La menor, 52 s)'],
+  ];
+  const box = document.getElementById('tracks');
+  box.innerHTML = TRACKS.map(([id, name, desc, src]) => `<div class="card track" data-id="${id}">
+      <h2>${name}</h2><p>${desc}</p><div class="src">${src}</div>
+      <div class="btn btn-light">▶ PLAY</div></div>`).join('');
+  let playing = null;
+  box.addEventListener('click', async e => {
+    const card = e.target.closest('.track');
+    if (!card) return;
+    stopTimer();
+    document.querySelectorAll('.track').forEach(c => c.classList.remove('on'));
+    if (playing === card.dataset.id) { music.stop(); playing = null; return; }
+    playing = card.dataset.id;
+    card.classList.add('on');
+    await music.play(playing);
+  });
+
+  // question timer simulator
+  let timer = null;
+  const clock = document.getElementById('clock');
+  const meter = [...document.querySelectorAll('.meter span')];
+  function stopTimer() { cancelAnimationFrame(timer); timer = null; meter.forEach(m => m.classList.remove('on')); }
+  document.getElementById('start').onclick = async () => {
+    stopTimer();
+    const total = Number(document.getElementById('diff').value);
+    playing = document.getElementById('track').value;
+    document.querySelectorAll('.track').forEach(c => c.classList.toggle('on', c.dataset.id === playing));
+    await music.play(playing);
+    music.reset();
+    const t0 = performance.now();
+    const step = () => {
+      const left = Math.max(0, total - (performance.now() - t0) / 1000);
+      clock.textContent = Math.ceil(left);
+      const level = left <= total * Music.PANIC_AT ? 1 : 0;
+      meter.forEach((m, i) => m.classList.toggle('on', i === level));
+      clock.style.color = level ? 'var(--red)' : 'var(--text)';
+      if (left <= 0) { music.timeUp(); clock.textContent = '0'; timer = null; return; }
+      music.setTimeLeft(left, total);
+      timer = requestAnimationFrame(step);
+    };
+    step();
+  };
+  document.getElementById('stop').onclick = () => { stopTimer(); music.stop(); playing = null; document.querySelectorAll('.track').forEach(c => c.classList.remove('on')); };
+</script>
+<script src="mockups.js?v=3"></script>
+</body>
+</html>

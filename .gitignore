@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+firebase-debug*.log
+database-debug.log
+.firebase/
+# generated from design/assets by scripts/sync-assets.mjs
+public/assets/
+# 55 MB source loop, no longer used by the build (kept locally only)
+design/assets-src/music/191_loop.wav
+# Playwright / test output
+test-results/
+playwright-report/

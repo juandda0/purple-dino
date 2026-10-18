@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purple Dino · Proyector</title>
+<link rel="stylesheet" href="mockups.css?v=3">
+</head>
+<body>
+<header class="page-head">
+  <h1>PURPLE DINO · PROYECTOR (11 PANTALLAS)</h1>
+  <nav><a href="index.html">ÍNDICE</a><a class="on" href="proyector.html">PROYECTOR</a><a href="celular.html">CELULAR</a><a href="sprites.html">SPRITES</a><a href="assets.html">ASSETS</a><a href="musica.html">MÚSICA</a></nav>
+</header>
+<p class="page-sub">Pantalla grande de la profe, 1600×900. Juego 100% en inglés, para estudiantes de 16–17 años. Ejemplo: Course 6 · Units 7, 8 y 9 · Medium (3 vidas, enemigos de 2 golpes).</p>
+
+<!-- ============================================================ 01 START -->
+<div class="label" id="p01">01 · INICIO</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/menu.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="abs spr" style="left:130px;top:440px;--n:3;--fw:360px;--fh:360px;--t:.9s;background-image:url(../assets/dinos/hero_idle_3x.png)" role="img" aria-label="Purple dino"></div>
+  <div class="abs" style="left:1040px;top:360px;width:540px;height:460px;background:radial-gradient(closest-side,rgba(232,67,76,.28),rgba(232,67,76,0))"></div>
+  <img class="abs" src="../sprites/enemy_king.svg" style="left:1090px;top:410px;width:432px;height:360px" alt="King Dread">
+  <div class="vignette"></div>
+  <div class="title-block" style="top:96px">
+    <div class="disp outline-lg" style="font-size:96px;line-height:104px;color:var(--white);text-align:center">PURPLE<br><span style="color:var(--dino-light)">DINO</span></div>
+    <div class="disp" style="font-size:15px;letter-spacing:.14em;color:var(--text)">FIGHT THE SHADOWS · SAVE THE PRINCESS</div>
+    <div style="font-weight:500;font-size:24px" class="muted">A co-op English quiz battle for the whole class</div>
+  </div>
+  <div class="abs" style="left:600px;top:560px;width:400px;display:flex;flex-direction:column;gap:18px">
+    <div class="btn btn-primary" style="padding:24px 28px;font-size:22px">CREATE GAME ▶</div>
+    <div class="btn btn-light" style="padding:16px 22px;font-size:14px">HOW TO PLAY</div>
+  </div>
+  <div class="abs disp" style="left:0;bottom:28px;width:1600px;text-align:center;font-size:12px;letter-spacing:.08em;color:var(--muted)">CAMBRIDGE ONE · PASSAGES 3RD EDITION</div>
+</div></div>
+
+<!-- ============================================================ 02 COURSE -->
+<div class="label" id="p02">02 · ELEGIR CURSO</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/menu.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="topbar">
+    <div class="logo"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:45px;height:51px" alt="">PURPLE<br>DINO</div>
+    <div class="steps"><div class="s now">1 COURSE</div><div class="ln"></div><div class="s">2 UNITS</div><div class="ln"></div><div class="s">3 DIFFICULTY</div><div class="ln"></div><div class="s">4 LOBBY</div></div>
+  </div>
+  <div class="title-block" style="top:140px">
+    <div class="title outline">CHOOSE YOUR COURSE</div>
+    <div class="subtitle">Only Course 6 is ready for now</div>
+  </div>
+  <div class="abs" style="left:180px;top:320px;width:1240px;display:flex;flex-wrap:wrap;gap:26px;justify-content:center" id="courses"></div>
+  <div class="abs" style="left:180px;top:736px;width:1240px;display:flex;align-items:center;justify-content:space-between">
+    <div class="card" style="padding:14px 18px;font-weight:700;font-size:22px">Course 6 · Passages 3rd Edition · 12 units</div>
+    <div class="btn btn-primary" style="padding:18px 28px;font-size:18px">NEXT ▶</div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 03 UNITS -->
+<div class="label" id="p03">03 · ELEGIR UNIDADES</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/menu.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="topbar">
+    <div class="logo"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:45px;height:51px" alt="">PURPLE<br>DINO</div>
+    <div class="steps"><div class="s done">1 COURSE 6</div><div class="ln done"></div><div class="s now">2 UNITS</div><div class="ln"></div><div class="s">3 DIFFICULTY</div><div class="ln"></div><div class="s">4 LOBBY</div></div>
+  </div>
+  <div class="title-block" style="top:132px">
+    <div class="title outline">CHOOSE THE UNITS</div>
+    <div class="subtitle">Course 6 · Passages 3rd Edition — which units go into battle?</div>
+  </div>
+  <div class="abs panel" style="left:216px;top:284px;width:1168px;display:flex;flex-direction:column;gap:20px;padding:36px 40px 32px">
+    <div id="units" style="display:flex;flex-wrap:wrap;gap:20px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:3px dashed var(--line)">
+      <div class="btn btn-light" style="padding:18px 24px;font-size:14px">ALL</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div class="disp" style="font-size:16px;color:var(--dino-light)">3 UNITS</div>
+        <div style="font-weight:500;font-size:20px" class="muted">7 · 8 · 9 → test review</div>
+      </div>
+      <div class="btn btn-primary" style="padding:18px 28px;font-size:18px">NEXT ▶</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 04 DIFFICULTY -->
+<div class="label" id="p04">04 · ELEGIR DIFICULTAD</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/menu.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="topbar">
+    <div class="logo"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:45px;height:51px" alt="">PURPLE<br>DINO</div>
+    <div class="steps"><div class="s done">1 COURSE 6</div><div class="ln done"></div><div class="s done">2 UNITS 7·8·9</div><div class="ln done"></div><div class="s now">3 DIFFICULTY</div><div class="ln"></div><div class="s">4 LOBBY</div></div>
+  </div>
+  <div class="title-block" style="top:132px">
+    <div class="title outline">HOW TOUGH?</div>
+    <div class="subtitle">It changes how forgiving the battle is — not the English</div>
+  </div>
+  <div class="abs" style="left:190px;top:292px;width:1220px;display:flex;gap:40px;align-items:flex-start" id="diff"></div>
+  <div class="abs" style="left:190px;top:776px;width:1220px;display:flex;align-items:center;justify-content:flex-end">
+    <div class="btn btn-primary" style="padding:18px 28px;font-size:18px">CREATE LOBBY ▶</div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 05 LOBBY -->
+<div class="label" id="p05">05 · LOBBY</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/menu.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="topbar">
+    <div class="logo"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:45px;height:51px" alt="">PURPLE<br>DINO</div>
+    <div style="display:flex;gap:12px;font-family:var(--display);font-size:13px">
+      <div class="card" style="padding:12px 16px">COURSE 6</div>
+      <div class="card" style="padding:12px 16px">UNITS 7 · 8 · 9</div>
+      <div class="card" style="padding:12px 16px;background:var(--yellow);color:var(--ink)">MEDIUM · 3 LIVES</div>
+    </div>
+  </div>
+  <div class="abs" style="left:64px;top:132px;width:1472px;display:flex;gap:40px;align-items:stretch">
+    <div class="panel" style="width:500px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:20px;padding:32px 36px 36px">
+      <div class="disp" style="font-size:22px;line-height:30px;text-align:center">SCAN TO<br>JOIN THE PACK</div>
+      <div style="padding:10px;background:var(--white);border:4px solid var(--edge);position:relative">
+        <img src="../sprites/qr.svg" style="width:330px;height:330px" alt="Room QR">
+        <img class="abs px" src="../assets/dinos/avatar_sena.png" style="left:147px;top:144px;width:45px;height:51px;background:#fff;outline:6px solid #fff" alt="">
+      </div>
+      <div style="font-weight:500;font-size:20px" class="muted">or go to <b style="color:var(--text)">purpledino.web.app</b> and type</div>
+      <div style="display:flex;gap:10px" id="digits"></div>
+    </div>
+    <div class="panel" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:22px;padding:32px 36px 36px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="disp" style="font-size:22px">THE PACK</div>
+          <div style="font-weight:500;font-size:20px" class="muted">15 players connected</div>
+        </div>
+        <div class="disp" style="display:flex;align-items:baseline;gap:8px;color:var(--dino-light)"><span style="font-size:44px">13</span><span style="font-size:18px" class="muted">/15 READY</span></div>
+      </div>
+      <div style="display:flex;height:24px;border:4px solid var(--edge);background:var(--panel-2)"><div style="width:86%;background:var(--green);box-shadow:inset 0 -5px 0 var(--green-dark)"></div></div>
+      <div id="players" style="display:flex;flex-wrap:wrap;gap:12px 14px"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-weight:500;font-size:20px" class="muted">Waiting for <b style="color:var(--text)">Emilio</b> and <b style="color:var(--text)">Lucía</b>…</div>
+        <div class="btn btn-off" style="padding:20px 30px;font-size:18px">START ▶</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 06 WALK -->
+<div class="label" id="p06">06 · CAMINATA (TRANSICIÓN ENTRE ENEMIGOS)</div>
+<p class="note">Después de derrotar a un enemigo el dino sigue caminando: las manos se balancean y el camino avanza hasta la siguiente parada.</p>
+<div class="frame"><div class="screen walking">
+  <img class="abs px" src="../assets/bg/battle.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="abs" style="left:610px;top:640px;width:10px;height:70px;background:rgba(255,255,255,.35);transform:rotate(35deg)"></div>
+  <div class="abs" style="left:560px;top:760px;width:12px;height:100px;background:rgba(255,255,255,.35);transform:rotate(40deg)"></div>
+  <div class="abs" style="left:980px;top:640px;width:10px;height:70px;background:rgba(255,255,255,.35);transform:rotate(-35deg)"></div>
+  <div class="abs" style="left:1040px;top:760px;width:12px;height:100px;background:rgba(255,255,255,.35);transform:rotate(-40deg)"></div>
+  <div class="abs spr" style="left:380px;top:640px;--n:16;--fw:320px;--fh:320px;--t:1s;opacity:.5;background-image:url(../assets/fx/dust.png)"></div>
+  <div class="abs spr" style="left:900px;top:640px;--n:16;--fw:320px;--fh:320px;--t:1s;opacity:.5;animation-delay:.5s;background-image:url(../assets/fx/dust.png)"></div>
+  <img class="pov pov-shield" src="../assets/pov/shield_2_cracked.png" alt="Cracked shield (dino claw)">
+  <img class="pov pov-sword" src="../assets/pov/sword_idle.png" alt="Sword">
+  <div class="vignette"></div>
+  <div class="abs hud-left">
+    <div class="road tag"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt=""><div class="seg done"></div><div class="stop won"></div><div class="seg done"></div><div class="stop now"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><img src="../sprites/castle.svg" style="width:56px;height:40px" alt=""></div>
+    <div class="shield-row tag">SHIELD <img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""></div>
+  </div>
+  <div class="abs" style="left:0;top:160px;width:1600px;display:flex;flex-direction:column;align-items:center;gap:26px">
+    <div class="disp outline" style="font-size:48px;line-height:56px;color:var(--yellow)">SHADE RAPTOR DEFEATED</div>
+    <div class="panel" style="display:flex;align-items:center;gap:22px;padding:20px 26px 24px">
+      <img src="../sprites/enemy_ptero.svg" style="width:144px;height:80px;filter:brightness(.6)" alt="Next enemy silhouette">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="disp" style="font-size:15px;color:var(--dino-light)">STOP 2 / 5 · THE CAVE</div>
+        <div style="font-weight:700;font-size:30px">Something moves in the dark…</div>
+        <div style="font-weight:500;font-size:20px" class="muted">Combo x2 · keep it going</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 07 QUESTION -->
+<div class="label" id="p07">07 · BATALLA · PREGUNTA EN CURSO</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/battle.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="abs" style="left:560px;top:196px;width:480px;display:flex;flex-direction:column;align-items:center;gap:14px">
+    <div class="plate tag"><div style="font-size:16px;letter-spacing:.06em">SHADE RAPTOR</div><div class="row" style="gap:6px"><span class="hpbar"></span><span class="hpbar"></span></div></div>
+    <div style="position:relative;width:360px;height:252px">
+      <img class="abs" src="../sprites/enemy_raptor.svg" style="left:0;top:0;width:360px;height:252px" alt="Shade raptor">
+    </div>
+  </div>
+  <img class="pov pov-shield" src="../assets/pov/shield_2_cracked.png" alt="Cracked shield (dino claw)">
+  <img class="pov pov-sword" src="../assets/pov/sword_idle.png" alt="Sword">
+  <div class="vignette"></div>
+  <div class="abs hud-left">
+    <div class="road tag"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt=""><div class="seg done"></div><div class="stop now"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><img src="../sprites/castle.svg" style="width:56px;height:40px" alt=""></div>
+    <div class="shield-row tag">SHIELD <img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""></div>
+  </div>
+  <div class="abs ring tag" style="left:752px;top:20px;width:112px;height:112px;background-color:rgba(14,10,30,.88);background-image:url(../assets/ui/timer_1.png);background-position:5px 5px;border-radius:0"><div class="disp" style="font-size:34px;color:var(--yellow)">17</div></div>
+  <div class="abs hud-right">
+    <div class="tag" style="padding:10px 16px;font-size:14px">STOP 1/5 · FOREST</div>
+    <div class="tag" style="padding:8px 14px;font-size:12px;background:var(--dino)">UNIT 8</div>
+  </div>
+  <div class="abs panel pxframe" style="left:330px;top:558px;width:940px;display:flex;flex-direction:column;gap:18px;padding:22px 28px 28px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="disp" style="font-size:12px;letter-spacing:.08em;color:var(--dino-light)">HIT 1 OF 2</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="bar" style="width:120px"><div style="width:72%;background:var(--dino-light)"></div></div>
+        <div style="font-weight:700;font-size:20px">11/15 answered</div>
+      </div>
+    </div>
+    <div style="font-weight:700;font-size:40px;line-height:46px">If I ______ more time, I would travel more.</div>
+    <div class="opts">
+      <div class="opt o-red"><img src="../sprites/icon_triangle.svg" style="width:40px;height:40px" alt=""><span class="txt">have</span></div>
+      <div class="opt o-blue"><img src="../sprites/icon_diamond.svg" style="width:40px;height:40px" alt=""><span class="txt">had</span></div>
+      <div class="opt o-yellow"><img src="../sprites/icon_star.svg" style="width:40px;height:40px" alt=""><span class="txt">will have</span></div>
+      <div class="opt o-green"><img src="../sprites/icon_circle.svg" style="width:40px;height:40px" alt=""><span class="txt">having</span></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 08 SWORD STRIKE -->
+<div class="label" id="p08">08 · ESPADAZO (LA MAYORÍA ACERTÓ)</div>
+<p class="note">Se revela la respuesta correcta y cuántos votaron cada opción. El enemigo pierde un golpe de vida.</p>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/battle.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="abs" style="left:560px;top:196px;width:480px;display:flex;flex-direction:column;align-items:center;gap:14px">
+    <div class="plate tag"><div style="font-size:16px;letter-spacing:.06em">SHADE RAPTOR</div><div class="row" style="gap:6px"><span class="hpbar"></span><span class="hpbar empty"></span></div></div>
+    <img src="../sprites/enemy_raptor_hit.svg" style="width:360px;height:252px" alt="Raptor hit">
+  </div>
+  <div class="abs spr still" style="left:700px;top:250px;--n:16;--f:9;--fw:240px;--fh:240px;background-image:url(../assets/fx/hit_ring.png)"></div>
+  <img class="pov pov-shield" src="../assets/pov/shield_2_cracked.png" alt="Cracked shield (dino claw)">
+  <div class="vignette"></div>
+  <div class="abs hud-left">
+    <div class="road tag"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt=""><div class="seg done"></div><div class="stop now"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><img src="../sprites/castle.svg" style="width:56px;height:40px" alt=""></div>
+    <div class="shield-row tag">SHIELD <img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""></div>
+  </div>
+  <div class="abs hud-right">
+    <div class="tag" style="padding:10px 16px;font-size:14px">STOP 1/5 · FOREST</div>
+    <div class="tag" style="padding:8px 14px;font-size:12px;background:var(--dino)">UNIT 8</div>
+  </div>
+  <div class="abs disp outline" style="left:0;top:28px;width:1600px;text-align:center;font-size:48px;line-height:60px;color:var(--yellow);transform:rotate(-2deg)">SWORD STRIKE!</div>
+  <div class="abs panel pxframe" style="left:330px;top:558px;width:940px;display:flex;flex-direction:column;gap:18px;padding:22px 28px 28px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="disp" style="font-size:14px;letter-spacing:.06em;color:var(--green)">CORRECT · 73% GOT IT</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="bar" style="width:120px"><div style="width:73%;background:var(--green)"></div></div>
+        <div style="font-weight:700;font-size:20px">Ana, Luis + 9 more struck</div>
+      </div>
+    </div>
+    <div style="font-weight:700;font-size:40px;line-height:46px">If I ______ more time, I would travel more.</div>
+    <div class="opts">
+      <div class="opt o-red dim"><img src="../sprites/icon_triangle.svg" style="width:40px;height:40px" alt=""><span class="txt">have</span><span class="votes">2</span></div>
+      <div class="opt o-blue correct"><img src="../sprites/icon_diamond.svg" style="width:40px;height:40px" alt=""><span class="txt">had</span><span class="votes">11</span><span class="okbox" style="width:36px;height:36px"><img src="../sprites/check.svg" style="width:20px;height:14px" alt="correct"></span></div>
+      <div class="opt o-yellow dim"><img src="../sprites/icon_star.svg" style="width:40px;height:40px" alt=""><span class="txt">will have</span><span class="votes">1</span></div>
+      <div class="opt o-green dim"><img src="../sprites/icon_circle.svg" style="width:40px;height:40px" alt=""><span class="txt">having</span><span class="votes">1</span></div>
+    </div>
+  </div>
+  <div class="abs disp outline" style="left:500px;top:400px;font-size:52px;color:var(--yellow);transform:rotate(-6deg)">-1</div>
+  <img class="abs px" src="../assets/fx/swing_arc_3.png" style="left:980px;top:-330px;width:960px;height:960px;opacity:.85;pointer-events:none" alt="">
+  <img class="abs px" src="../assets/pov/sword_attack_2_arm_long.png" style="left:980px;top:-330px;width:960px;height:1260px;pointer-events:none" alt="Dino arm mid-swing">
+</div></div>
+
+<!-- ============================================================ 09 LAST CHANCE -->
+<div class="label" id="p09">09 · GOLPE AL ESCUDO · LAST CHANCE</div>
+<p class="note">Medium, segundo fallo: el escudo se rompe y queda la última vida. No se muestra la respuesta correcta; la pregunta se repite con las opciones en otro orden.</p>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/battle.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="abs" style="left:470px;top:250px;width:660px;display:flex;flex-direction:column;align-items:center;gap:14px;transform:rotate(3deg)">
+    <div style="position:relative;width:540px;height:378px">
+      <img class="abs" src="../sprites/enemy_raptor.svg" style="left:0;top:0;width:540px;height:378px" alt="Raptor lunging">
+    </div>
+  </div>
+  <img class="pov pov-sword" src="../assets/pov/sword_idle.png" alt="Sword">
+  <img class="pov pov-shield" src="../assets/pov/shield_4_gone.png" alt="Bare dino fist, no shield">
+  <img class="abs px" src="../assets/pov/shield_shards.png" style="left:20px;top:400px;width:445px;height:400px" alt="Shattered shield">
+  <div class="abs disp outline" style="left:250px;top:300px;font-size:36px;color:var(--white);transform:rotate(-10deg)">CLANK!</div>
+  <div class="abs" style="inset:0;box-shadow:inset 0 0 0 14px var(--red), inset 0 0 220px 60px rgba(232,67,76,.5);pointer-events:none"></div>
+  <div class="abs hud-left">
+    <div class="road tag"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt=""><div class="seg done"></div><div class="stop now"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><img src="../sprites/castle.svg" style="width:56px;height:40px" alt=""></div>
+    <div class="shield-row tag" style="background:var(--red)">NO SHIELD <img class="crest" src="../assets/ui/crest_empty.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""></div>
+  </div>
+  <div class="abs hud-right">
+    <div class="tag" style="padding:10px 16px;font-size:14px">STOP 1/5 · FOREST</div>
+    <div class="tag" style="padding:8px 14px;font-size:12px;background:var(--dino)">UNIT 8</div>
+  </div>
+  <div class="abs" style="left:0;top:110px;width:1600px;display:flex;flex-direction:column;align-items:center;gap:22px">
+    <div class="disp outline-lg" style="font-size:84px;line-height:92px;color:var(--red);transform:rotate(-3deg)">LAST CHANCE</div>
+    <div class="tag" style="padding:10px 18px;font-size:14px">ONE MORE MISS AND IT'S OVER</div>
+  </div>
+  <div class="abs panel" style="left:400px;top:640px;width:800px;display:flex;align-items:center;gap:28px;padding:26px 30px 30px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0">
+      <div class="disp" style="font-size:44px;color:var(--red)">38%</div>
+      <div class="disp muted" style="font-size:11px;letter-spacing:.08em">GOT IT</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+      <div style="font-weight:700;font-size:34px;line-height:38px">Not enough. Try again.</div>
+      <div style="font-weight:500;font-size:20px;line-height:26px" class="muted">Same question, answers shuffled. The right answer stays secret.</div>
+    </div>
+    <div class="btn btn-primary" style="flex-shrink:0;padding:16px 18px;flex-direction:column;gap:6px"><span style="font-size:11px">RETRY IN</span><span style="font-size:32px;line-height:32px">3</span></div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 10 VICTORY -->
+<div class="label" id="p10">10 · VICTORIA · PRINCESA RESCATADA</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/victory.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <div class="abs" style="left:0;top:0" data-confetti="1600,430,40" data-seed="7"></div>
+  <img class="abs" src="../sprites/cage.svg" style="left:1200px;top:470px;width:180px;height:240px" alt="Open cage">
+  <div class="abs spr" style="left:470px;top:450px;--n:4;--fw:360px;--fh:360px;--t:.7s;background-image:url(../assets/dinos/hero_jump_3x.png)" role="img" aria-label="Purple dino jumping"></div>
+  <div class="abs spr" style="left:880px;top:390px;--n:3;--fw:360px;--fh:420px;--t:.9s;background-image:url(../assets/dinos/princess_idle_3x.png)" role="img" aria-label="Princess"></div>
+  <div class="title-block" style="top:24px">
+    <img class="px" src="../assets/ui/emblem_purple.png" style="width:160px;height:80px" alt="">
+    <div class="disp outline-lg" style="font-size:64px;line-height:72px;color:var(--white)">PRINCESS RESCUED</div>
+    <div class="tag" style="padding:10px 18px;font-size:14px;background:var(--dino)">THE PACK BROKE THE SHADOW CURSE</div>
+  </div>
+  <div class="abs panel" style="left:40px;bottom:48px;width:400px;display:flex;flex-direction:column;gap:14px;padding:24px 26px 30px">
+    <div class="disp" style="font-size:14px;letter-spacing:.06em;color:var(--dino-light)">BATTLE REPORT</div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Stops cleared</span><b>5 / 5</b></div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Questions</span><b>13</b></div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Class accuracy</span><b>81%</b></div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Shield left</span><span class="row" style="gap:4px"><img class="crest" src="../assets/ui/crest_full.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""><img class="crest" src="../assets/ui/crest_empty.png" alt=""></span></div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Best combo</span><b>x4</b></div>
+    <div style="font-size:16px" class="muted">Course 6 · Units 7 · 8 · 9 · Medium</div>
+  </div>
+  <div class="abs" style="right:40px;bottom:56px;display:flex;flex-direction:column;gap:18px;width:360px">
+    <div class="btn btn-primary" style="padding:22px 26px;font-size:18px">PLAY AGAIN ▶</div>
+    <div class="btn btn-light" style="padding:16px 22px;font-size:14px">BACK TO START</div>
+  </div>
+</div></div>
+
+<!-- ============================================================ 11 GAME OVER -->
+<div class="label" id="p11">11 · GAME OVER</div>
+<div class="frame"><div class="screen">
+  <img class="abs px" src="../assets/bg/gameover.png" style="left:0;top:0;width:1600px;height:900px" alt="">
+  <img class="abs" src="../sprites/enemy_ptero.svg" style="left:1060px;top:300px;width:288px;height:160px;opacity:.9" alt="Nightwing">
+  <div class="title-block" style="top:70px;gap:22px">
+    <div class="disp outline-lg" style="font-size:96px;line-height:104px;color:var(--red)">GAME OVER</div>
+    <div style="font-weight:700;font-size:30px">The shadows win… this time.</div>
+    <div class="road tag">
+      <img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt="">
+      <div class="seg done"></div><div class="stop won"></div><div class="seg done"></div><div class="stop now"></div>
+      <div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div><div class="stop"></div><div class="seg"></div>
+      <img src="../sprites/castle.svg" style="width:56px;height:40px;opacity:.5" alt="">
+    </div>
+  </div>
+  <div class="abs spr still" style="left:620px;top:470px;--n:5;--f:2;--fw:360px;--fh:360px;background-image:url(../assets/dinos/hero_dead_3x.png)" role="img" aria-label="Defeated dino"></div>
+  <img class="abs px" src="../assets/pov/shield_shards.png" style="left:930px;top:700px;width:267px;height:240px" alt="Broken shield">
+  <div class="abs panel" style="left:40px;bottom:48px;width:420px;display:flex;flex-direction:column;gap:14px;padding:24px 26px 30px">
+    <div class="disp" style="font-size:14px;letter-spacing:.06em;color:var(--red)">THE SHIELD BROKE</div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>You reached</span><b>Stop 2 / 5</b></div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Questions</span><b>8</b></div>
+    <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Class accuracy</span><b>62%</b></div>
+    <div style="padding-top:10px;border-top:3px dashed var(--line);font-size:18px;line-height:24px;font-weight:500">To review: <b>Unit 8</b> was the toughest.</div>
+  </div>
+  <div class="abs" style="right:40px;bottom:56px;display:flex;flex-direction:column;gap:18px;width:360px">
+    <div class="btn btn-primary" style="padding:22px 26px;font-size:18px">TRY AGAIN ▶</div>
+    <div class="btn btn-light" style="padding:16px 22px;font-size:14px">CHANGE UNITS</div>
+    <div class="btn btn-light" style="padding:16px 22px;font-size:14px">BACK TO START</div>
+  </div>
+</div></div>
+
+<script>
+  const S = '../sprites/';
+  // 02 · courses (only Course 6 is playable)
+  document.getElementById('courses').innerHTML = [1, 2, 3, 4, 5, 6, 7].map(n => n === 6
+    ? `<div class="tile on" style="width:290px;height:170px;position:relative;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:0 24px">
+         <div class="disp" style="font-size:24px">COURSE 6</div>
+         <div style="font-weight:700;font-size:22px">Passages 3rd Edition</div>
+         <div style="font-weight:500;font-size:18px;opacity:.85">12 units ready</div>
+         <div class="okbox" style="position:absolute;right:-16px;top:-16px;width:42px;height:42px;background:var(--yellow);border-width:4px"><img src="${S}check.svg" style="width:20px;height:14px" alt=""></div>
+       </div>`
+    : `<div style="width:290px;height:170px;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 24px;background:rgba(14,10,30,.82);border:4px dashed rgba(242,238,255,.22);color:rgba(242,238,255,.45)">
+         <div class="row" style="justify-content:space-between"><div class="disp" style="font-size:20px">COURSE ${n}</div><div class="lock"></div></div>
+         <div class="disp" style="align-self:flex-start;padding:6px 10px;background:rgba(242,238,255,.12);font-size:11px">COMING SOON</div>
+       </div>`).join('');
+
+  // 03 · units 1–12 (7, 8, 9 selected)
+  document.getElementById('units').innerHTML = Array.from({ length: 12 }, (_, i) => {
+    const n = i + 1, on = [7, 8, 9].includes(n);
+    return `<div class="tile${on ? ' on' : ''}" style="width:160px;height:132px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+      <div class="disp" style="font-size:12px;letter-spacing:.12em;opacity:.7">UNIT</div>
+      <div class="disp" style="font-size:44px;line-height:44px">${String(n).padStart(2, '0')}</div>
+      ${on ? `<div class="okbox" style="position:absolute;right:-14px;top:-14px;width:40px;height:40px;background:var(--yellow);border-width:4px"><img src="${S}check.svg" style="width:20px;height:14px" alt=""></div>` : ''}
+    </div>`;
+  }).join('');
+
+  // 04 · difficulty cards
+  const diffs = [
+    { name: 'EASY', color: 'var(--green)', dark: 'var(--green-dark)', lives: 5, enemy: 1, boss: 2, time: 30, level: 'Warm-up' },
+    { name: 'MEDIUM', color: 'var(--yellow)', dark: 'var(--yellow-dark)', lives: 3, enemy: 2, boss: 3, time: 20, level: 'Recommended', on: true },
+    { name: 'HARD', color: 'var(--red)', dark: 'var(--red-dark)', lives: 2, enemy: 3, boss: 4, time: 15, level: 'Test prep' },
+  ];
+  document.getElementById('diff').innerHTML = diffs.map(d => `
+    <div class="panel" style="width:380px;display:flex;flex-direction:column;position:relative;${d.on ? 'transform:translateY(-14px);box-shadow:inset 0 0 0 3px var(--line),0 0 0 4px var(--white),0 18px 0 var(--edge)' : ''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:${d.color};box-shadow:inset 0 -6px 0 ${d.dark};border-bottom:4px solid var(--edge)">
+        <div class="disp outline-sm" style="font-size:26px;color:var(--white)">${d.name}</div>
+        <div style="font-weight:700;font-size:18px;color:var(--ink)">${d.level}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px 24px 30px">
+        <div class="col" style="gap:8px"><div class="disp muted" style="font-size:11px;letter-spacing:.08em">SHIELD LIVES</div>
+          <div class="row" style="gap:6px">${Array.from({ length: d.lives }, () => `<img class="crest" src="../assets/ui/crest_full.png" alt="">`).join('')}</div></div>
+        <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Hits per enemy</span><b>${d.enemy}</b></div>
+        <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Hits on the boss</span><b>${d.boss}</b></div>
+        <div class="row" style="justify-content:space-between;font-size:22px;font-weight:500"><span>Time per question</span><b>${d.time} s</b></div>
+      </div>
+      ${d.on ? `<div class="okbox" style="position:absolute;right:-16px;top:-16px;width:42px;height:42px;background:var(--yellow);border-width:4px"><img src="${S}check.svg" style="width:20px;height:14px" alt=""></div>` : ''}
+    </div>`).join('');
+
+  // 05 · lobby code + players
+  document.getElementById('digits').innerHTML = [4, 8, 2, 7].map(d =>
+    `<div class="disp" style="width:68px;height:76px;display:flex;align-items:center;justify-content:center;background:var(--dino);border:4px solid var(--edge);box-shadow:inset 0 -6px 0 var(--dino-dark);font-size:36px;color:var(--white)">${d}</div>`).join('');
+  const names = ['Ana', 'Luis', 'Sofía', 'Mateo', 'Valentina', 'Samuel', 'Isabella', 'Tomás', 'Mariana', 'Juan', 'Camila', 'Nicolás', 'Daniela', 'Emilio', 'Lucía'];
+  const cols = ['sena', 'olaf', 'tard', 'loki', 'kira', 'cole', 'mort', 'doux', 'nico', 'vita', 'mono', 'kuro'];
+  document.getElementById('players').innerHTML = names.map((n, i) => {
+    const ready = i < 13;
+    return `<div class="${ready ? 'tile' : ''}" style="display:flex;align-items:center;gap:12px;width:274px;height:56px;padding:0 12px 0 10px;${ready ? 'border-width:3px'
+      : 'background:rgba(242,238,255,.04);border:3px dashed rgba(242,238,255,.22)'}">
+      <img class="px" src="../assets/dinos/avatar_${cols[i % 12]}.png" style="width:30px;height:34px;${ready ? '' : 'opacity:.45'}" alt="">
+      <div style="flex:1;font-weight:700;font-size:22px;color:${ready ? 'var(--text)' : 'rgba(242,238,255,.45)'}">${n}</div>
+      ${ready ? `<div class="okbox" style="width:30px;height:30px"><img src="${S}check.svg" style="width:18px;height:13px" alt=""></div>`
+              : '<div style="width:30px;text-align:center;font-weight:700;font-size:24px;color:rgba(242,238,255,.45)">…</div>'}
+    </div>`;
+  }).join('');
+</script>
+<script src="mockups.js?v=3"></script>
+</body>
+</html>

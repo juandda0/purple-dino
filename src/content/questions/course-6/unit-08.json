@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u08-001",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "I enjoy ___ to music while I study.",
+    "options": [
+      "to listen",
+      "listening",
+      "listen",
+      "listened"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u08-002",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "She decided ___ a job in a cafe.",
+    "options": [
+      "getting",
+      "get",
+      "got",
+      "to get"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u08-003",
+    "course": 6,
+    "unit": 8,
+    "skill": "vocabulary",
+    "question": "She has a part-time ___ at a supermarket.",
+    "options": [
+      "job",
+      "work",
+      "labour",
+      "task"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u08-004",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "He's good at ___ problems.",
+    "options": [
+      "to solve",
+      "solve",
+      "solving",
+      "solved"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u08-005",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "My teacher told me ___ harder.",
+    "options": [
+      "studying",
+      "study",
+      "to study",
+      "studied"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u08-006",
+    "course": 6,
+    "unit": 8,
+    "skill": "expressions",
+    "question": "I can't go out. I have a lot on my ___ this week.",
+    "options": [
+      "plate",
+      "table",
+      "desk",
+      "tray"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u08-007",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "I'm looking forward to ___ you next week.",
+    "options": [
+      "see",
+      "to see",
+      "saw",
+      "seeing"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u08-008",
+    "course": 6,
+    "unit": 8,
+    "skill": "vocabulary",
+    "question": "Our teacher gave us a lot of ___ to do at home.",
+    "options": [
+      "housework",
+      "homework",
+      "homeland",
+      "household"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u08-009",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "We can't afford ___ a new laptop.",
+    "options": [
+      "to buy",
+      "buying",
+      "buy",
+      "bought"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u08-010",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "Stop ___! The teacher is explaining something.",
+    "options": [
+      "talk",
+      "talked",
+      "talking",
+      "talks"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u08-011",
+    "course": 6,
+    "unit": 8,
+    "skill": "vocabulary",
+    "question": "A person who works for a company is an ___.",
+    "options": [
+      "employer",
+      "employee",
+      "employment",
+      "employ"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u08-012",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "She promised ___ late again.",
+    "options": [
+      "not being",
+      "not be",
+      "no to be",
+      "not to be"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u08-013",
+    "course": 6,
+    "unit": 8,
+    "skill": "expressions",
+    "question": "Exams are a piece of ___ for her. She never worries.",
+    "options": [
+      "bread",
+      "pie",
+      "cookie",
+      "cake"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u08-014",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "Would you mind ___ the door?",
+    "options": [
+      "to close",
+      "closing",
+      "close",
+      "closed"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u08-015",
+    "course": 6,
+    "unit": 8,
+    "skill": "vocabulary",
+    "question": "He earns a good ___ as an engineer.",
+    "options": [
+      "rent",
+      "fare",
+      "salary",
+      "tip"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u08-016",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "I use my laptop ___ notes in class.",
+    "options": [
+      "to take",
+      "take",
+      "takes",
+      "taken"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u08-017",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "He avoids ___ about his exam results.",
+    "options": [
+      "to talk",
+      "talk",
+      "talking",
+      "talked"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u08-018",
+    "course": 6,
+    "unit": 8,
+    "skill": "expressions",
+    "question": "I'm up to my ___ in homework this week!",
+    "options": [
+      "neck",
+      "knees",
+      "toes",
+      "elbows"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u08-019",
+    "course": 6,
+    "unit": 8,
+    "skill": "vocabulary",
+    "question": "To get a job, you usually send your ___ and go to an interview.",
+    "options": [
+      "diary",
+      "CV",
+      "ticket",
+      "recipe"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u08-020",
+    "course": 6,
+    "unit": 8,
+    "skill": "grammar",
+    "question": "I'd like ___ a doctor when I grow up.",
+    "options": [
+      "being",
+      "be",
+      "been",
+      "to be"
+    ],
+    "answer": 3
+  }
+]

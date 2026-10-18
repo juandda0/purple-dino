@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u11-001",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If I had more money, I ___ a new bike.",
+    "options": [
+      "would buy",
+      "will buy",
+      "bought",
+      "had bought"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u11-002",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If she ___ harder, she would pass the exam.",
+    "options": [
+      "studies",
+      "will study",
+      "studied",
+      "would study"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u11-003",
+    "course": 6,
+    "unit": 11,
+    "skill": "vocabulary",
+    "question": "Being ___ means telling the truth, even when it's difficult.",
+    "options": [
+      "greedy",
+      "lazy",
+      "nervous",
+      "honest"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u11-004",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If we had left earlier, we ___ the train.",
+    "options": [
+      "wouldn't missed",
+      "wouldn't have missed",
+      "didn't miss",
+      "won't have missed"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u11-005",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If I ___ you, I would apologize.",
+    "options": [
+      "am",
+      "were",
+      "will be",
+      "would be"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u11-006",
+    "course": 6,
+    "unit": 11,
+    "skill": "expressions",
+    "question": "I can't decide about the trip. I'm on the ___.",
+    "options": [
+      "wall",
+      "line",
+      "edge",
+      "fence"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u11-007",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "What would you do if you ___ a million euros?",
+    "options": [
+      "win",
+      "will win",
+      "won",
+      "would win"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u11-008",
+    "course": 6,
+    "unit": 11,
+    "skill": "vocabulary",
+    "question": "It's a tough ___. I can't choose between the two schools.",
+    "options": [
+      "decision",
+      "division",
+      "direction",
+      "discussion"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u11-009",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If he hadn't lied, his friends ___ angry.",
+    "options": [
+      "wouldn't been",
+      "won't have been",
+      "hadn't been",
+      "wouldn't have been"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u11-010",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "I would help you if I ___ the answer.",
+    "options": [
+      "know",
+      "knew",
+      "will know",
+      "would know"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u11-011",
+    "course": 6,
+    "unit": 11,
+    "skill": "vocabulary",
+    "question": "She ___ to help the new student instead of going out.",
+    "options": [
+      "chose",
+      "choose",
+      "choice",
+      "choosed"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u11-012",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If they ___ the match, they would have been champions.",
+    "options": [
+      "would win",
+      "won",
+      "had won",
+      "have won"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u11-013",
+    "course": 6,
+    "unit": 11,
+    "skill": "expressions",
+    "question": "Think twice before you decide. Don't jump to ___.",
+    "options": [
+      "endings",
+      "solutions",
+      "conclusions",
+      "results"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u11-014",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If it ___ so cold yesterday, we would have gone to the beach.",
+    "options": [
+      "hadn't been",
+      "wasn't",
+      "isn't",
+      "wouldn't be"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u11-015",
+    "course": 6,
+    "unit": 11,
+    "skill": "vocabulary",
+    "question": "I admire her. She's a great role ___ for me.",
+    "options": [
+      "player",
+      "model",
+      "maker",
+      "teacher"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u11-016",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "She wouldn't be tired if she ___ more.",
+    "options": [
+      "sleeps",
+      "will sleep",
+      "would sleep",
+      "slept"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u11-017",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If I ___ a superpower, I'd choose flying.",
+    "options": [
+      "have",
+      "had",
+      "would have",
+      "will have"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u11-018",
+    "course": 6,
+    "unit": 11,
+    "skill": "expressions",
+    "question": "It's up to you now. The ball is in your ___.",
+    "options": [
+      "hand",
+      "goal",
+      "field",
+      "court"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u11-019",
+    "course": 6,
+    "unit": 11,
+    "skill": "vocabulary",
+    "question": "You should ___ the pros and cons before you decide.",
+    "options": [
+      "weigh",
+      "wear",
+      "wait",
+      "wish"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u11-020",
+    "course": 6,
+    "unit": 11,
+    "skill": "grammar",
+    "question": "If you had told me, I ___ you.",
+    "options": [
+      "will help",
+      "helped",
+      "would have helped",
+      "would had helped"
+    ],
+    "answer": 2
+  }
+]

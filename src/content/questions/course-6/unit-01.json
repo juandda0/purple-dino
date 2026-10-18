@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u01-001",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "Mia usually walks to school, but today she ___ the bus.",
+    "options": [
+      "are taking",
+      "taking",
+      "is taking",
+      "take"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u01-002",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "Look! The dog ___ in the garden.",
+    "options": [
+      "is running",
+      "runs",
+      "ran",
+      "has ran"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u01-003",
+    "course": 6,
+    "unit": 1,
+    "skill": "vocabulary",
+    "question": "A person who is happy to give things to others is ___.",
+    "options": [
+      "selfish",
+      "generous",
+      "shy",
+      "lazy"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u01-004",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "My brother ___ football every Saturday.",
+    "options": [
+      "play",
+      "is playing",
+      "playing",
+      "plays"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u01-005",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "How often ___ you check your phone?",
+    "options": [
+      "are",
+      "does",
+      "have",
+      "do"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u01-006",
+    "course": 6,
+    "unit": 1,
+    "skill": "expressions",
+    "question": "My little brother never stops talking. He's a real ___.",
+    "options": [
+      "bookworm",
+      "chatterbox",
+      "couch potato",
+      "show-off"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u01-007",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "Shh! I ___ to concentrate.",
+    "options": [
+      "am trying",
+      "try",
+      "tries",
+      "trying"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u01-008",
+    "course": 6,
+    "unit": 1,
+    "skill": "vocabulary",
+    "question": "She never talks to new people because she is very ___.",
+    "options": [
+      "friendly",
+      "outgoing",
+      "shy",
+      "confident"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u01-009",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "She ___ coffee. She prefers tea.",
+    "options": [
+      "isn't liking",
+      "doesn't like",
+      "don't like",
+      "doesn't likes"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u01-010",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "Water ___ at 100 degrees Celsius.",
+    "options": [
+      "is boiling",
+      "boil",
+      "boiling",
+      "boils"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u01-011",
+    "course": 6,
+    "unit": 1,
+    "skill": "vocabulary",
+    "question": "He always tells the truth, so everyone says he is ___.",
+    "options": [
+      "rude",
+      "jealous",
+      "honest",
+      "bossy"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u01-012",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "Why ___ you laughing at me?",
+    "options": [
+      "are",
+      "do",
+      "is",
+      "does"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u01-013",
+    "course": 6,
+    "unit": 1,
+    "skill": "expressions",
+    "question": "Leo reads all the time. He is a real ___.",
+    "options": [
+      "bookworm",
+      "chatterbox",
+      "couch potato",
+      "workaholic"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u01-014",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "I ___ what you mean. Can you explain again?",
+    "options": [
+      "am not understanding",
+      "doesn't understand",
+      "don't understand",
+      "not understand"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u01-015",
+    "course": 6,
+    "unit": 1,
+    "skill": "vocabulary",
+    "question": "Someone who doesn't like working hard is ___.",
+    "options": [
+      "ambitious",
+      "hard-working",
+      "polite",
+      "lazy"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u01-016",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "Tom ___ his homework right now.",
+    "options": [
+      "does",
+      "is doing",
+      "do",
+      "doing"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u01-017",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "They ___ a lot of pizza on Fridays.",
+    "options": [
+      "are eating",
+      "eats",
+      "eating",
+      "eat"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u01-018",
+    "course": 6,
+    "unit": 1,
+    "skill": "expressions",
+    "question": "Don't be so shy! Come on, let's break the ___.",
+    "options": [
+      "wall",
+      "ice",
+      "glass",
+      "door"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u01-019",
+    "course": 6,
+    "unit": 1,
+    "skill": "vocabulary",
+    "question": "A ___ person likes meeting people and going to parties.",
+    "options": [
+      "moody",
+      "reserved",
+      "sociable",
+      "serious"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u01-020",
+    "course": 6,
+    "unit": 1,
+    "skill": "grammar",
+    "question": "What ___ your parents do? They are nurses.",
+    "options": [
+      "do",
+      "does",
+      "are",
+      "is"
+    ],
+    "answer": 0
+  }
+]

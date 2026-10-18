@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u02-001",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "I was cooking dinner when the fire alarm ___.",
+    "options": [
+      "goes off",
+      "is going off",
+      "has went off",
+      "went off"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u02-002",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "Yesterday I ___ my keys on the bus.",
+    "options": [
+      "was losing",
+      "lost",
+      "have lost",
+      "am losing"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u02-003",
+    "course": 6,
+    "unit": 2,
+    "skill": "vocabulary",
+    "question": "If you ___ a mistake in the test, cross it out.",
+    "options": [
+      "do",
+      "take",
+      "make",
+      "have"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u02-004",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "When I got home, my parents ___ TV.",
+    "options": [
+      "were watching",
+      "are watching",
+      "have watching",
+      "was watching"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u02-005",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "She ___ her arm when she fell off her bike.",
+    "options": [
+      "broke",
+      "was breaking",
+      "has broken",
+      "breaks"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u02-006",
+    "course": 6,
+    "unit": 2,
+    "skill": "expressions",
+    "question": "I'm sorry! I didn't break it on ___. It was an accident.",
+    "options": [
+      "target",
+      "aim",
+      "purpose",
+      "goal"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u02-007",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "It ___ heavily when we left the cinema.",
+    "options": [
+      "is raining",
+      "was raining",
+      "has rained",
+      "were raining"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u02-008",
+    "course": 6,
+    "unit": 2,
+    "skill": "vocabulary",
+    "question": "Oh no! I ___ coffee all over my notebook.",
+    "options": [
+      "stole",
+      "lost",
+      "missed",
+      "spilled"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u02-009",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "What ___ you doing when I called you?",
+    "options": [
+      "did",
+      "was",
+      "were",
+      "have"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u02-010",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "I ___ the window while I was playing football.",
+    "options": [
+      "broke",
+      "was breaking",
+      "have broken",
+      "break"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u02-011",
+    "course": 6,
+    "unit": 2,
+    "skill": "vocabulary",
+    "question": "It was an ___. I didn't mean to break your glasses.",
+    "options": [
+      "adventure",
+      "argument",
+      "exercise",
+      "accident"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u02-012",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "The teacher ___ the board when the lights went out.",
+    "options": [
+      "is cleaning",
+      "was cleaning",
+      "cleans",
+      "has cleaned"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u02-013",
+    "course": 6,
+    "unit": 2,
+    "skill": "expressions",
+    "question": "It's already broken. Don't cry over spilled ___.",
+    "options": [
+      "tea",
+      "milk",
+      "soup",
+      "rice"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u02-014",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "I didn't hear the phone because I ___ a shower.",
+    "options": [
+      "am taking",
+      "take",
+      "have took",
+      "was taking"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u02-015",
+    "course": 6,
+    "unit": 2,
+    "skill": "vocabulary",
+    "question": "Be careful! The floor is wet and you might ___.",
+    "options": [
+      "slip",
+      "skip",
+      "slap",
+      "sleep"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u02-016",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "He ___ his homework at home, so he got a zero.",
+    "options": [
+      "forget",
+      "forgotten",
+      "forgot",
+      "forgetted"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u02-017",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "While Lucy was texting, she ___ into a lamp post.",
+    "options": [
+      "walked",
+      "walks",
+      "has walked",
+      "walk"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u02-018",
+    "course": 6,
+    "unit": 2,
+    "skill": "expressions",
+    "question": "Sorry, I got the wrong end of the ___ and misunderstood you.",
+    "options": [
+      "rope",
+      "pen",
+      "stick",
+      "road"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u02-019",
+    "course": 6,
+    "unit": 2,
+    "skill": "vocabulary",
+    "question": "Sorry for the ___. I sent the message to the wrong person.",
+    "options": [
+      "crash",
+      "wound",
+      "damage",
+      "mistake"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u02-020",
+    "course": 6,
+    "unit": 2,
+    "skill": "grammar",
+    "question": "I ___ my phone on the table and went out.",
+    "options": [
+      "was leaving",
+      "left",
+      "leave",
+      "have left"
+    ],
+    "answer": 1
+  }
+]

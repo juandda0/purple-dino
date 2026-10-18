@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u03-001",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "I ___ in this city since 2019.",
+    "options": [
+      "have lived",
+      "lived",
+      "live",
+      "am living"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u03-002",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "She has worked here ___ three years.",
+    "options": [
+      "since",
+      "during",
+      "for",
+      "from"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u03-003",
+    "course": 6,
+    "unit": 3,
+    "skill": "vocabulary",
+    "question": "A ___ is a very tall building with many floors.",
+    "options": [
+      "cottage",
+      "bridge",
+      "tunnel",
+      "skyscraper"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u03-004",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "We ___ to Rome last summer.",
+    "options": [
+      "have been",
+      "went",
+      "have gone",
+      "go"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u03-005",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "Have you ___ been to Japan?",
+    "options": [
+      "ago",
+      "ever",
+      "since",
+      "last"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u03-006",
+    "course": 6,
+    "unit": 3,
+    "skill": "expressions",
+    "question": "New York is a real melting ___ of cultures.",
+    "options": [
+      "pan",
+      "bowl",
+      "jar",
+      "pot"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u03-007",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "I've never ___ sushi, but I want to try it.",
+    "options": [
+      "ate",
+      "eat",
+      "eaten",
+      "eating"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u03-008",
+    "course": 6,
+    "unit": 3,
+    "skill": "vocabulary",
+    "question": "You can buy stamps and send letters at the ___.",
+    "options": [
+      "post office",
+      "bakery",
+      "library",
+      "gym"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u03-009",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "He ___ his phone two days ago.",
+    "options": [
+      "has lost",
+      "is losing",
+      "loses",
+      "lost"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u03-010",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "When ___ you move to this town?",
+    "options": [
+      "have",
+      "did",
+      "do",
+      "are"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u03-011",
+    "course": 6,
+    "unit": 3,
+    "skill": "vocabulary",
+    "question": "The ___ of the city is about two million people.",
+    "options": [
+      "population",
+      "crowd",
+      "traffic",
+      "audience"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u03-012",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "My cousin has lived in Madrid ___ 2020.",
+    "options": [
+      "for",
+      "ago",
+      "since",
+      "from"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u03-013",
+    "course": 6,
+    "unit": 3,
+    "skill": "expressions",
+    "question": "The city never sleeps. It's a real concrete ___.",
+    "options": [
+      "forest",
+      "desert",
+      "jungle",
+      "garden"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u03-014",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "They ___ the museum yet.",
+    "options": [
+      "haven't visited",
+      "not visited",
+      "don't visited",
+      "hasn't visited"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u03-015",
+    "course": 6,
+    "unit": 3,
+    "skill": "vocabulary",
+    "question": "We crossed the river by the old stone ___.",
+    "options": [
+      "tunnel",
+      "bridge",
+      "station",
+      "tower"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u03-016",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "This is the most beautiful city I've ever ___.",
+    "options": [
+      "visit",
+      "visiting",
+      "was visit",
+      "visited"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u03-017",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "How long ___ you known your best friend?",
+    "options": [
+      "are",
+      "have",
+      "do",
+      "will"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u03-018",
+    "course": 6,
+    "unit": 3,
+    "skill": "expressions",
+    "question": "I want to get away from it ___ and relax in the mountains.",
+    "options": [
+      "each",
+      "every",
+      "whole",
+      "all"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u03-019",
+    "course": 6,
+    "unit": 3,
+    "skill": "vocabulary",
+    "question": "The city centre is very ___ at rush hour: too many cars and people.",
+    "options": [
+      "crowded",
+      "empty",
+      "quiet",
+      "peaceful"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u03-020",
+    "course": 6,
+    "unit": 3,
+    "skill": "grammar",
+    "question": "Ana ___ in Paris in 2018, but now she lives in London.",
+    "options": [
+      "has lived",
+      "lives",
+      "lived",
+      "is living"
+    ],
+    "answer": 2
+  }
+]

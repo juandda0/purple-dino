@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purple Dino · Mockups</title>
+<link rel="stylesheet" href="mockups.css?v=3">
+<style>
+  .grid { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 28px; }
+  .tile-link { display: flex; flex-direction: column; gap: 12px; width: 360px; padding: 22px; background: #1A1433; border: 3px solid #3B2F63; color: var(--text); text-decoration: none; }
+  .tile-link:hover { border-color: var(--dino-light); }
+  .tile-link h2 { font-family: var(--display); font-size: 14px; line-height: 22px; color: var(--white); }
+  .tile-link ol { padding-left: 22px; font-size: 17px; line-height: 25px; color: var(--muted); }
+  .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .facts span { padding: 8px 12px; border: 2px solid #3B2F63; font-size: 16px; }
+  .enemies { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; margin-top: 28px; padding: 22px; background: linear-gradient(#33204F, #C5576E 75%, #EE8A6A); border: 3px solid #3B2F63; }
+  .enemies figure { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .enemies img { image-rendering: pixelated; display: block; }
+  .enemies figcaption { font-family: var(--display); font-size: 10px; color: var(--white); text-shadow: 2px 2px 0 #000; }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <h1>PURPLE DINO · MOCKUPS</h1>
+  <nav><a class="on" href="index.html">ÍNDICE</a><a href="proyector.html">PROYECTOR</a><a href="celular.html">CELULAR</a><a href="sprites.html">SPRITES</a><a href="assets.html">ASSETS</a><a href="musica.html">MÚSICA</a></nav>
+</header>
+<p class="page-sub">Quiz cooperativo de inglés en primera persona: la clase es el dino morado y pelea contra dinosaurios de sombra para llegar al castillo y rescatar a la princesa.</p>
+<div class="facts">
+  <span>Juego 100% en inglés</span><span>Estudiantes de 16–17 años</span><span>Course 6 · Passages 3rd Edition</span><span>Pixel art, interfaz oscura</span>
+</div>
+
+<div class="enemies">
+  <figure><img src="../sprites/enemy_raptor.svg" width="240" height="168" alt=""><figcaption>1 · SHADE RAPTOR</figcaption></figure>
+  <figure><img src="../sprites/enemy_ptero.svg" width="288" height="160" alt=""><figcaption>2 · NIGHTWING</figcaption></figure>
+  <figure><img src="../sprites/enemy_spino.svg" width="280" height="184" alt=""><figcaption>3 · MIRE SPINE</figcaption></figure>
+  <figure><img src="../sprites/enemy_trike.svg" width="280" height="176" alt=""><figcaption>4 · ASHHORN</figcaption></figure>
+  <figure><img src="../sprites/enemy_king.svg" width="288" height="240" alt=""><figcaption>5 · KING DREAD (BOSS)</figcaption></figure>
+</div>
+
+<div class="grid">
+  <a class="tile-link" href="proyector.html">
+    <h2>PROYECTOR · 11 PANTALLAS</h2>
+    <ol>
+      <li>Inicio</li><li>Elegir curso</li><li>Elegir unidades</li><li>Elegir dificultad</li><li>Lobby con QR</li>
+      <li>Caminata</li><li>Pregunta en curso</li><li>Espadazo</li><li>Golpe al escudo · Last chance</li><li>Victoria</li><li>Game over</li>
+    </ol>
+  </a>
+  <a class="tile-link" href="celular.html">
+    <h2>CELULAR · 7 PANTALLAS</h2>
+    <ol type="A">
+      <li>Unirse</li><li>Sala de espera</li><li>Responder</li><li>Respuesta enviada</li><li>Resultado: espadazo</li><li>Resultado: golpe al escudo</li><li>Final</li>
+    </ol>
+  </a>
+  <a class="tile-link" href="sprites.html">
+    <h2>SPRITES</h2>
+    <ol style="list-style:none;padding:0">
+      <li>Todos los SVG pixel art del juego, generados por <code>design/sprites.py</code>.</li>
+    </ol>
+  </a>
+</div>
+</body>
+</html>

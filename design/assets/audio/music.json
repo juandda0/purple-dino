@@ -1,0 +1,31 @@
+{
+  "boss": {
+    "file": "music_boss.mp3",
+    "loopStart": 6.68447,
+    "loopEnd": 160.77034
+  },
+  "lobby": {
+    "file": "music_lobby.mp3",
+    "loopStart": 0.15,
+    "loopEnd": 159.4
+  },
+  "battle": {
+    "file": "music_battle.mp3",
+    "loopStart": 24.55,
+    "loopEnd": 165.35
+  },
+  "victory": {
+    "file": "jingle_victory.mp3",
+    "loop": false,
+    "then": "lobby"
+  },
+  "defeat": {
+    "file": "jingle_defeat_suno.mp3",
+    "loop": false
+  },
+  "battle_intense": {
+    "file": "music_battle_intense.mp3",
+    "loopStart": 8.35,
+    "loopEnd": 161.8
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "purple-dino-design",
+  "private": true,
+  "description": "Design tooling: builds the game's pixel-art assets from the third-party packs in assets-src/",
+  "scripts": {
+    "assets": "node tools/build-assets.js",
+    "music": "node tools/build-music.js"
+  },
+  "devDependencies": {
+    "@breezystack/lamejs": "^1.2.7",
+    "mpg123-decoder": "1.0.3",
+    "sharp": "0.33.5"
+  }
+}

@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u09-001",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "There isn't ___ milk in the fridge.",
+    "options": [
+      "many",
+      "few",
+      "much",
+      "a few"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u09-002",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "I have ___ friends in this city, so I feel lonely.",
+    "options": [
+      "few",
+      "little",
+      "much",
+      "a little"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u09-003",
+    "course": 6,
+    "unit": 9,
+    "skill": "vocabulary",
+    "question": "Teenagers are, in ___, interested in technology.",
+    "options": [
+      "common",
+      "general",
+      "all",
+      "usual"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u09-004",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "She has ___ free time, so she can't join us.",
+    "options": [
+      "few",
+      "many",
+      "a few",
+      "little"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u09-005",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "How ___ students are in your class?",
+    "options": [
+      "much",
+      "lot",
+      "little",
+      "many"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u09-006",
+    "course": 6,
+    "unit": 9,
+    "skill": "expressions",
+    "question": "___ the whole, students here are friendly.",
+    "options": [
+      "In",
+      "On",
+      "At",
+      "By"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u09-007",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "Can I have ___ apple, please?",
+    "options": [
+      "an",
+      "a",
+      "many",
+      "few"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u09-008",
+    "course": 6,
+    "unit": 9,
+    "skill": "vocabulary",
+    "question": "Most people, not all, but a large ___, like pizza.",
+    "options": [
+      "minority",
+      "single",
+      "majority",
+      "little"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u09-009",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "___ moon goes around the Earth.",
+    "options": [
+      "A",
+      "The",
+      "An",
+      "Some"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u09-010",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "Most ___ listen to music every day.",
+    "options": [
+      "the teenagers",
+      "a teenager",
+      "of teenagers",
+      "teenagers"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u09-011",
+    "course": 6,
+    "unit": 9,
+    "skill": "vocabulary",
+    "question": "It's a ___ that all teenagers are always on their phones.",
+    "options": [
+      "fashion",
+      "habit",
+      "stereotype",
+      "goal"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u09-012",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "We need ___ sugar for the cake.",
+    "options": [
+      "some",
+      "a",
+      "many",
+      "few"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u09-013",
+    "course": 6,
+    "unit": 9,
+    "skill": "expressions",
+    "question": "By and ___, people in this town are kind.",
+    "options": [
+      "large",
+      "big",
+      "wide",
+      "huge"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u09-014",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "There are ___ people at the concert. It's full!",
+    "options": [
+      "much",
+      "little",
+      "a lot of",
+      "a little"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u09-015",
+    "course": 6,
+    "unit": 9,
+    "skill": "vocabulary",
+    "question": "Teenagers ___ to sleep late on weekends.",
+    "options": [
+      "intend",
+      "pretend",
+      "extend",
+      "tend"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u09-016",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "She plays ___ guitar in a band.",
+    "options": [
+      "a",
+      "the",
+      "an",
+      "some"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u09-017",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "Bangkok is ___ capital of Thailand.",
+    "options": [
+      "a",
+      "an",
+      "one",
+      "the"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u09-018",
+    "course": 6,
+    "unit": 9,
+    "skill": "expressions",
+    "question": "Generally ___, a healthy breakfast is a good start to the day.",
+    "options": [
+      "talking",
+      "speaking",
+      "saying",
+      "telling"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u09-019",
+    "course": 6,
+    "unit": 9,
+    "skill": "vocabulary",
+    "question": "That's not always true. There are some ___ to the rule.",
+    "options": [
+      "examples",
+      "excuses",
+      "exceptions",
+      "experts"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u09-020",
+    "course": 6,
+    "unit": 9,
+    "skill": "grammar",
+    "question": "She's ___ honest person.",
+    "options": [
+      "an",
+      "a",
+      "some",
+      "any"
+    ],
+    "answer": 0
+  }
+]

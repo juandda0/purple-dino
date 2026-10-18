@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u05-001",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "You look tired. You ___ go to bed early tonight.",
+    "options": [
+      "ought",
+      "have",
+      "should",
+      "are"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u05-002",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "Students ___ wear a uniform at my school. It's the rule.",
+    "options": [
+      "have to",
+      "might",
+      "would",
+      "could"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u05-003",
+    "course": 6,
+    "unit": 5,
+    "skill": "vocabulary",
+    "question": "Can you ___ me a message when you arrive?",
+    "options": [
+      "say",
+      "send",
+      "tell",
+      "speak"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u05-004",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "You ___ pay to enter the park. It's free.",
+    "options": [
+      "mustn't",
+      "haven't to",
+      "not have to",
+      "don't have to"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u05-005",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "You ___ use your phone during the exam. It's forbidden.",
+    "options": [
+      "don't have to",
+      "doesn't have to",
+      "needn't",
+      "mustn't"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u05-006",
+    "course": 6,
+    "unit": 5,
+    "skill": "expressions",
+    "question": "It's been a while! Let's keep in ___ after the summer.",
+    "options": [
+      "line",
+      "touch",
+      "reach",
+      "contact"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u05-007",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "___ you help me with this exercise, please?",
+    "options": [
+      "Could",
+      "Must",
+      "Ought",
+      "Need"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u05-008",
+    "course": 6,
+    "unit": 5,
+    "skill": "vocabulary",
+    "question": "I'll ___ you tomorrow to talk about the plan.",
+    "options": [
+      "say",
+      "speak",
+      "call",
+      "talk"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u05-009",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "He ___ get up early on Sundays, so he sleeps late.",
+    "options": [
+      "mustn't",
+      "doesn't have to",
+      "hasn't",
+      "don't have to"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u05-010",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "You ___ be rude to your teachers.",
+    "options": [
+      "ought",
+      "have to",
+      "hadn't",
+      "shouldn't"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u05-011",
+    "course": 6,
+    "unit": 5,
+    "skill": "vocabulary",
+    "question": "I'll ___ you a voice message because I can't talk now.",
+    "options": [
+      "put",
+      "make",
+      "leave",
+      "do"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u05-012",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "Last week I ___ wear a suit at my cousin's wedding.",
+    "options": [
+      "had to",
+      "must",
+      "have to",
+      "should"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u05-013",
+    "course": 6,
+    "unit": 5,
+    "skill": "expressions",
+    "question": "Please say it clearly. Don't beat around the ___.",
+    "options": [
+      "bush",
+      "tree",
+      "garden",
+      "corner"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u05-014",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "Do we ___ bring a pen to the exam?",
+    "options": [
+      "must to",
+      "ought",
+      "have to",
+      "should to"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u05-015",
+    "course": 6,
+    "unit": 5,
+    "skill": "vocabulary",
+    "question": "She spoke so quietly that I couldn't ___ what she said.",
+    "options": [
+      "listen",
+      "sound",
+      "attend",
+      "hear"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u05-016",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "You ___ drink so much soda. It's bad for your teeth.",
+    "options": [
+      "should",
+      "shouldn't",
+      "have to",
+      "ought"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u05-017",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "Passengers ___ fasten their seat belts during take-off.",
+    "options": [
+      "ought",
+      "would",
+      "might",
+      "must"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u05-018",
+    "course": 6,
+    "unit": 5,
+    "skill": "expressions",
+    "question": "Please keep me in the ___ about the party plans.",
+    "options": [
+      "circle",
+      "loop",
+      "ring",
+      "line"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u05-019",
+    "course": 6,
+    "unit": 5,
+    "skill": "vocabulary",
+    "question": "Please ___ the document to your email so I can open it.",
+    "options": [
+      "attend",
+      "attack",
+      "attach",
+      "attain"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u05-020",
+    "course": 6,
+    "unit": 5,
+    "skill": "grammar",
+    "question": "I think you ___ talk to your friend and say sorry.",
+    "options": [
+      "should",
+      "would",
+      "must to",
+      "had"
+    ],
+    "answer": 0
+  }
+]

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purple Dino · Celular</title>
+<link rel="stylesheet" href="mockups.css?v=3">
+<style>
+  .phone { background: linear-gradient(#1E1438, #0E0A1E 70%); }
+  .p-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 20px 0; }
+  .chip { display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 8px; }
+  .p-label { font-family: var(--display); font-size: 11px; letter-spacing: .08em; color: var(--muted); }
+  .digit { width: 64px; height: 72px; display: flex; align-items: center; justify-content: center; background: var(--dino); border: 4px solid var(--edge);
+           box-shadow: inset 0 -6px 0 var(--dino-dark); font-family: var(--display); font-size: 30px; color: var(--white); }
+  .input { display: flex; align-items: center; height: 64px; padding: 0 18px; background: var(--panel-2); border: 4px solid var(--edge);
+           box-shadow: inset 0 0 0 2px var(--dino-light); font-weight: 700; font-size: 26px; }
+  .caret { width: 3px; height: 30px; background: var(--dino-light); margin-left: 4px; }
+  .swatch { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--panel-2); border: 3px solid var(--edge); box-shadow: inset 0 0 0 2px var(--line); }
+  .swatch.on { box-shadow: 0 0 0 3px var(--white); }
+  .p-foot { margin-top: auto; padding: 0 20px 34px; }
+  .home { position: absolute; left: 50%; bottom: 8px; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: rgba(255,255,255,.7); }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <h1>PURPLE DINO · CELULAR DEL ALUMNO (7 PANTALLAS)</h1>
+  <nav><a href="index.html">ÍNDICE</a><a href="proyector.html">PROYECTOR</a><a class="on" href="celular.html">CELULAR</a><a href="sprites.html">SPRITES</a><a href="assets.html">ASSETS</a><a href="musica.html">MÚSICA</a></nav>
+</header>
+<p class="page-sub">390×844. El celular es solo el control: unirse, decir "listo" y responder. Todo el texto del juego en inglés.</p>
+
+<div class="phones">
+
+  <!-- A · JOIN -->
+  <div class="phone-wrap">
+    <div class="label">A · UNIRSE</div>
+    <p class="note">Al escanear el QR la web abre con el código ya puesto; solo falta el nombre.</p>
+    <div class="phone">
+      <div class="statusbar" data-sb></div>
+      <div class="row" style="justify-content:center;gap:12px;padding-top:18px">
+        <img class="px" src="../assets/dinos/avatar_sena.png" style="width:45px;height:51px" alt="">
+        <div class="disp" style="font-size:15px;line-height:22px">PURPLE<br>DINO</div>
+      </div>
+      <div class="disp p-pad" style="font-size:22px;line-height:30px;text-align:center;padding-top:26px">JOIN THE PACK</div>
+      <div class="col p-pad" style="gap:10px;padding-top:26px">
+        <div class="p-label">ROOM CODE</div>
+        <div class="row" style="gap:10px"><div class="digit">4</div><div class="digit">8</div><div class="digit">2</div><div class="digit">7</div></div>
+        <div class="row" style="gap:8px;font-weight:500;font-size:16px;color:var(--green)"><span class="okbox" style="width:22px;height:22px;border-width:2px"><img src="../sprites/check.svg" style="width:13px;height:9px" alt=""></span>Filled in from the QR code</div>
+      </div>
+      <div class="col p-pad" style="gap:10px;padding-top:24px">
+        <div class="p-label">YOUR NAME</div>
+        <div class="input">Ana<span class="caret"></span></div>
+      </div>
+      <div class="col p-pad" style="gap:10px;padding-top:24px">
+        <div class="p-label">PICK YOUR DINO</div>
+        <div class="row" style="gap:6px" id="swatches"></div>
+      </div>
+      <div class="p-foot"><div class="btn btn-primary" style="height:76px;font-size:20px">JOIN ▶</div></div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <!-- B · WAITING ROOM -->
+  <div class="phone-wrap">
+    <div class="label">B · SALA DE ESPERA</div>
+    <p class="note">Cuando todos tocan "I'm ready", la profe puede empezar.</p>
+    <div class="phone">
+      <div class="statusbar" data-sb></div>
+      <div class="p-head"><div class="p-label">ROOM 4827</div><div class="p-label">UNITS 7 · 8 · 9</div></div>
+      <div class="col" style="align-items:center;gap:16px;padding-top:56px">
+        <div style="padding:22px;background:var(--panel-2);border:4px solid var(--edge);box-shadow:inset 0 0 0 2px var(--line)">
+          <div class="spr" style="--n:3;--fw:144px;--fh:144px;--t:.9s;background-image:url(../assets/dinos/hero_idle_3x.png);background-size:432px 144px" role="img" aria-label="Your dino"></div>
+        </div>
+        <div style="font-weight:700;font-size:34px">Ana</div>
+        <div class="tag" style="padding:8px 12px;font-size:11px;background:var(--yellow);color:var(--ink);border-color:var(--edge)">MEDIUM · 3 LIVES</div>
+      </div>
+      <div class="col p-pad" style="gap:10px;padding-top:40px">
+        <div class="row" style="justify-content:space-between;font-weight:700;font-size:18px"><span>The pack</span><span>13 / 15 ready</span></div>
+        <div class="bar" style="height:18px"><div style="width:86%;background:var(--green)"></div></div>
+      </div>
+      <div class="p-foot col" style="gap:14px">
+        <div class="btn btn-go" style="height:110px;font-size:24px">I'M READY</div>
+        <div style="text-align:center;font-weight:500;font-size:16px" class="muted">When the battle starts, look at the projector.</div>
+      </div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <!-- C · ANSWER -->
+  <div class="phone-wrap">
+    <div class="label">C · RESPONDER</div>
+    <p class="note">Botones grandes con color, forma y el texto en inglés.</p>
+    <div class="phone">
+      <div class="statusbar" data-sb></div>
+      <div class="p-head">
+        <div class="chip card" style="border-width:3px"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt=""><span style="font-weight:700;font-size:20px">Ana</span></div>
+        <div class="disp" style="width:64px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--yellow);border:3px solid var(--edge);box-shadow:0 4px 0 var(--edge);font-size:22px;color:var(--ink)">17</div>
+      </div>
+      <div class="col p-pad" style="gap:10px;padding-top:20px">
+        <div class="p-label">SHADE RAPTOR · HIT 1 OF 2</div>
+        <div class="panel" style="padding:16px 18px;font-weight:700;font-size:24px;line-height:30px">If I ______ more time, I would travel more.</div>
+      </div>
+      <div class="col p-pad" style="gap:16px;padding-top:24px">
+        <div class="p-btn o-red"><img src="../sprites/icon_triangle.svg" style="width:44px;height:44px" alt="">have</div>
+        <div class="p-btn o-blue"><img src="../sprites/icon_diamond.svg" style="width:44px;height:44px" alt="">had</div>
+        <div class="p-btn o-yellow" style="color:var(--ink)"><img src="../sprites/icon_star.svg" style="width:44px;height:44px" alt="">will have</div>
+        <div class="p-btn o-green"><img src="../sprites/icon_circle.svg" style="width:44px;height:44px" alt="">having</div>
+      </div>
+      <div class="p-foot" style="text-align:center;font-weight:500;font-size:16px;padding-bottom:30px" class="muted"><span class="muted">Tap your answer before time runs out</span></div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <!-- D · ANSWER SENT -->
+  <div class="phone-wrap">
+    <div class="label">D · RESPUESTA ENVIADA</div>
+    <p class="note">Su respuesta queda bloqueada; espera al resto de la clase.</p>
+    <div class="phone">
+      <div class="statusbar" data-sb></div>
+      <div class="p-head">
+        <div class="chip card" style="border-width:3px"><img class="px" src="../assets/dinos/avatar_sena.png" style="width:30px;height:34px" alt=""><span style="font-weight:700;font-size:20px">Ana</span></div>
+        <div class="disp" style="width:64px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--yellow);border:3px solid var(--edge);box-shadow:0 4px 0 var(--edge);font-size:22px;color:var(--ink)">09</div>
+      </div>
+      <div class="col" style="align-items:center;gap:22px;padding:80px 20px 0">
+        <div class="disp" style="font-size:20px">LOCKED IN</div>
+        <div style="position:relative;width:100%">
+          <div class="p-btn o-blue" style="height:120px;font-size:38px;justify-content:center"><img src="../sprites/icon_diamond.svg" style="width:52px;height:52px" alt="">had</div>
+          <div class="okbox" style="position:absolute;right:-12px;top:-14px;width:46px;height:46px;background:var(--yellow);border-width:4px"><img src="../sprites/check.svg" style="width:22px;height:16px" alt=""></div>
+        </div>
+      </div>
+      <div class="col p-pad" style="gap:10px;padding-top:56px">
+        <div class="row" style="justify-content:space-between;font-weight:700;font-size:18px"><span>Waiting for the others…</span><span>11 / 15</span></div>
+        <div class="bar" style="height:18px"><div style="width:73%;background:var(--dino-light)"></div></div>
+      </div>
+      <div class="p-foot" style="text-align:center;font-weight:500;font-size:16px"><span class="muted">Eyes on the projector</span></div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <!-- E1 · ROUND RESULT: STRIKE -->
+  <div class="phone-wrap">
+    <div class="label">E1 · RESULTADO · ESPADAZO</div>
+    <p class="note">La mayoría acertó: se muestra si este alumno acertó y el combo.</p>
+    <div class="phone" style="background:linear-gradient(#123A2A,#0E0A1E 70%)">
+      <div class="statusbar" data-sb></div>
+      <div class="col" style="align-items:center;gap:18px;padding-top:70px">
+        <div style="position:relative;width:240px;height:168px">
+          <img src="../sprites/enemy_raptor_hit.svg" style="width:240px;height:168px" alt="">
+          <div class="abs spr still" style="left:40px;top:4px;--n:16;--f:5;--fw:160px;--fh:160px;background-image:url(../assets/fx/hit_ring.png)"></div>
+        </div>
+        <div class="disp outline-sm" style="font-size:28px;line-height:36px;color:var(--yellow);text-align:center">SWORD<br>STRIKE!</div>
+        <div class="row" style="gap:10px;font-weight:700;font-size:24px;color:var(--green)"><span class="okbox" style="width:30px;height:30px"><img src="../sprites/check.svg" style="width:18px;height:13px" alt=""></span>You got it right</div>
+      </div>
+      <div class="col p-pad" style="gap:12px;padding-top:40px">
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Class</span><b>73% correct</b></div>
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Shade Raptor</span><span class="row" style="gap:4px"><span class="hpbar"></span><span class="hpbar empty"></span></span></div>
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Combo</span><b style="color:var(--yellow)">x2</b></div>
+      </div>
+      <div class="p-foot" style="text-align:center;font-weight:500;font-size:16px"><span class="muted">Next hit coming up…</span></div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <!-- E2 · ROUND RESULT: SHIELD HIT -->
+  <div class="phone-wrap">
+    <div class="label">E2 · RESULTADO · GOLPE AL ESCUDO</div>
+    <p class="note">La mayoría falló: no se dice si este alumno acertó, para no revelar la respuesta antes del reintento.</p>
+    <div class="phone" style="background:linear-gradient(#4A1420,#0E0A1E 70%)">
+      <div class="statusbar" data-sb></div>
+      <div class="col" style="align-items:center;gap:18px;padding-top:56px">
+        <img class="px" src="../assets/pov/shield_shards.png" style="width:267px;height:240px" alt="Shattered shield">
+        <div class="disp outline-sm" style="font-size:28px;line-height:36px;color:var(--red);text-align:center">SHIELD<br>BROKEN</div>
+        <div class="tag" style="padding:8px 12px;font-size:11px;background:var(--red)">LAST CHANCE</div>
+      </div>
+      <div class="col p-pad" style="gap:12px;padding-top:30px">
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Class</span><b style="color:var(--red)">38% correct</b></div>
+        <div class="card" style="padding:16px 18px;font-weight:500;font-size:19px;line-height:25px">Same question again, answers shuffled. Your answer stays secret for now.</div>
+      </div>
+      <div class="p-foot" style="text-align:center;font-weight:500;font-size:16px"><span class="muted">Get ready…</span></div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <!-- F · FINAL -->
+  <div class="phone-wrap">
+    <div class="label">F · FINAL (VICTORIA)</div>
+    <p class="note">Resultado del grupo y el aporte personal del alumno, sin ranking público.</p>
+    <div class="phone" style="background:url(../assets/castles/sunny_18.png) center top / 390px 577px no-repeat, #0E0A1E;image-rendering:pixelated">
+      <div class="abs" style="inset:0;background:linear-gradient(rgba(14,10,30,.15),rgba(14,10,30,.55) 40%,#0E0A1E 62%)"></div>
+      <div class="abs" style="left:0;top:0" data-confetti="390,170,18" data-seed="3"></div>
+      <div class="statusbar" data-sb style="position:relative"></div>
+      <div class="col" style="align-items:center;gap:16px;padding-top:44px;position:relative">
+        <div class="row" style="align-items:flex-end;gap:4px">
+          <div class="spr" style="--n:4;--fw:144px;--fh:144px;--t:.7s;background-image:url(../assets/dinos/hero_jump_3x.png)" role="img" aria-label="Purple dino"></div>
+          <div class="spr" style="--n:3;--fw:144px;--fh:168px;--t:.9s;background-image:url(../assets/dinos/princess_idle_3x.png)" role="img" aria-label="Princess"></div>
+        </div>
+        <div class="disp outline-sm" style="font-size:24px;line-height:34px;text-align:center">PRINCESS<br>RESCUED</div>
+      </div>
+      <div class="col p-pad" style="gap:12px;padding-top:30px;position:relative">
+        <div class="p-label">YOUR PART</div>
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Correct answers</span><b>10 / 13</b></div>
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Best streak</span><b style="color:var(--yellow)">x5</b></div>
+        <div class="card row" style="justify-content:space-between;padding:16px 18px;font-weight:500;font-size:20px"><span>Class accuracy</span><b>81%</b></div>
+      </div>
+      <div class="p-foot" style="text-align:center;font-weight:500;font-size:16px;position:relative"><span class="muted">GG, pack. See you next battle.</span></div>
+      <div class="home"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const SB = `<span class="t">9:41</span>
+    <svg width="82" height="22" viewBox="0 0 82 22" fill="white" aria-hidden="true">
+      <path d="M3.7 13H2.5a1 1 0 0 0-1 1v2.5a1 1 0 0 0 1 1h1.2a1 1 0 0 0 1-1V14a1 1 0 0 0-1-1m5.2-2.5H7.7a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.2a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1M14.1 8h-1.2a1 1 0 0 0-1 1v7.5a1 1 0 0 0 1 1h1.2a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1m5.2-2.5h-1.2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1.2a1 1 0 0 0 1-1v-10a1 1 0 0 0-1-1" />
+      <path fill-rule="evenodd" d="M36.57 7.8c2.49 0 4.88.92 6.68 2.58.14.13.36.12.49 0l1.3-1.27a.34.34 0 0 0 0-.5 12.55 12.55 0 0 0-16.93 0 .34.34 0 0 0 0 .5l1.3 1.26c.13.13.34.14.48 0a10 10 0 0 1 6.68-2.57m0 4.22a5.4 5.4 0 0 1 3.67 1.44c.14.13.35.13.48 0l1.3-1.33a.37.37 0 0 0-.01-.52 7.9 7.9 0 0 0-10.88 0 .37.37 0 0 0 0 .52l1.29 1.32c.13.14.34.14.48 0 1-.92 2.31-1.43 3.67-1.43m2.52 2.8q0 .15-.1.28l-2.18 2.45a.3.3 0 0 1-.24.11.3.3 0 0 1-.24-.1l-2.18-2.46a.43.43 0 0 1 .01-.56 3.44 3.44 0 0 1 4.82 0 .4.4 0 0 1 .11.28" clip-rule="evenodd" />
+      <path fill-rule="evenodd" d="M70.5 5c2.05 0 3.08 0 3.88.34a4.3 4.3 0 0 1 2.28 2.28c.34.8.34 1.83.34 3.88s0 3.08-.34 3.88a4.3 4.3 0 0 1-2.28 2.28c-.8.34-1.83.34-3.88.34h-12c-2.05 0-3.08 0-3.88-.34a4.3 4.3 0 0 1-2.28-2.28c-.34-.8-.34-1.83-.34-3.88s0-3.08.34-3.88a4.3 4.3 0 0 1 2.28-2.28C55.42 5 56.45 5 58.5 5zM58.28 6c-1.85 0-2.77 0-3.48.36a3.3 3.3 0 0 0-1.44 1.44C53 8.5 53 9.43 53 11.28v.44c0 1.85 0 2.77.36 3.48a3.3 3.3 0 0 0 1.44 1.44c.7.36 1.63.36 3.48.36h12.44c1.85 0 2.77 0 3.48-.36a3.3 3.3 0 0 0 1.44-1.44c.36-.7.36-1.63.36-3.48v-.44c0-1.85 0-2.77-.36-3.48a3.3 3.3 0 0 0-1.44-1.44C73.5 6 72.57 6 70.72 6z" clip-rule="evenodd" style="opacity:.35" />
+      <path d="M54 11c0-1.4 0-2.1.27-2.63a2.5 2.5 0 0 1 1.1-1.1C55.9 7 56.6 7 58 7h13c1.4 0 2.1 0 2.64.27q.72.37 1.09 1.1C75 8.9 75 9.6 75 11v1c0 1.4 0 2.1-.27 2.64a2.5 2.5 0 0 1-1.1 1.09C73.1 16 72.4 16 71 16H58c-1.4 0-2.1 0-2.63-.27a2.5 2.5 0 0 1-1.1-1.1C54 14.1 54 13.4 54 12z" />
+      <path d="M78 9.5v4.08a2.2 2.2 0 0 0 1.33-2.04A2.2 2.2 0 0 0 78 9.5" style="opacity:.35" />
+    </svg>`;
+  document.querySelectorAll('[data-sb]').forEach(el => { el.innerHTML = SB; });
+  document.getElementById('swatches').innerHTML = ['sena', 'olaf', 'tard', 'loki', 'kira', 'mort'].map((c, i) =>
+    `<div class="swatch${i === 0 ? ' on' : ''}"><img class="px" src="../assets/dinos/avatar_${c}.png" style="width:30px;height:34px" alt="${c}"></div>`).join('');
+</script>
+<script src="mockups.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u04-001",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "My brother is ___ than me.",
+    "options": [
+      "tallest",
+      "taller",
+      "more tall",
+      "the taller"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u04-002",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "This is the ___ film I've ever seen.",
+    "options": [
+      "funnier",
+      "most funny",
+      "funny",
+      "funniest"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u04-003",
+    "course": 6,
+    "unit": 4,
+    "skill": "vocabulary",
+    "question": "I set my ___ for 6:30 so I don't oversleep.",
+    "options": [
+      "alarm",
+      "siren",
+      "signal",
+      "whistle"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u04-004",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "Learning Spanish is ___ difficult than learning Chinese.",
+    "options": [
+      "fewer",
+      "least",
+      "less",
+      "lesser"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u04-005",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "Tom gets up ___ than his sister.",
+    "options": [
+      "more early",
+      "earliest",
+      "earlier",
+      "early"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u04-006",
+    "course": 6,
+    "unit": 4,
+    "skill": "expressions",
+    "question": "I'm so tired. I'm going to hit the ___ now.",
+    "options": [
+      "hay",
+      "grass",
+      "straw",
+      "wood"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u04-007",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "He is the ___ player in the team.",
+    "options": [
+      "better",
+      "most good",
+      "goodest",
+      "best"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u04-008",
+    "course": 6,
+    "unit": 4,
+    "skill": "vocabulary",
+    "question": "I usually have ___ at 8 a.m. before school.",
+    "options": [
+      "dinner",
+      "breakfast",
+      "supper",
+      "lunch"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u04-009",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "Today is ___ yesterday. It's freezing!",
+    "options": [
+      "colder than",
+      "colder as",
+      "more cold than",
+      "cold than"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u04-010",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "My phone is as ___ as yours.",
+    "options": [
+      "more expensive",
+      "expensively",
+      "expensive",
+      "the most expensive"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u04-011",
+    "course": 6,
+    "unit": 4,
+    "skill": "vocabulary",
+    "question": "My daily ___ is simple: wake up, eat, go to school, study, sleep.",
+    "options": [
+      "recipe",
+      "routine",
+      "rumour",
+      "region"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u04-012",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "The more I practise, ___ I play.",
+    "options": [
+      "better",
+      "the best",
+      "the more good",
+      "the better"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u04-013",
+    "course": 6,
+    "unit": 4,
+    "skill": "expressions",
+    "question": "She is a real early ___. She's always up at 5 a.m.",
+    "options": [
+      "cat",
+      "fish",
+      "dog",
+      "bird"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u04-014",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "Which mountain is ___, Everest or K2?",
+    "options": [
+      "most high",
+      "higher",
+      "more high",
+      "highly"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u04-015",
+    "course": 6,
+    "unit": 4,
+    "skill": "vocabulary",
+    "question": "Someone who goes to bed very late is a night ___.",
+    "options": [
+      "hawk",
+      "crow",
+      "owl",
+      "duck"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u04-016",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "Night owls don't wake up as ___ as early birds.",
+    "options": [
+      "early",
+      "earlier",
+      "earliest",
+      "more early"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u04-017",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "He runs ___ than anyone in our school.",
+    "options": [
+      "fastest",
+      "more fast",
+      "faster",
+      "fast"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u04-018",
+    "course": 6,
+    "unit": 4,
+    "skill": "expressions",
+    "question": "It's midnight and I'm wide ___. I can't sleep!",
+    "options": [
+      "awake",
+      "open",
+      "ready",
+      "clear"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u04-019",
+    "course": 6,
+    "unit": 4,
+    "skill": "vocabulary",
+    "question": "I always ___ my teeth before I go to bed.",
+    "options": [
+      "sweep",
+      "brush",
+      "polish",
+      "scratch"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u04-020",
+    "course": 6,
+    "unit": 4,
+    "skill": "grammar",
+    "question": "That was the ___ day of my life!",
+    "options": [
+      "worse",
+      "baddest",
+      "most bad",
+      "worst"
+    ],
+    "answer": 3
+  }
+]

@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u10-001",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "She said, \"I am tired.\" She said she ___ tired.",
+    "options": [
+      "were",
+      "would be",
+      "has been",
+      "was"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u10-002",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"We will help you.\" They said they ___ help me.",
+    "options": [
+      "wills",
+      "would",
+      "had",
+      "did"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u10-003",
+    "course": 6,
+    "unit": 10,
+    "skill": "vocabulary",
+    "question": "I'd like to make a ___ about the noise in the hall.",
+    "options": [
+      "compliment",
+      "competition",
+      "complaint",
+      "compass"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u10-004",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"I have finished.\" She said she ___ finished.",
+    "options": [
+      "had",
+      "has",
+      "have",
+      "was"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u10-005",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"Do you like pizza?\" He asked me ___ pizza.",
+    "options": [
+      "if I liked",
+      "did I like",
+      "do I like",
+      "that I like"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u10-006",
+    "course": 6,
+    "unit": 10,
+    "skill": "expressions",
+    "question": "That's the last ___! I'm leaving this club.",
+    "options": [
+      "brick",
+      "stone",
+      "straw",
+      "leaf"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u10-007",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"Where do you live?\" She asked me where I ___.",
+    "options": [
+      "did live",
+      "lived",
+      "am living",
+      "living"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u10-008",
+    "course": 6,
+    "unit": 10,
+    "skill": "vocabulary",
+    "question": "The waiter was very ___ and didn't smile once.",
+    "options": [
+      "polite",
+      "kind",
+      "friendly",
+      "rude"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u10-009",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"Don't touch it!\" She told me ___ it.",
+    "options": [
+      "don't touch",
+      "to not touching",
+      "not to touch",
+      "not touch"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u10-010",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"I'll call you tomorrow.\" He said he would call me ___.",
+    "options": [
+      "the next day",
+      "the day before",
+      "the last day",
+      "before day"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u10-011",
+    "course": 6,
+    "unit": 10,
+    "skill": "vocabulary",
+    "question": "My laptop isn't working. There's a ___ with the battery.",
+    "options": [
+      "prize",
+      "project",
+      "plan",
+      "problem"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u10-012",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"Can you help me?\" She asked if I ___ help her.",
+    "options": [
+      "would can",
+      "could",
+      "may",
+      "cans"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u10-013",
+    "course": 6,
+    "unit": 10,
+    "skill": "expressions",
+    "question": "Stop making a mountain out of a ___. It's a small problem.",
+    "options": [
+      "hill",
+      "molehill",
+      "rock",
+      "stone"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u10-014",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"What time is the party?\" I asked what time the party ___.",
+    "options": [
+      "were",
+      "be",
+      "been",
+      "was"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u10-015",
+    "course": 6,
+    "unit": 10,
+    "skill": "vocabulary",
+    "question": "I'm so ___ with this slow Wi-Fi! I can't stand it.",
+    "options": [
+      "annoyed",
+      "delighted",
+      "amused",
+      "relaxed"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u10-016",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"Please sit down.\" He asked me ___ down.",
+    "options": [
+      "sitting",
+      "sit",
+      "to sit",
+      "that sit"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u10-017",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "He ___ me that he was sorry.",
+    "options": [
+      "told",
+      "said",
+      "spoke",
+      "talked"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u10-018",
+    "course": 6,
+    "unit": 10,
+    "skill": "expressions",
+    "question": "I'm fed ___ with all this noise!",
+    "options": [
+      "out",
+      "off",
+      "up",
+      "in"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u10-019",
+    "course": 6,
+    "unit": 10,
+    "skill": "vocabulary",
+    "question": "My shoes arrived broken, so I asked for a ___ of my money.",
+    "options": [
+      "present",
+      "holiday",
+      "review",
+      "refund"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u10-020",
+    "course": 6,
+    "unit": 10,
+    "skill": "grammar",
+    "question": "\"Why are you crying?\" She asked me why I ___ crying.",
+    "options": [
+      "am",
+      "was",
+      "were",
+      "be"
+    ],
+    "answer": 1
+  }
+]

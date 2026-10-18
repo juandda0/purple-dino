@@ -1,0 +1,282 @@
+[
+  {
+    "id": "c6-u07-001",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "English ___ in many countries.",
+    "options": [
+      "is spoken",
+      "speaks",
+      "is speaking",
+      "speak"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u07-002",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "This phone ___ in China.",
+    "options": [
+      "made",
+      "was make",
+      "was made",
+      "is making"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u07-003",
+    "course": 6,
+    "unit": 7,
+    "skill": "vocabulary",
+    "question": "You need a strong password to protect your ___.",
+    "options": [
+      "arrival",
+      "agent",
+      "answer",
+      "account"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u07-004",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "The window ___ by a ball yesterday.",
+    "options": [
+      "broke",
+      "was broken",
+      "were broken",
+      "broken"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u07-005",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "Millions of photos ___ on Instagram every day.",
+    "options": [
+      "is shared",
+      "are shared",
+      "share",
+      "were shared"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u07-006",
+    "course": 6,
+    "unit": 7,
+    "skill": "expressions",
+    "question": "Her funny video went ___ and got ten million views.",
+    "options": [
+      "virus",
+      "sick",
+      "wild",
+      "viral"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u07-007",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "The Eiffel Tower ___ in 1889.",
+    "options": [
+      "is built",
+      "built",
+      "was built",
+      "has built"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u07-008",
+    "course": 6,
+    "unit": 7,
+    "skill": "vocabulary",
+    "question": "Please ___ the app before you can play the game.",
+    "options": [
+      "download",
+      "discount",
+      "decline",
+      "deliver"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u07-009",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "Our homework ___ by the teacher every Friday.",
+    "options": [
+      "checks",
+      "are checked",
+      "checking",
+      "is checked"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u07-010",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "The video ___ by millions of people last week.",
+    "options": [
+      "watched",
+      "was watched",
+      "is watched",
+      "watches"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u07-011",
+    "course": 6,
+    "unit": 7,
+    "skill": "vocabulary",
+    "question": "I post photos on social ___ every day.",
+    "options": [
+      "media",
+      "press",
+      "channel",
+      "page"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u07-012",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "These cars ___ in Germany.",
+    "options": [
+      "produces",
+      "is produced",
+      "are produced",
+      "produce"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u07-013",
+    "course": 6,
+    "unit": 7,
+    "skill": "expressions",
+    "question": "Please keep me up to ___ with the news.",
+    "options": [
+      "day",
+      "time",
+      "date",
+      "hour"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c6-u07-014",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "Was the email ___ yesterday?",
+    "options": [
+      "sent",
+      "send",
+      "sending",
+      "sended"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u07-015",
+    "course": 6,
+    "unit": 7,
+    "skill": "vocabulary",
+    "question": "Her phone has a good ___, so it lasts all day.",
+    "options": [
+      "cable",
+      "battery",
+      "signal",
+      "keyboard"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u07-016",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "Smartphones ___ by teenagers all over the world.",
+    "options": [
+      "is used",
+      "use",
+      "uses",
+      "are used"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u07-017",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "The match ___ because of the rain.",
+    "options": [
+      "cancelled",
+      "was cancelled",
+      "cancels",
+      "were cancelled"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c6-u07-018",
+    "course": 6,
+    "unit": 7,
+    "skill": "expressions",
+    "question": "I can't do this alone. Can you give me a ___ with this app?",
+    "options": [
+      "arm",
+      "finger",
+      "foot",
+      "hand"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c6-u07-019",
+    "course": 6,
+    "unit": 7,
+    "skill": "vocabulary",
+    "question": "A ___ is a program that lets you look at websites.",
+    "options": [
+      "browser",
+      "router",
+      "printer",
+      "speaker"
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c6-u07-020",
+    "course": 6,
+    "unit": 7,
+    "skill": "grammar",
+    "question": "Passwords shouldn't ___ shared with friends.",
+    "options": [
+      "been",
+      "being",
+      "be",
+      "are"
+    ],
+    "answer": 2
+  }
+]
