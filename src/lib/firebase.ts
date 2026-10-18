@@ -6,7 +6,8 @@ import { connectAuthEmulator, getAuth, signInAnonymously } from 'firebase/auth';
 import { connectDatabaseEmulator, getDatabase, onValue, ref } from 'firebase/database';
 
 const env = import.meta.env;
-const useEmulators = env.VITE_USE_EMULATORS === 'true';
+// emulators only in `vite` dev mode: a production build can never end up talking to localhost
+const useEmulators = env.DEV && env.VITE_USE_EMULATORS === 'true';
 const emulatorHost = env.VITE_EMULATOR_HOST || (typeof location !== 'undefined' ? location.hostname : '127.0.0.1');
 
 const app = initializeApp({
@@ -16,6 +17,9 @@ const app = initializeApp({
   projectId: env.VITE_FIREBASE_PROJECT_ID,
   appId: env.VITE_FIREBASE_APP_ID,
 });
+
+/** A production build without a real Firebase project (scripts/check-env.mjs blocks deploying it). */
+export const misconfigured = !useEmulators && (!env.VITE_FIREBASE_DATABASE_URL?.startsWith('https://') || env.VITE_FIREBASE_PROJECT_ID?.startsWith('demo-'));
 
 export const auth = getAuth(app);
 export const db = getDatabase(app);

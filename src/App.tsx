@@ -1,5 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { misconfigured } from './lib/firebase';
+import { ErrorBoundary } from './ui/ErrorBoundary';
 
 // Two separate bundles: phones only download the controller; the projector chunk carries the
 // question bank, the game loop and the audio.
@@ -10,15 +12,22 @@ const Loading = () => <div className="disp" style={{ padding: 32, textAlign: 'ce
 
 export function App() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path="/" element={<HostApp />} />
-          <Route path="/join" element={<PlayApp />} />
-          <Route path="/join/:code" element={<PlayApp />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <ErrorBoundary>
+      {misconfigured && (
+        <div role="alert" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10, padding: 8, background: 'var(--red)', textAlign: 'center', fontWeight: 700 }}>
+          This build has no Firebase project configured (see README → Deploy).
+        </div>
+      )}
+      <BrowserRouter>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<HostApp />} />
+            <Route path="/join" element={<PlayApp />} />
+            <Route path="/join/:code" element={<PlayApp />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
