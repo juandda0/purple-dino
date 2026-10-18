@@ -60,11 +60,6 @@ export async function deleteRoom(code: string) {
   if (safeStorage.get(HOST_ROOM_KEY) === code) safeStorage.remove(HOST_ROOM_KEY);
 }
 
-export async function readAnswers(code: string, key: string): Promise<Record<string, number>> {
-  const snap = await get(ref(db, `answers/${code}/${key}`));
-  return (snap.val() as Record<string, number> | null) ?? {};
-}
-
 export const clearAnswers = (code: string) => remove(ref(db, `answers/${code}`));
 
 export function watchAnswers(code: string, key: string, cb: (answers: Record<string, number>) => void): Unsubscribe {

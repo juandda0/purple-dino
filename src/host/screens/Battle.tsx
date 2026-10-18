@@ -40,7 +40,8 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
   useEffect(() => {
     if (room.status === 'question') music.calm();
     if (room.status === 'reveal') music.timeUp();
-  }, [room.status, question?.key]);
+    // endsAt too: a question that landed late gets its time back (Lote 11.1), so the music leaves panic mode
+  }, [room.status, question?.key, question?.endsAt]);
   useEffect(() => {
     if (room.status !== 'question' || !question) return;
     const id = setInterval(() => music.setTimeLeft(Math.max(0, (question.endsAt - serverNow()) / 1000), total), 200);

@@ -54,12 +54,14 @@ export function extendedDeadline(q: { startedAt: number; endsAt: number }, lande
 }
 
 /**
- * Answers to count at the end of a round: the final server read, topped up with the live snapshot (or the snapshot
- * alone if the read failed). Offline nothing can be trusted, not even a read that "succeeded": the SDK then answers
- * from its local cache. So offline the round cannot be counted (null) and is treated like "nobody could answer":
- * no life lost, same question again.
+ * Can the answers seen so far be trusted at the end of a round? `synced`: a write confirmed by the server after the
+ * deadline (it is delivered after every earlier event on this connection, so the live listener already has every
+ * answer that reached the server). Offline, or with a link that looks connected but gets nothing through (captive
+ * portal, school uplink down), the round is treated as "nobody could answer": no life lost, same question again.
+ * Only once per question though when still "connected": on a slow but working network the repeat is counted with
+ * what arrived, or the class would never move on.
  */
-export function answersToCount(fetched: Record<string, number> | null, latest: Record<string, number>, connected: boolean): Record<string, number> | null {
-  if (!connected) return null;
-  return { ...latest, ...(fetched ?? {}) };
+export function roundCountable({ synced, connected, repeatedForNetwork }: { synced: boolean; connected: boolean; repeatedForNetwork: boolean }): boolean {
+  if (!connected) return false;
+  return synced || repeatedForNetwork;
 }

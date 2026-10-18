@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { answersToCount, decideRound, extendedDeadline, type RoundInput } from './round';
+import { decideRound, extendedDeadline, roundCountable, type RoundInput } from './round';
 import { initialState } from './rules';
 import type { Player } from './types';
 
@@ -63,15 +63,16 @@ describe('extendedDeadline (Lote 11.1)', () => {
   });
 });
 
-describe('answersToCount (Lote 11.3)', () => {
-  it('final read wins over the live snapshot, which only tops it up', () => {
-    expect(answersToCount({ a: 1, b: 2 }, { a: 0, c: 3 }, true)).toEqual({ a: 1, b: 2, c: 3 });
+describe('roundCountable (Lote 11.3)', () => {
+  it('confirmed by the server after the deadline -> count', () => {
+    expect(roundCountable({ synced: true, connected: true, repeatedForNetwork: false })).toBe(true);
   });
-  it('read failed while connected -> the live snapshot is up to date', () => {
-    expect(answersToCount(null, { a: 1 }, true)).toEqual({ a: 1 });
+  it('offline -> never count (no life lost), even on a repeat', () => {
+    expect(roundCountable({ synced: true, connected: false, repeatedForNetwork: false })).toBe(false);
+    expect(roundCountable({ synced: false, connected: false, repeatedForNetwork: true })).toBe(false);
   });
-  it('offline -> cannot count (treated as nobody: no life lost), even if the read "succeeded" from the local cache', () => {
-    expect(answersToCount(null, { a: 1 }, false)).toBeNull();
-    expect(answersToCount({}, {}, false)).toBeNull();
+  it('"connected" but nothing gets through (half-open link) -> repeat once, then count what arrived', () => {
+    expect(roundCountable({ synced: false, connected: true, repeatedForNetwork: false })).toBe(false);
+    expect(roundCountable({ synced: false, connected: true, repeatedForNetwork: true })).toBe(true);
   });
 });

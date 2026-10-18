@@ -2,10 +2,10 @@
 // The right answer only lives here, in memory; the database gets the public question and the result.
 import { serverTimestamp } from 'firebase/database';
 import { currentUid, serverNow } from '../lib/firebase';
-import { readAnswers, updateRoom, watchAnswers, watchConnection, watchPresence, watchRoom } from '../data/room';
+import { updateRoom, watchAnswers, watchConnection, watchPresence, watchRoom } from '../data/room';
 import { QuestionDeck } from '../game/questions';
 import { hostOwnsRoom } from '../game/ownership';
-import { answersToCount, decideRound, extendedDeadline } from '../game/round';
+import { decideRound, extendedDeadline, roundCountable } from '../game/round';
 import { DIFFICULTY, initialState, newGameId, nextStop, reshuffleDifferent, roundKey, shuffleOptions } from '../game/rules';
 import type { BattleState, GameConfig, Player, PublicQuestion, Question } from '../game/types';
 
@@ -17,7 +17,7 @@ export const TIMING = {
   graceMs: 2000, // after the deadline, before counting: >= the 1.5 s the database rules accept answers for (+ clock skew)
   allAnsweredMs: 700, // everybody answered -> close early
   nobodyMs: 2500, // nobody could answer -> ask the same question again after this pause
-  readTimeoutMs: 2500, // max wait for the final read of the answers
+  syncTimeoutMs: 2500, // max wait for the server to confirm the end-of-round sync write
   retryMs: 1500, // pause before retrying a failed write
   lateMs: 2000, // a question that reached the database later than this gets its full time again (once, no re-ask)
   troubleAfter: 3, // rejected writes in a row before the teacher sees a warning
@@ -44,7 +44,8 @@ interface Round {
   endsAt: number;
   eligible: Set<string>;
   finished: boolean;
-  latest: Record<string, number>; // last snapshot from the live listener (fallback if the final read fails)
+  latest: Record<string, number>; // live snapshot of the answers (complete once the end-of-round sync is confirmed)
+  repeatedForNetwork: boolean; // already asked again once because a round could not be counted (network)
   stopAnswers: () => void;
 }
 
@@ -127,8 +128,11 @@ export class GameController {
       .map(([uid]) => uid));
   }
 
-  /** `repeat`: same question with options reshuffled (after a miss); `again`: same question, same attempt (nobody could answer). */
-  private ask(repeat: boolean, again = false) {
+  /**
+   * `repeat`: same question with options reshuffled (after a miss); `again`: same question, same attempt (nobody could
+   * answer); `forNetwork`: the "again" is because the round could not be counted (see roundCountable).
+   */
+  private ask(repeat: boolean, again = false, forNetwork = false) {
     const prev = this.round;
     let question: Question;
     let shuffled: { options: string[]; answer: number };
@@ -153,7 +157,7 @@ export class GameController {
 
     const round: Round = {
       question, ...shuffled, attempt, key, startedAt, endsAt, eligible, finished: false, latest: {},
-      stopAnswers: () => {},
+      repeatedForNetwork: forNetwork, stopAnswers: () => {},
     };
     let closing = false;
     round.stopAnswers = watchAnswers(this.code, key, answers => {
@@ -194,17 +198,18 @@ export class GameController {
   private async finish(round: Round) {
     if (round.finished || round !== this.round) return;
     round.finished = true;
-    round.stopAnswers();
 
-    // final read from the server (if it fails or hangs, the live snapshot); offline nothing is counted (answersToCount)
-    // (a network hiccup on the teacher's laptop must not cost the class a life)
-    const fetched = await withTimeout(readAnswers(this.code, round.key), TIMING.readTimeoutMs).catch(() => null);
+    // sync barrier: once the server confirms this (idempotent) write, the live listener has every answer that reached
+    // the server before it. A cached read would not prove that (with a listener on the path, get() answers from cache).
+    const synced = await withTimeout(updateRoom(this.code, { 'question/endsAt': round.endsAt }), TIMING.syncTimeoutMs).then(() => true, () => false);
+    round.stopAnswers();
     if (this.disposed || round !== this.round) return;
-    const answers = answersToCount(fetched, round.latest, this.connected);
-    if (!answers) {
-      this.later(TIMING.nobodyMs, () => this.ask(false, true));
+    // a network problem on the teacher's laptop must not cost the class a life
+    if (!roundCountable({ synced, connected: this.connected, repeatedForNetwork: round.repeatedForNetwork })) {
+      this.later(TIMING.nobodyMs, () => this.ask(false, true, true));
       return;
     }
+    const answers = round.latest;
 
     const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: round.eligible, answers, players: this.players, state: this.state });
     if (decision.kind === 'nobody') {

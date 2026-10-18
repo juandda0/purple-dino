@@ -40,8 +40,8 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
       .catch(() => setQr(null));
   }, [code]);
 
-  // connected first, then by arrival: if the list overflows ("+N MORE"), the hidden ones are newest and still here,
-  // while stale offline entries stay visible so they can be removed
+  // connected first (they are the ones START waits for), then by arrival; past 49 entries the hidden ones ("+N MORE")
+  // are therefore offline: they do not block anything, but cannot be removed from here
   const players = Object.entries(room.players ?? {}).sort((a, b) => Number(online.has(b[0])) - Number(online.has(a[0])) || a[1].joinedAt - b[1].joinedAt);
   const connected = players.filter(([uid]) => online.has(uid));
   const ready = connected.filter(([, p]) => p.ready);

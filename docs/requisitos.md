@@ -59,7 +59,7 @@ Quiz cooperativo de inglés para la clase (tipo Kahoot) en el que toda la clase 
 | Privacidad y datos | Nombre de pila y respuestas viven solo mientras dura la partida; se borran al salir. Salas abandonadas: borrar a las 24 h (C) — hoy solo se pueden reutilizar a las 24 h, el borrado automático necesita una función programada (plan Blaze). | C |
 | Accesibilidad | Respuestas con color + forma + texto; texto grande legible en proyector; contraste AA en la interfaz (S). | C/S |
 | Plataformas | Proyector: Chrome/Edge actuales. Celulares: Safari iOS 16+ y Chrome Android de los últimos 2 años. | S |
-| Conectividad | Funciona con Wi-Fi escolar; si un celular se desconecta, deja de contar hasta que vuelve. Si el proyector pierde la red: aviso visible tras 3 s; la pregunta que llegó tarde recupera su tiempo completo, y una ronda que no se pudo contar se repite sin quitar vida (R10). | S |
+| Conectividad | Funciona con Wi-Fi escolar; si un celular se desconecta, deja de contar hasta que vuelve. Si el proyector pierde la red: aviso visible tras 3 s; la pregunta que llegó tarde recupera su tiempo completo, y una ronda que no se pudo contar (sin red, o con una red que parece conectada pero no deja pasar nada) se repite sin quitar vida (R10); si la red parece conectada, solo una vez por pregunta, para que una red lenta no deje a la clase repitiendo sin fin. | S |
 | Idiomas | Toda la interfaz del juego en inglés; la documentación interna en español. | C |
 
 ## Fuera de alcance (v1)

@@ -29,6 +29,7 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
   const gone = roomState.status !== 'loading' && !room;
   useEffect(() => {
     if (!gone) return;
+    setTrouble(false);
     controller.current?.dispose();
     controller.current = null;
     void music.play('lobby');
