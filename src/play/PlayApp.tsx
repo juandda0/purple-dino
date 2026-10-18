@@ -4,6 +4,7 @@ import { useRoom, useSecondsLeft } from '../data/hooks';
 import { JoinError, joinRoom, leavePresence, readMyAnswer, setReady, submitAnswer } from '../data/room';
 import { safeStorage } from '../lib/storage';
 import { ensureSignedIn } from '../lib/firebase';
+import { cleanName } from '../game/names';
 import { AVATARS } from '../game/stops';
 import type { Reveal, Room } from '../game/types';
 import { ANSWER_STYLES } from '../ui/answers';
@@ -58,7 +59,7 @@ function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string,
   const [typedCode, setTypedCode] = useState(code ?? '');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const name = profile.name.trim();
+  const name = cleanName(profile.name);
   const validCode = /^\d{4}$/.test(typedCode);
 
   const submit = async (e: React.FormEvent) => {

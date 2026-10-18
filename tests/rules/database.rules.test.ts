@@ -30,6 +30,10 @@ const room = (over: Record<string, unknown> = {}) => ({
 /** Seeds data bypassing the rules. */
 const seed = (path: string, value: unknown) => env.withSecurityRulesDisabled(c => set(ref(c.database(), path), value));
 
+/** Creating a room = the room + the host's one-room index, in one multi-path write (like createRoom()). */
+const createAs = (uid: string, code: string, over: Record<string, unknown> = {}) =>
+  update(ref(db(uid)), { [`rooms/${code}`]: { ...room({ hostUid: uid, ...over }), createdAt: serverTimestamp() }, [`hostRooms/${uid}`]: code });
+
 const player = (joinedAt = Date.now() - 60_000) => ({ name: 'Ana', avatar: 'sena', ready: false, joinedAt });
 
 async function seedQuestion(over: Record<string, unknown> = {}) {
@@ -43,7 +47,7 @@ async function seedQuestion(over: Record<string, unknown> = {}) {
 
 describe('rooms: the teacher owns her room', () => {
   it('anyone signed in can create a free code as its host', async () => {
-    await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}`), { ...room(), createdAt: serverTimestamp() }));
+    await assertSucceeds(createAs('teacher', CODE));
   });
   it('nobody signed out can create or read rooms', async () => {
     await assertFails(set(ref(db(null), `rooms/${CODE}`), room()));
@@ -52,14 +56,15 @@ describe('rooms: the teacher owns her room', () => {
   });
   it('cannot create a room in someone else\'s name', async () => {
     await assertFails(set(ref(db('mallory'), `rooms/${CODE}`), { ...room(), createdAt: serverTimestamp() }));
+    await assertFails(update(ref(db('mallory')), { [`rooms/${CODE}`]: { ...room(), createdAt: serverTimestamp() }, 'hostRooms/mallory': CODE }));
   });
   it('cannot take over a code that is in use', async () => {
     await seed(`rooms/${CODE}`, room());
-    await assertFails(set(ref(db('mallory'), `rooms/${CODE}`), { ...room({ hostUid: 'mallory' }), createdAt: serverTimestamp() }));
+    await assertFails(createAs('mallory', CODE));
   });
   it('can reuse a code abandoned for more than 24 h', async () => {
     await seed(`rooms/${CODE}`, room({ createdAt: Date.now() - DAY - 60_000 }));
-    await assertSucceeds(set(ref(db('teacher2'), `rooms/${CODE}`), { ...room({ hostUid: 'teacher2' }), createdAt: serverTimestamp() }));
+    await assertSucceeds(createAs('teacher2', CODE));
   });
   it('a student cannot change the game state, question or result', async () => {
     await seed(`rooms/${CODE}`, room());
@@ -92,6 +97,50 @@ describe('rooms: the teacher owns her room', () => {
   });
 });
 
+describe('one room per teacher; abandoned rooms (lote 4)', () => {
+  it('a teacher cannot open a second room while the first one exists', async () => {
+    await assertSucceeds(createAs('teacher', '1111'));
+    await assertFails(createAs('teacher', '2222'));
+    await assertSucceeds(remove(ref(db('teacher'), 'rooms/1111')));
+    await assertSucceeds(createAs('teacher', '2222'));
+  });
+  it('a room cannot be created without the index, nor the index point to a room that is not yours', async () => {
+    await assertFails(set(ref(db('teacher'), `rooms/${CODE}`), { ...room(), createdAt: serverTimestamp() }));
+    await seed(`rooms/${CODE}`, room({ hostUid: 'other' }));
+    await assertFails(set(ref(db('teacher'), 'hostRooms/teacher'), CODE));
+    await assertFails(set(ref(db('teacher'), 'hostRooms/someone'), CODE));
+  });
+  it('taking over an abandoned room restarts its 24 h clock', async () => {
+    await seed(`rooms/${CODE}`, room({ createdAt: Date.now() - DAY - 60_000 }));
+    await assertFails(update(ref(db('m1')), { [`rooms/${CODE}/hostUid`]: 'm1', 'hostRooms/m1': CODE }));
+  });
+});
+
+describe('field validation (lote 4)', () => {
+  beforeEach(() => seedQuestion());
+  const host = () => db('teacher');
+  it('state only takes the known fields within range', async () => {
+    const ok = { stop: 0, enemyHp: 2, enemyMaxHp: 2, lives: 3, combo: 0, questionNumber: 1 };
+    await assertSucceeds(set(ref(host(), `rooms/${CODE}/state`), ok));
+    await assertFails(set(ref(host(), `rooms/${CODE}/state`), { ...ok, junk: 1 }));
+    await assertFails(set(ref(host(), `rooms/${CODE}/state`), { ...ok, lives: 99 }));
+  });
+  it('reveal rejects junk, huge values and malformed votes', async () => {
+    const ok = { key: 'kx9a2b-s0q1a0', outcome: 'shield', percent: 30, answered: 2, eligible: 3 };
+    await assertSucceeds(set(ref(host(), `rooms/${CODE}/reveal`), ok));
+    await assertFails(set(ref(host(), `rooms/${CODE}/reveal`), { ...ok, percent: 'x'.repeat(5000) }));
+    await assertFails(set(ref(host(), `rooms/${CODE}/reveal`), { ...ok, extra: { deep: true } }));
+    await assertFails(set(ref(host(), `rooms/${CODE}/reveal`), { ...ok, outcome: 'strike', correct: 1, votes: [1, 2] }));
+    await assertFails(set(ref(host(), `rooms/${CODE}/reveal`), { ...ok, outcome: 'strike', correct: 1, votes: [1, 1, 0, 0], strikers: ['a', 'b', 'c'] }));
+  });
+  it('a question needs exactly 4 options and sane numbers; units are 1-12, at most 12 of them', async () => {
+    await assertFails(set(ref(host(), `rooms/${CODE}/question/options`), ['only one']));
+    await assertFails(set(ref(host(), `rooms/${CODE}/question/unit`), -5));
+    await assertFails(set(ref(host(), `rooms/${CODE}/config/units`), Array.from({ length: 13 }, () => 7)));
+    await assertSucceeds(set(ref(host(), `rooms/${CODE}/config/units`), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
+  });
+});
+
 describe('players: each student only writes about themself', () => {
   beforeEach(() => seed(`rooms/${CODE}`, room()));
 
@@ -112,6 +161,21 @@ describe('players: each student only writes about themself', () => {
     await assertFails(set(ref(db('ana'), `rooms/${CODE}/players/ana`), player(Date.now() - DAY)));
     await assertFails(set(ref(db('ana'), `rooms/${CODE}/players/ana`), { ...player(), joinedAt: serverTimestamp(), role: 'host' }));
     await assertFails(set(ref(db('ana'), `rooms/${CODE}/players/ana`), { ...player(), name: 'x'.repeat(40), joinedAt: serverTimestamp() }));
+  });
+  it('the teacher can remove a student and reset "ready", but not rename or invent students (lote 4)', async () => {
+    await seed(`rooms/${CODE}/players/ana`, player());
+    await assertFails(update(ref(db('teacher'), `rooms/${CODE}/players/ana`), { name: 'Insulto' }));
+    await assertFails(update(ref(db('teacher'), `rooms/${CODE}/players/ana`), { avatar: 'kuro' }));
+    await assertFails(set(ref(db('teacher'), `rooms/${CODE}/players/fake1`), { ...player(), joinedAt: serverTimestamp() }));
+    await assertSucceeds(update(ref(db('teacher'), `rooms/${CODE}/players/ana`), { ready: false }));
+    await assertFails(update(ref(db('teacher'), `rooms/${CODE}/players/ana`), { ready: true }));
+    await assertSucceeds(remove(ref(db('teacher'), `rooms/${CODE}/players/ana`))); // expel (confirmed 2026-10-18)
+  });
+  it('names cannot carry control characters (lote 4; bidi and zero-width are stripped by the client, names.test.ts)', async () => {
+    for (const bad of ['a\u0000b', 'a\u0007b', 'tab\there']) {
+      await assertFails(set(ref(db('ana'), `rooms/${CODE}/players/ana`), { ...player(), name: bad, joinedAt: serverTimestamp() }));
+    }
+    await assertSucceeds(set(ref(db('ana'), `rooms/${CODE}/players/ana`), { ...player(), name: 'José María', joinedAt: serverTimestamp() }));
   });
   it('can toggle ready but not move their join time', async () => {
     const t = Date.now() - 60_000;

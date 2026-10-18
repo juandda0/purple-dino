@@ -46,6 +46,7 @@ Quiz cooperativo de inglés para la clase (tipo Kahoot) en el que toda la clase 
 | R7 | En una partida no se repite una pregunta (salvo el reintento por fallo). | Variedad. | C |
 | R8 | Sin ranking público: el celular muestra solo el aporte propio. | Cooperativo. | C |
 | R9 | Solo se guarda el **nombre de pila** del alumno; no se guarda historial. | Privacidad (no hay datos reales sensibles). | C |
+| R10 | Si **nadie** puede responder una pregunta (nadie conectado, p. ej. se cae el Wi-Fi), no se quita vida: se repite la misma pregunta. | No castigar a la clase por la red. | C (2026-10-18) |
 
 ## Requisitos no funcionales
 
@@ -70,6 +71,7 @@ Quiz cooperativo de inglés para la clase (tipo Kahoot) en el que toda la clase 
 
 ## Preguntas abiertas
 
+0. Un alumno que se desconecta a mitad de pregunta, ¿cuenta como fallo? Hoy sí (cuentan los conectados al empezar la pregunta).
 1. ¿Cuántas clases podrían jugar a la vez en el colegio? (define si basta el plan gratuito).
 2. ¿Pasar a plan Blaze para borrar salas abandonadas a las 24 h automáticamente?
 3. ¿Qué navegadores y celulares tienen realmente los alumnos?

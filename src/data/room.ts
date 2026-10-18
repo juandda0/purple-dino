@@ -3,6 +3,7 @@
 //   rooms/{code}/players/{uid}   each student writes only their own entry
 //   presence/{code}/{uid}        who is connected right now (host reads)
 //   answers/{code}/{key}/{uid}   one locked answer per student and round (host reads all)
+//   hostRooms/{uid}              the one room a teacher has open (rules: one room per teacher)
 import {
   get, onDisconnect, onValue, ref, remove, serverTimestamp, set, update, type Unsubscribe,
 } from 'firebase/database';
@@ -19,15 +20,23 @@ const randomCode = () => String(Math.floor(Math.random() * 10_000)).padStart(4, 
 /** Creates a room with a free 4-digit code. The rules reject codes in use, so we just try another. */
 export async function createRoom(config: GameConfig): Promise<string> {
   const uid = await ensureSignedIn();
-  // a teacher only keeps one room: remove the one from the previous game, if any
-  const previous = safeStorage.get(HOST_ROOM_KEY);
-  if (previous) await deleteRoom(previous).catch(() => undefined);
+  // one room per teacher: close the previous one first (from the database index, or this browser's memory)
+  const indexed = (await get(ref(db, `hostRooms/${uid}`)).catch(() => null))?.val() as string | null | undefined;
+  for (const previous of new Set([indexed, safeStorage.get(HOST_ROOM_KEY)])) {
+    if (previous) await deleteRoom(previous).catch(() => undefined);
+  }
 
   for (let attempt = 0; attempt < 12; attempt++) {
     const code = randomCode();
     try {
-      await set(roomRef(code), { hostUid: uid, createdAt: serverTimestamp(), status: 'lobby', config });
+      // room + index in one atomic write; the rules reject codes in use -> try another
+      await update(ref(db), {
+        [`rooms/${code}`]: { hostUid: uid, createdAt: serverTimestamp(), status: 'lobby', config },
+        [`hostRooms/${uid}`]: code,
+      });
       safeStorage.set(HOST_ROOM_KEY, code);
+      // a reused (abandoned) code may still hold the previous game's answers/presence
+      await Promise.all([remove(ref(db, `answers/${code}`)), remove(ref(db, `presence/${code}`))]).catch(() => undefined);
       return code;
     } catch {
       // code taken (permission denied) -> try another
@@ -42,6 +51,9 @@ export const updateRoom = (code: string, patch: Record<string, unknown>) => upda
 export async function deleteRoom(code: string) {
   await Promise.all([remove(ref(db, `answers/${code}`)), remove(ref(db, `presence/${code}`))]);
   await remove(roomRef(code));
+  const uid = await ensureSignedIn();
+  const mine = (await get(ref(db, `hostRooms/${uid}`)).catch(() => null))?.val();
+  if (mine === code) await remove(ref(db, `hostRooms/${uid}`)).catch(() => undefined);
   if (safeStorage.get(HOST_ROOM_KEY) === code) safeStorage.remove(HOST_ROOM_KEY);
 }
 
