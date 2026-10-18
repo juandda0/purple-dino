@@ -24,14 +24,14 @@
       "privacidad": "borrar al salir; abandonadas a las 24 h (C)"
     },
     "preguntasAbiertas": [
-      "desconexión a mitad de pregunta: ¿cuenta? (hoy cuenta y la respuesta ausente es fallo; propuesta ofrecida: no contar a quien se va sin responder; pendiente del usuario)",
       "clases simultáneas",
       "¿plan Blaze?"
     ],
     "motivoRechazo": null,
     "decisiones": [
       "sin elegibles: no se pierde vida y se repite la pregunta (2026-10-18)",
-      "exactamente 50 % es fallo: mayoría estricta, comportamiento confirmado (2026-10-18)"
+      "exactamente 50 % es fallo: mayoría estricta, comportamiento confirmado (2026-10-18)",
+      "R11 (2026-10-18): quien se desconecta durante la pregunta sin responder no cuenta para esa pregunta"
     ]
   },
   "modeloAcceso": {
