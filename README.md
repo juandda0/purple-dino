@@ -53,7 +53,7 @@ npm test              # game logic only
 npm run test:rules    # database.rules.json against the emulator
 ```
 
-`npm run verify` and `npm run test:rules` start their own Database emulator, so they fail with "port taken" if `npm run dev:emu` is already running. In that case run the rules tests against the emulator that is already up: `npx vitest run --config vitest.rules.config.ts`.
+`npm run verify` and `npm run test:rules` start their own Database emulator, so they fail with "port taken" if `npm run dev:emu` is already running. In that case run the rules tests against the emulator that is already up: `npx vitest run --config vitest.rules.config.ts`. They use their own database namespace (`demo-purple-dino-rules`), so they never wipe the rooms of the running game.
 
 ## Deploy (done by the project owner)
 

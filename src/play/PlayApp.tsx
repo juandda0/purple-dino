@@ -128,7 +128,11 @@ const EMPTY_PERSONAL: Personal = { struck: 0, strikes: 0, streak: 0, bestStreak:
 
 function InRoom({ code, uid }: { code: string; uid: string }) {
   const roomState = useRoom(code);
-  const room = roomState.status === 'ready' ? roomState.room : null;
+  const live = roomState.status === 'ready' ? roomState.room : null;
+  // the teacher this student joined: if the code is later reused by someone else, this room is closed for them
+  const [host, setHost] = useState<string | null>(null);
+  if (live && host === null) setHost(live.hostUid);
+  const room = live && (host === null || live.hostUid === host) ? live : null;
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [personal, setPersonal] = useState<Personal>(EMPTY_PERSONAL);
   const counted = useRef(new Set<string>());

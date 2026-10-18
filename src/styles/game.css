@@ -69,11 +69,12 @@ button:disabled { cursor: not-allowed; }
 .btn-go { background: var(--green); color: var(--ink); box-shadow: inset 0 -8px 0 var(--green-dark), 0 8px 0 var(--edge); }
 .btn-light { background: var(--panel-2); color: var(--text); box-shadow: inset 0 0 0 2px var(--line), 0 6px 0 var(--edge); }
 .btn:disabled, .btn-off { background: #2A2245; color: rgba(242, 238, 255, .4); box-shadow: inset 0 0 0 2px #3B2F63; }
-/* lobby: remove-a-student button over the tile's status mark */
-.player .kick { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: calc(100% - 8px); aspect-ratio: 1; padding: 0;
-  display: flex; align-items: center; justify-content: center; font: 700 20px var(--body); color: var(--white); background: var(--red-dark);
-  border: 3px solid var(--ink); cursor: pointer; opacity: 0; }
-.player:hover .kick, .player .kick:focus-visible { opacity: 1; }
+/* lobby: remove-a-student button (always visible, quiet) and its "REMOVE …?" confirmation over the tile */
+.player .kick { flex-shrink: 0; padding: 0; display: flex; align-items: center; justify-content: center; font: 700 18px var(--body);
+  color: rgba(242,238,255,.55); background: transparent; border: 2px solid rgba(242,238,255,.25); cursor: pointer; }
+.player .kick:hover, .player .kick:focus-visible { color: var(--white); background: var(--red-dark); border-color: var(--ink); }
+.player .kick-confirm { position: absolute; inset: -3px; z-index: 1; padding: 0 8px; color: var(--white); background: var(--red-dark);
+  border: 3px solid var(--ink); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .okbox { display: flex; align-items: center; justify-content: center; background: var(--green); border: 3px solid var(--ink); flex-shrink: 0; }
 
 /* menus */

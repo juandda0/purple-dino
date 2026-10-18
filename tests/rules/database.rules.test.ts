@@ -10,7 +10,8 @@ const DAY = 86_400_000;
 
 beforeAll(async () => {
   env = await initializeTestEnvironment({
-    projectId: 'demo-purple-dino',
+    // its own database namespace: clearDatabase() must never wipe the rooms of a running `npm run dev:emu` (Lote 11.5)
+    projectId: 'demo-purple-dino-rules',
     database: { rules: readFileSync('database.rules.json', 'utf8'), host: '127.0.0.1', port: 9000 },
   });
 });

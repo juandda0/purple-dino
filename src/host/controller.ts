@@ -1,10 +1,11 @@
 // Runs the battle on the teacher's screen (design §7: the host decides every round).
 // The right answer only lives here, in memory; the database gets the public question and the result.
 import { serverTimestamp } from 'firebase/database';
-import { serverNow } from '../lib/firebase';
-import { readAnswers, updateRoom, watchAnswers, watchPresence, watchRoom } from '../data/room';
+import { currentUid, serverNow } from '../lib/firebase';
+import { readAnswers, updateRoom, watchAnswers, watchConnection, watchPresence, watchRoom } from '../data/room';
 import { QuestionDeck } from '../game/questions';
-import { decideRound } from '../game/round';
+import { hostOwnsRoom } from '../game/ownership';
+import { answersToCount, decideRound, extendedDeadline } from '../game/round';
 import { DIFFICULTY, initialState, newGameId, nextStop, reshuffleDifferent, roundKey, shuffleOptions } from '../game/rules';
 import type { BattleState, GameConfig, Player, PublicQuestion, Question } from '../game/types';
 
@@ -18,6 +19,8 @@ export const TIMING = {
   nobodyMs: 2500, // nobody could answer -> ask the same question again after this pause
   readTimeoutMs: 2500, // max wait for the final read of the answers
   retryMs: 1500, // pause before retrying a failed write
+  lateMs: 2000, // a question that reached the database later than this gets its full time again (once, no re-ask)
+  troubleAfter: 3, // rejected writes in a row before the teacher sees a warning
 };
 
 const withTimeout = <T,>(p: Promise<T>, ms: number) =>
@@ -55,14 +58,26 @@ export class GameController {
   private unsubs: Array<() => void> = [];
   private disposed = false;
   private gameId = '';
+  private connected = true;
+  private rejected = 0;
   readonly stats: HostStats = { questions: 0, correct: 0, possible: 0, bestCombo: 0, byUnit: {} };
 
-  constructor(private readonly code: string, private readonly config: GameConfig, private readonly onStats: (s: HostStats) => void = () => {}) {
+  constructor(
+    private readonly code: string,
+    private readonly config: GameConfig,
+    private readonly onStats: (s: HostStats) => void = () => {},
+    private readonly onTrouble: (trouble: boolean) => void = () => {},
+  ) {
     this.deck = new QuestionDeck(config.course, config.units);
     this.state = initialState(config.difficulty);
     this.unsubs.push(
       watchPresence(code, online => (this.online = online)),
-      watchRoom(code, room => (this.players = room?.players ?? {})),
+      watchConnection(connected => (this.connected = connected)),
+      watchRoom(code, room => {
+        // the room vanished or changed hands (e.g. a new room from a second tab): stop writing into it
+        if (!hostOwnsRoom(room, currentUid())) return this.dispose();
+        this.players = room.players ?? {};
+      }),
     );
   }
 
@@ -75,6 +90,7 @@ export class GameController {
   }
 
   dispose() {
+    if (this.disposed) return;
     this.disposed = true;
     for (const t of this.timers) clearTimeout(t);
     this.timers.clear();
@@ -90,9 +106,16 @@ export class GameController {
     this.timers.add(t);
   }
 
+  /** Offline, a write just waits in the SDK's queue (the banner for that comes from useConnectionLost); this only sees rejections. */
   private write(patch: Record<string, unknown>) {
-    return updateRoom(this.code, patch).then(() => true, err => {
+    return updateRoom(this.code, patch).then(() => {
+      if (this.rejected >= TIMING.troubleAfter && !this.disposed) this.onTrouble(false);
+      this.rejected = 0;
+      return true;
+    }, err => {
       console.error('Could not update the room', err);
+      this.rejected += 1;
+      if (this.rejected === TIMING.troubleAfter && !this.disposed) this.onTrouble(true);
       return false;
     });
   }
@@ -159,6 +182,12 @@ export class GameController {
       this.later(TIMING.retryMs, () => this.ask(false, true));
       return;
     }
+    // offline the write only waits in a queue: if the question landed late, give it its full time again
+    const extended = extendedDeadline(round, serverNow(), TIMING.lateMs);
+    if (extended !== null) {
+      round.endsAt = extended;
+      void this.write({ 'question/endsAt': extended });
+    }
     this.later(round.endsAt - serverNow() + TIMING.graceMs, () => void this.finish(round));
   }
 
@@ -167,11 +196,15 @@ export class GameController {
     round.finished = true;
     round.stopAnswers();
 
-    // final read from the server; if it fails or hangs, use what the live listener already saw
+    // final read from the server (if it fails or hangs, the live snapshot); offline nothing is counted (answersToCount)
     // (a network hiccup on the teacher's laptop must not cost the class a life)
     const fetched = await withTimeout(readAnswers(this.code, round.key), TIMING.readTimeoutMs).catch(() => null);
     if (this.disposed || round !== this.round) return;
-    const answers = { ...round.latest, ...(fetched ?? {}) };
+    const answers = answersToCount(fetched, round.latest, this.connected);
+    if (!answers) {
+      this.later(TIMING.nobodyMs, () => this.ask(false, true));
+      return;
+    }
 
     const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: round.eligible, answers, players: this.players, state: this.state });
     if (decision.kind === 'nobody') {

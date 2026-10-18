@@ -75,6 +75,11 @@ export function watchPresence(code: string, cb: (online: Set<string>) => void): 
   return onValue(ref(db, `presence/${code}`), s => cb(new Set(Object.keys((s.val() as Record<string, true> | null) ?? {}))));
 }
 
+/** Whether this browser is connected to the database right now (false while the Wi-Fi is down). */
+export function watchConnection(cb: (connected: boolean) => void): Unsubscribe {
+  return onValue(ref(db, '.info/connected'), s => cb(s.val() === true));
+}
+
 export function watchRoom(code: string, cb: (room: Room | null) => void, onError?: (e: Error) => void): Unsubscribe {
   return onValue(roomRef(code), s => cb(s.val() as Room | null), onError);
 }

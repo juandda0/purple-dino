@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { music } from '../audio/music';
 import { playSfx } from '../audio/sfx';
-import { useRoom } from '../data/hooks';
+import { useConnectionLost, useRoom } from '../data/hooks';
 import { clearAnswers, deleteRoom, removePlayer, updateRoom, watchAnswers, watchPresence } from '../data/room';
+import { hostOwnsRoom } from '../game/ownership';
+import { currentUid } from '../lib/firebase';
 import { GameController } from './controller';
 import { Battle } from './screens/Battle';
 import { GameOver, Victory } from './screens/End';
@@ -16,11 +18,21 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
   const controller = useRef<GameController | null>(null);
   const [online, setOnline] = useState<Set<string>>(new Set());
   const [answeredCount, setAnsweredCount] = useState(0);
+  const [trouble, setTrouble] = useState(false); // writes keep being rejected
+  const offline = useConnectionLost();
 
   useEffect(() => watchPresence(code, setOnline), [code]);
   useEffect(() => () => controller.current?.dispose(), []);
 
-  const room = roomState.status === 'ready' ? roomState.room : null;
+  // a room that vanished, changed hands or is only a partial local copy is not ours any more (Lote 11.4)
+  const room = roomState.status === 'ready' && hostOwnsRoom(roomState.room, currentUid()) ? roomState.room : null;
+  const gone = roomState.status !== 'loading' && !room;
+  useEffect(() => {
+    if (!gone) return;
+    controller.current?.dispose();
+    controller.current = null;
+    void music.play('lobby');
+  }, [gone]);
   const questionKey = room?.status === 'question' ? room.question?.key : undefined;
 
   // live "11/15 answered"
@@ -46,7 +58,8 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
     playSfx('select');
     controller.current?.dispose();
     setStats(null);
-    controller.current = new GameController(code, room.config, setStats);
+    setTrouble(false);
+    controller.current = new GameController(code, room.config, setStats, setTrouble);
     controller.current.start();
   }, [code, room, setStats]);
 
@@ -73,37 +86,50 @@ export function RoomScreen({ code, onShake }: { code: string; onShake: () => voi
     void music.play('lobby');
   }, [code, room, setStats]);
 
-  if (roomState.status === 'loading') return <Centered>Opening the room…</Centered>;
-  if (!room) {
-    return (
-      <Centered>
-        The room is gone.
-        <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, marginTop: 24 }} onClick={() => { setCode(null); go('start'); }}>BACK TO START</button>
-      </Centered>
-    );
-  }
+  return (
+    <>
+      {renderView()}
+      {offline || trouble ? (
+        <div className="abs tag" role="alert" style={{ left: 450, top: 140, width: 700, padding: '14px 18px', fontSize: 16, textAlign: 'center', background: 'var(--red-dark)', zIndex: 5 }}>
+          {offline ? 'NO CONNECTION — CHECK THE WI-FI. THE GAME WILL CONTINUE WHEN IT IS BACK.' : 'THE GAME COULD NOT BE SAVED. RETRYING…'}
+        </div>
+      ) : null}
+    </>
+  );
 
-  // same eligible set the controller decides with (published with the question)
-  const eligible = room.question?.eligible ?? 0;
+  function renderView() {
+    if (roomState.status === 'loading') return <Centered>Opening the room…</Centered>;
+    if (!room) {
+      return (
+        <Centered>
+          The room is gone.
+          <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, marginTop: 24 }} onClick={() => { setCode(null); go('start'); }}>BACK TO START</button>
+        </Centered>
+      );
+    }
 
-  switch (room.status) {
-    case 'lobby':
-      return <Lobby code={code} room={room} online={online} onStart={start} onBack={() => void exit('units')} onRemove={uid => void removePlayer(code, uid).catch(() => playSfx('error'))} />;
-    case 'won':
-      return <Victory room={room} stats={stats} onPlayAgain={() => void playAgain()} onChangeUnits={() => void exit('units')} onExit={() => void exit('start')} />;
-    case 'lost':
-      return <GameOver room={room} stats={stats} onPlayAgain={() => void playAgain()} onChangeUnits={() => void exit('units')} onExit={() => void exit('start')} />;
-    default:
-      // walking / question / reveal. If the teacher reloaded mid-battle the controller is gone: offer to restart.
-      if (!controller.current) {
-        return (
-          <Centered>
-            This battle was interrupted.
-            <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, marginTop: 24 }} onClick={() => void playAgain()}>BACK TO THE LOBBY</button>
-          </Centered>
-        );
-      }
-      return room.state ? <Battle room={room} answered={Math.min(answeredCount, eligible)} eligible={eligible} onShake={onShake} /> : null;
+    // same eligible set the controller decides with (published with the question)
+    const eligible = room.question?.eligible ?? 0;
+
+    switch (room.status) {
+      case 'lobby':
+        return <Lobby code={code} room={room} online={online} onStart={start} onBack={() => void exit('units')} onRemove={uid => void removePlayer(code, uid).catch(() => playSfx('error'))} />;
+      case 'won':
+        return <Victory room={room} stats={stats} onPlayAgain={() => void playAgain()} onChangeUnits={() => void exit('units')} onExit={() => void exit('start')} />;
+      case 'lost':
+        return <GameOver room={room} stats={stats} onPlayAgain={() => void playAgain()} onChangeUnits={() => void exit('units')} onExit={() => void exit('start')} />;
+      default:
+        // walking / question / reveal. If the teacher reloaded mid-battle the controller is gone: offer to restart.
+        if (!controller.current) {
+          return (
+            <Centered>
+              This battle was interrupted.
+              <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, marginTop: 24 }} onClick={() => void playAgain()}>BACK TO THE LOBBY</button>
+            </Centered>
+          );
+        }
+        return room.state ? <Battle room={room} answered={Math.min(answeredCount, eligible)} eligible={eligible} onShake={onShake} /> : null;
+    }
   }
 }
 

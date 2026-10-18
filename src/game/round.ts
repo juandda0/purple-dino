@@ -42,3 +42,24 @@ export function decideRound({ key, answer, attempt, eligible, answers, players, 
   }
   return { kind: 'resolved', result, reveal, correct: t.correct };
 }
+
+/**
+ * A question that reached the database late (slow or offline teacher laptop) gets its full time again, counted from
+ * when it really landed. Returns the new deadline, or null when it landed on time. It only ever extends the same
+ * question once: asking again instead would loop forever on a slow network.
+ */
+export function extendedDeadline(q: { startedAt: number; endsAt: number }, landedAt: number, lateMs: number): number | null {
+  if (landedAt - q.startedAt <= lateMs) return null;
+  return landedAt + (q.endsAt - q.startedAt);
+}
+
+/**
+ * Answers to count at the end of a round: the final server read, topped up with the live snapshot (or the snapshot
+ * alone if the read failed). Offline nothing can be trusted, not even a read that "succeeded": the SDK then answers
+ * from its local cache. So offline the round cannot be counted (null) and is treated like "nobody could answer":
+ * no life lost, same question again.
+ */
+export function answersToCount(fetched: Record<string, number> | null, latest: Record<string, number>, connected: boolean): Record<string, number> | null {
+  if (!connected) return null;
+  return { ...latest, ...(fetched ?? {}) };
+}

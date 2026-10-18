@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { decideRound, type RoundInput } from './round';
+import { answersToCount, decideRound, extendedDeadline, type RoundInput } from './round';
 import { initialState } from './rules';
 import type { Player } from './types';
 
@@ -48,5 +48,30 @@ describe('decideRound', () => {
   it('a strike on a retry does not build the combo', () => {
     const d = decideRound(base({ attempt: 1, answers: { a: 1, b: 1, c: 1 } }));
     expect(d.kind === 'resolved' && d.result.state.combo).toBe(0);
+  });
+});
+
+describe('extendedDeadline (Lote 11.1)', () => {
+  const q = { startedAt: 10_000, endsAt: 30_000 }; // 20 s question
+  it('on time -> keeps the deadline', () => {
+    expect(extendedDeadline(q, 11_500, 2000)).toBeNull();
+    expect(extendedDeadline(q, 12_000, 2000)).toBeNull();
+  });
+  it('landed late (offline / slow laptop) -> the full time again from when it landed', () => {
+    expect(extendedDeadline(q, 12_001, 2000)).toBe(32_001);
+    expect(extendedDeadline(q, 70_000, 2000)).toBe(90_000); // even long after the old deadline
+  });
+});
+
+describe('answersToCount (Lote 11.3)', () => {
+  it('final read wins over the live snapshot, which only tops it up', () => {
+    expect(answersToCount({ a: 1, b: 2 }, { a: 0, c: 3 }, true)).toEqual({ a: 1, b: 2, c: 3 });
+  });
+  it('read failed while connected -> the live snapshot is up to date', () => {
+    expect(answersToCount(null, { a: 1 }, true)).toEqual({ a: 1 });
+  });
+  it('offline -> cannot count (treated as nobody: no life lost), even if the read "succeeded" from the local cache', () => {
+    expect(answersToCount(null, { a: 1 }, false)).toBeNull();
+    expect(answersToCount({}, {}, false)).toBeNull();
   });
 });

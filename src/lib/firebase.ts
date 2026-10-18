@@ -31,6 +31,9 @@ if (useEmulators) {
 
 let signIn: Promise<string> | null = null;
 
+/** Uid of the signed-in session, if any (the host is always signed in once it has a room). */
+export const currentUid = () => auth.currentUser?.uid ?? null;
+
 /** Anonymous session (kept by the browser, so a reload keeps the same player/host identity). */
 export function ensureSignedIn(): Promise<string> {
   signIn ??= auth.authStateReady().then(async () => auth.currentUser?.uid ?? (await signInAnonymously(auth)).user.uid);

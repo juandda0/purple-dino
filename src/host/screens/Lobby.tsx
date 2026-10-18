@@ -26,6 +26,13 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
   code: string; room: Room; online: Set<string>; onStart: () => void; onBack: () => void; onRemove: (uid: string) => void;
 }) {
   const [qr, setQr] = useState<string | null>(null);
+  // removing takes two clicks/taps on the same student (a projector is often a touch whiteboard)
+  const [armed, setArmed] = useState<string | null>(null);
+  useEffect(() => {
+    if (!armed) return;
+    const t = setTimeout(() => setArmed(null), 3000);
+    return () => clearTimeout(t);
+  }, [armed]);
   useEffect(() => preloadBattleAssets(), []);
   useEffect(() => {
     QRCode.toDataURL(joinUrl(code), { margin: 0, width: 330, color: { dark: '#1B1430', light: '#FFFFFF' }, errorCorrectionLevel: 'M' })
@@ -33,7 +40,9 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
       .catch(() => setQr(null));
   }, [code]);
 
-  const players = Object.entries(room.players ?? {}).sort((a, b) => a[1].joinedAt - b[1].joinedAt);
+  // connected first, then by arrival: if the list overflows ("+N MORE"), the hidden ones are newest and still here,
+  // while stale offline entries stay visible so they can be removed
+  const players = Object.entries(room.players ?? {}).sort((a, b) => Number(online.has(b[0])) - Number(online.has(a[0])) || a[1].joinedAt - b[1].joinedAt);
   const connected = players.filter(([uid]) => online.has(uid));
   const ready = connected.filter(([, p]) => p.ready);
   const waiting = connected.filter(([, p]) => !p.ready).map(([, p]) => p.name);
@@ -97,13 +106,18 @@ export function Lobby({ code, room, online, onStart, onBack, onRemove }: {
             {shown.map(([uid, p]) => {
               const on = online.has(uid);
               return (
-                <div key={uid} className={`player ${p.ready && on ? 'tile pop-in' : 'pop-in'}`} style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: density.small ? 8 : 12, minWidth: 0, padding: density.small ? '0 8px' : '0 12px 0 10px', ...(p.ready && on ? { borderWidth: 3 } : { background: 'rgba(242,238,255,.04)', border: '3px dashed rgba(242,238,255,.22)' }), opacity: on ? 1 : 0.45 }}>
+                <div key={uid} className={`player ${p.ready && on ? 'tile pop-in' : 'pop-in'}`} style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: density.small ? 8 : 12, minWidth: 0, padding: density.small ? '0 8px' : '0 12px 0 10px', ...(p.ready && on ? { borderWidth: 3 } : { background: 'rgba(242,238,255,.04)', border: '3px dashed rgba(242,238,255,.22)' }), opacity: on || armed === uid ? 1 : 0.45 }}>
                   <img src={`${A}/dinos/avatar_${p.avatar}.png`} width={density.small ? 15 : 30} height={density.small ? 17 : 34} alt="" />
                   <span style={{ flex: 1, minWidth: 0, fontWeight: 700, fontSize: density.font, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: p.ready ? 'var(--text)' : 'rgba(242,238,255,.6)' }}>{p.name}</span>
                   {p.ready && on ? <span className="okbox" style={{ width: density.check, height: density.check }}><img src={`${A}/sprites/check.svg`} width={density.small ? 12 : 18} height={density.small ? 9 : 13} alt="ready" /></span>
-                    : <span style={{ width: density.check, textAlign: 'center', fontWeight: 700, fontSize: density.font, color: 'rgba(242,238,255,.45)' }}>{on ? '…' : '×'}</span>}
-                  {/* the teacher can take a student out (stale entry, wrong name); shows on hover/focus */}
-                  <button className="kick" aria-label={`Remove ${p.name}`} title={`Remove ${p.name}`} onClick={() => onRemove(uid)}>×</button>
+                    : <span style={{ minWidth: density.check, textAlign: 'center', fontWeight: 700, fontSize: on ? density.font : Math.round(density.font * 0.65), color: 'rgba(242,238,255,.45)' }}>{on ? '…' : 'OFF'}</span>}
+                  {/* the teacher can take a student out (stale entry, wrong name): × then "REMOVE?" to confirm */}
+                  <button className="kick" style={{ width: density.check, height: density.check }} aria-label={`Remove ${p.name}`} title={`Remove ${p.name}`} onClick={() => setArmed(uid)}>×</button>
+                  {armed === uid ? (
+                    <button className="kick-confirm disp" autoFocus onClick={() => { setArmed(null); onRemove(uid); }} onBlur={() => setArmed(null)} style={{ fontSize: density.small ? 10 : 13 }}>
+                      REMOVE {p.name.toUpperCase()}?
+                    </button>
+                  ) : null}
                 </div>
               );
             })}

@@ -8,7 +8,7 @@ Quiz cooperativo de inglés para clase: la profe proyecta la batalla (`/`) y los
 |---|---|
 | `npm run dev:emu` | Emuladores de Firebase (auth + database) + Vite en http://127.0.0.1:5173 |
 | `npm run dev:lan` | Igual, pero con emuladores en `0.0.0.0` (`firebase.lan.json`) y Vite `--host`, para probar con celulares en la misma red |
-| `npm run verify` | typecheck + lint + tests + tests de reglas (emulador) + build. Levanta su propio emulador de Database: falla con "port taken" si `dev:emu` está corriendo; en ese caso `npx vitest run --config vitest.rules.config.ts` |
+| `npm run verify` | typecheck + lint + tests + tests de reglas (emulador) + build. Levanta su propio emulador de Database: falla con "port taken" si `dev:emu` está corriendo; en ese caso `npx vitest run --config vitest.rules.config.ts` (usa su propio namespace, `demo-purple-dino-rules`: no borra las salas del juego abierto) |
 | `npm test` | Tests de la lógica del juego (Vitest) |
 | `npm run test:rules` | Tests de `database.rules.json` contra el emulador |
 | `npm run assets` | Copia `design/assets` + sprites a `public/assets` (corre solo antes de dev/build) |

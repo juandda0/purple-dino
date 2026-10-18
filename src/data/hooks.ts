@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { serverNow } from '../lib/firebase';
 import type { Room } from '../game/types';
-import { watchRoom } from './room';
+import { watchConnection, watchRoom } from './room';
 
 export type RoomState = { status: 'loading' } | { status: 'missing' } | { status: 'error'; error: Error } | { status: 'ready'; room: Room };
 
@@ -36,4 +36,22 @@ export function useSecondsLeft(endsAt: number | undefined): number {
     return () => clearInterval(id);
   }, [endsAt]);
   return endsAt ? seconds : 0;
+}
+
+/** True once this browser has been disconnected from the database for `afterMs` (short blips are ignored). */
+export function useConnectionLost(afterMs = 3000): boolean {
+  const [lost, setLost] = useState(false);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const stop = watchConnection(connected => {
+      clearTimeout(timer);
+      if (connected) setLost(false);
+      else timer = setTimeout(() => setLost(true), afterMs);
+    });
+    return () => {
+      clearTimeout(timer);
+      stop();
+    };
+  }, [afterMs]);
+  return lost;
 }
