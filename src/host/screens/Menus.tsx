@@ -37,6 +37,7 @@ const Background = () => <img className="bg" src={`${A}/bg/menu.png`} alt="" />;
 export function StartScreen() {
   const go = useHost(s => s.go);
   const [help, setHelp] = useState(false);
+  const [credits, setCredits] = useState(false);
   const start = async () => {
     await music.unlock(); // first user gesture: audio is allowed from now on
     void music.play('lobby'); // the battle song is fetched after the lobby one starts (see music.ts NEXT)
@@ -59,20 +60,71 @@ export function StartScreen() {
       </div>
       <div className="abs col" style={{ left: 600, top: 560, width: 400, gap: 18 }}>
         <button className="btn btn-primary" style={{ padding: '24px 28px', fontSize: 22 }} onClick={start}>CREATE GAME ▶</button>
-        <button className="btn btn-light" style={{ padding: '16px 22px', fontSize: 14 }} onClick={() => { playSfx('popup'); setHelp(true); }}>HOW TO PLAY</button>
+        <div className="row" style={{ gap: 18 }}>
+          <button className="btn btn-light" style={{ flex: 1, padding: '16px 22px', fontSize: 14 }} onClick={() => { playSfx('popup'); setHelp(true); }}>HOW TO PLAY</button>
+          <button className="btn btn-light" style={{ padding: '16px 22px', fontSize: 14 }} onClick={() => { playSfx('popup'); setCredits(true); }}>CREDITS</button>
+        </div>
       </div>
       <div className="abs disp muted" style={{ left: 0, bottom: 28, width: 1600, textAlign: 'center', fontSize: 12, letterSpacing: '.08em' }}>CAMBRIDGE ONE · PASSAGES 3RD EDITION</div>
       {help && <HowToPlay onClose={() => { playSfx('back'); setHelp(false); }} />}
+      {credits && <Credits onClose={() => { playSfx('back'); setCredits(false); }} />}
     </>
   );
 }
 
 function HowToPlay({ onClose }: { onClose: () => void }) {
+  return (
+    <Dialog label="How to play" onClose={onClose}>
+      <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>HOW TO PLAY</div>
+      <ol style={{ fontSize: 26, lineHeight: '36px', paddingLeft: 30 }}>
+        <li>Everyone scans the QR code and joins with their first name.</li>
+        <li>The whole class is the purple dino. Answer on your phone before time runs out.</li>
+        <li>More than half right → <b style={{ color: 'var(--yellow)' }}>SWORD STRIKE</b>. Otherwise the enemy hits the shield.</li>
+        <li>No shield left and another miss → game over. Beat King Dread to save the princess!</li>
+      </ol>
+    </Dialog>
+  );
+}
+
+// Third-party art, sound and music (design/assets/CREDITS.md). JDSherbert's licence requires this credit.
+const CREDITS = [
+  ['UI sound effects', 'JDSherbert — Ultimate UI SFX Pack'],
+  ['First-person art & battle sounds', '"Landlord" — Ferhat Tanman, Eugenia Cheskidova, Sercan Altundaş, Emre Aydın (LÖVE Jam 2020)'],
+  ['Dino characters', 'Arks — DinoCharacters'],
+  ['Skies', 'CraftPix.net — Ocean and Clouds'],
+  ['Castle', 'Pixel_1992 — Sunny Castles'],
+  ['Interface pieces', 'Pixel UI pack 3'],
+  ['Smoke & impact effects', 'Free Smoke Fx Pixel'],
+  ['Music', 'Made with Suno for this game · victory theme and boss remix composed for the project'],
+  ['Fonts', 'Press Start 2P (CodeMan38) and Pixelify Sans — SIL Open Font License'],
+];
+
+function Credits({ onClose }: { onClose: () => void }) {
+  return (
+    <Dialog label="Credits" onClose={onClose}>
+      <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>CREDITS</div>
+      <dl style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '10px 24px', fontSize: 22, lineHeight: '28px' }}>
+        {CREDITS.map(([what, who]) => (
+          <div key={what} style={{ display: 'contents' }}>
+            <dt className="muted" style={{ fontWeight: 500 }}>{what}</dt>
+            <dd style={{ fontWeight: 700 }}>{who}</dd>
+          </div>
+        ))}
+      </dl>
+    </Dialog>
+  );
+}
+
+function Dialog({ label, onClose, children }: { label: string; onClose: () => void; children: React.ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
+  const close = useRef(onClose);
+  useEffect(() => {
+    close.current = onClose;
+  });
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') close.current();
       if (e.key === 'Tab') {
         // keep focus inside the dialog
         const items = box.current?.querySelectorAll<HTMLElement>('button, [href], [tabindex]:not([tabindex="-1"])');
@@ -84,17 +136,11 @@ function HowToPlay({ onClose }: { onClose: () => void }) {
     };
     window.addEventListener('keydown', onKey);
     return () => { window.removeEventListener('keydown', onKey); opener?.focus(); };
-  }, [onClose]);
+  }, []);
   return (
-    <div ref={box} className="abs" style={{ inset: 0, background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label="How to play">
-      <div className="panel pxframe col" style={{ width: 900, padding: '36px 44px', gap: 18 }}>
-        <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>HOW TO PLAY</div>
-        <ol style={{ fontSize: 26, lineHeight: '36px', paddingLeft: 30 }}>
-          <li>Everyone scans the QR code and joins with their first name.</li>
-          <li>The whole class is the purple dino. Answer on your phone before time runs out.</li>
-          <li>More than half right → <b style={{ color: 'var(--yellow)' }}>SWORD STRIKE</b>. Otherwise the enemy hits the shield.</li>
-          <li>No shield left and another miss → game over. Beat King Dread to save the princess!</li>
-        </ol>
+    <div ref={box} className="abs" style={{ inset: 0, background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label={label}>
+      <div className="panel pxframe col" style={{ width: 960, padding: '36px 44px', gap: 18 }}>
+        {children}
         <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, alignSelf: 'flex-end' }} onClick={onClose} autoFocus>GOT IT</button>
       </div>
     </div>

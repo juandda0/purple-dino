@@ -16,7 +16,7 @@ Las fuentes originales están en `design/assets-src/`; `node tools/build-assets.
 | **Free Smoke Fx Pixel 2** | (itch.io / CraftPix) | Revisar la página del pack | Humo de sombra, impactos, polvo |
 | **Ultimate UI SFX Pack (FREE)** | JDSherbert | Uso comercial y no comercial **con crédito obligatorio** a JDSherbert | Sonidos de interfaz (hover, seleccionar, atrás, popup, error) |
 
-Crédito para la pantalla de créditos del juego: *UI SFX by JDSherbert · First-person art & sounds from "Landlord" (Love Jam 2020) · Dinos by Arks · Backgrounds by CraftPix.net · Castles by Pixel_1992*.
+Crédito que muestra la pantalla **CREDITS** del juego (inicio → CREDITS): *UI SFX by JDSherbert · First-person art & sounds from "Landlord" (Love Jam 2020) · Dinos by Arks · Backgrounds by CraftPix.net · Castles by Pixel_1992*.
 
 ## No usados
 - **191_loop.wav** (origen sin indicar) — era la batalla del jefe; reemplazada por el remix de Suno. Sigue en `assets-src/music/` pero ya no se usa.
