@@ -138,7 +138,7 @@ function Dialog({ label, onClose, children }: { label: string; onClose: () => vo
     return () => { window.removeEventListener('keydown', onKey); opener?.focus(); };
   }, []);
   return (
-    <div ref={box} className="abs" style={{ inset: 0, background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label={label}>
+    <div ref={box} className="abs" style={{ inset: 'calc(-1 * var(--oy)) calc(-1 * var(--ox))', background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label={label}>
       <div className="panel pxframe col" style={{ width: 960, padding: '36px 44px', gap: 18 }}>
         {children}
         <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, alignSelf: 'flex-end' }} onClick={onClose} autoFocus>GOT IT</button>
