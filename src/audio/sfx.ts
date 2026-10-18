@@ -23,16 +23,26 @@ export function setSfxMuted(value: boolean) {
   muted = value;
 }
 
+function base(name: Sfx) {
+  let a = cache.get(name);
+  if (!a) {
+    a = new Audio(`/assets/audio/${FILES[name]}`);
+    a.preload = 'auto';
+    cache.set(name, a);
+  }
+  return a;
+}
+
+/** Fetch every effect once (lobby), so the first strike/clank plays on time. */
+export function preloadSfx() {
+  for (const name of Object.keys(FILES) as Sfx[]) base(name).load();
+}
+
 export function playSfx(name: Sfx, volume = 0.6) {
   if (muted) return;
-  let base = cache.get(name);
-  if (!base) {
-    base = new Audio(`/assets/audio/${FILES[name]}`);
-    base.preload = 'auto';
-    cache.set(name, base);
-  }
+  const original = base(name);
   // clone so the same sound can overlap (e.g. several players getting ready at once)
-  const a = base.cloneNode() as HTMLAudioElement;
+  const a = original.cloneNode() as HTMLAudioElement;
   a.volume = volume;
   void a.play().catch(() => undefined);
 }

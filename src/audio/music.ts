@@ -25,6 +25,16 @@ interface Layer {
 
 const BASE = '/assets/audio/';
 
+// Decoded tracks are big (~55 MB each for ~2.5 min of stereo): only keep what is playing or comes next,
+// and fetch the next one after the current one started (never everything at once).
+const NEXT: Record<TrackName, string[]> = {
+  lobby: ['battle'],
+  battle: ['battle_intense', 'victory', 'defeat'],
+  boss: ['boss_intense', 'victory', 'defeat'],
+  victory: ['lobby'],
+  defeat: ['lobby'],
+};
+
 export class Music {
   private ctx: AudioContext | null = null;
   private master!: GainNode;
@@ -76,9 +86,14 @@ export class Music {
     return p;
   }
 
-  /** Starts decoding tracks ahead of time (e.g. the battle songs while in the lobby). */
+  /** Starts decoding tracks ahead of time (e.g. the boss song one stop before the castle). */
   preload(...names: string[]) {
     for (const n of names) void this.load(n);
+  }
+
+  /** Frees decoded tracks that are neither playing nor next. */
+  private release(keep: Set<string>) {
+    for (const name of [...this.buffers.keys()]) if (!keep.has(name)) this.buffers.delete(name);
   }
 
   private layer(name: string, buffer: AudioBuffer, gainValue: number, offset = 0): Layer {
@@ -108,7 +123,10 @@ export class Music {
     main.gain.gain.setTargetAtTime(this.manifest[name]?.volume ?? 1, this.ctx.currentTime, fade / 3);
     const cur = { name, layers: [main] };
     this.current = cur;
-    void this.load(`${name}_intense`);
+    const next = NEXT[name];
+    this.release(new Set([name, `${name}_intense`, ...next]));
+    // prefetch what comes next once this track is already playing (one at a time, idle priority)
+    void next.reduce((p, n) => p.then(() => this.load(n).then(() => undefined)), Promise.resolve());
     const then = this.manifest[name]?.then;
     if (this.manifest[name]?.loop === false) {
       main.src.onended = () => {

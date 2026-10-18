@@ -39,8 +39,7 @@ export function StartScreen() {
   const [help, setHelp] = useState(false);
   const start = async () => {
     await music.unlock(); // first user gesture: audio is allowed from now on
-    void music.play('lobby');
-    music.preload('battle', 'battle_intense', 'boss', 'victory', 'defeat');
+    void music.play('lobby'); // the battle song is fetched after the lobby one starts (see music.ts NEXT)
     playSfx('select');
     go('course');
   };

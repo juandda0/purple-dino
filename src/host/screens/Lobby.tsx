@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { playSfx } from '../../audio/sfx';
 import { DIFFICULTY } from '../../game/rules';
+import { preloadBattleAssets } from '../preload';
 import type { Room } from '../../game/types';
 import { TopBar } from './Menus';
 
@@ -23,6 +24,7 @@ function joinUrl(code: string) {
 
 export function Lobby({ code, room, online, onStart, onBack }: { code: string; room: Room; online: Set<string>; onStart: () => void; onBack: () => void }) {
   const [qr, setQr] = useState<string | null>(null);
+  useEffect(() => preloadBattleAssets(), []);
   useEffect(() => {
     QRCode.toDataURL(joinUrl(code), { margin: 0, width: 330, color: { dark: '#1B1430', light: '#FFFFFF' }, errorCorrectionLevel: 'M' })
       .then(setQr)

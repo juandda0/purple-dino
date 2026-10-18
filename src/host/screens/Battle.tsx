@@ -35,6 +35,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
   // ---- music: battle / boss loop, calm at each new question, panic near the end, duck on reveal
   useEffect(() => {
     void music.play(state.stop === BOSS_STOP ? 'boss' : 'battle');
+    if (state.stop === BOSS_STOP - 1) music.preload('boss'); // one stop ahead, not at the start
   }, [state.stop]);
   useEffect(() => {
     if (room.status === 'question') music.calm();
