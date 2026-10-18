@@ -54,19 +54,19 @@ export function StartScreen() {
   return (
     <>
       <Background />
-      <Sprite src={`${A}/dinos/hero_idle_3x.png`} frames={3} width={360} height={360} duration={0.9} className="abs" style={{ left: 130, top: 440 }} label="Purple dino" />
-      <div className="abs" style={{ left: 1040, top: 360, width: 540, height: 460, background: 'radial-gradient(closest-side, rgba(232,67,76,.28), rgba(232,67,76,0))' }} />
-      <img className="abs" src={`${A}/sprites/enemy_king.svg`} style={{ left: 1060, top: 390, width: 480, height: 400 }} alt="King Dread" />
-      <div className="vignette" />
-      <div className="title-block" style={{ top: 96 }}>
-        <h1 className="disp outline-lg" style={{ fontSize: 96, lineHeight: '104px', color: 'var(--white)', fontWeight: 400 }}>
-          PURPLE<br /><span style={{ color: 'var(--dino-light)' }}>DINO</span>
-        </h1>
-        <div className="disp" style={{ fontSize: 15, letterSpacing: '.14em' }}>FIGHT THE SHADOWS · SAVE THE PRINCESS</div>
-        <div className="muted" style={{ fontWeight: 500, fontSize: 24 }}>A co-op English quiz battle for the whole class</div>
+      <div className="start-art">
+        <Sprite src={`${A}/dinos/hero_idle_3x.png`} frames={3} width={360} height={360} duration={0.9} className="start-hero" label="Purple dino" />
+        <div className="start-glow" />
+        <img className="start-king" src={`${A}/sprites/enemy_king.svg`} alt="King Dread" />
       </div>
-      <div className="abs col" style={{ left: 600, top: 560, width: 400, gap: 18 }}>
-        <button className="btn btn-primary" style={{ padding: '24px 28px', fontSize: 22 }} onClick={start}>CREATE GAME ▶</button>
+      <div className="vignette" />
+      <div className="title-block start-title">
+        <h1 className="disp outline-lg">PURPLE<br /><span style={{ color: 'var(--dino-light)' }}>DINO</span></h1>
+        <div className="disp start-tagline">FIGHT THE SHADOWS · SAVE THE PRINCESS</div>
+        <div className="muted start-sub">A co-op English quiz battle for the whole class</div>
+      </div>
+      <div className="col start-actions">
+        <button className="btn btn-primary start-create" onClick={start}>CREATE GAME ▶</button>
         {/* students can also play from a computer (e.g. a computer lab): same screen as on the phone */}
         <button className="btn btn-light" style={{ padding: '16px 22px', fontSize: 16 }} onClick={() => { playSfx('select'); navigate('/join', { state: { fromStart: true } }); }}>JOIN A GAME</button>
         <div className="row" style={{ gap: 18 }}>
@@ -74,7 +74,7 @@ export function StartScreen() {
           <button className="btn btn-light" style={{ padding: '16px 22px', fontSize: 14 }} onClick={() => { playSfx('popup'); setCredits(true); }}>CREDITS</button>
         </div>
       </div>
-      <div className="abs disp muted" style={{ left: 0, bottom: 28, width: 1600, textAlign: 'center', fontSize: 12, letterSpacing: '.08em' }}>CAMBRIDGE ONE · PASSAGES 3RD EDITION</div>
+      <div className="disp muted start-foot">CAMBRIDGE ONE · PASSAGES 3RD EDITION</div>
       {help && <HowToPlay onClose={() => { playSfx('back'); setHelp(false); }} />}
       {credits && <Credits onClose={() => { playSfx('back'); setCredits(false); }} />}
     </>
@@ -85,7 +85,7 @@ function HowToPlay({ onClose }: { onClose: () => void }) {
   return (
     <Dialog label="How to play" onClose={onClose}>
       <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>HOW TO PLAY</div>
-      <ol style={{ fontSize: 26, lineHeight: '36px', paddingLeft: 30 }}>
+      <ol className="dialog-text" style={{ paddingLeft: '1.2em' }}>
         <li>Everyone scans the QR code and joins with their first name.</li>
         <li>The whole class is the purple dino. Answer on your phone before time runs out.</li>
         <li>More than half right → <b style={{ color: 'var(--yellow)' }}>SWORD STRIKE</b>. Otherwise the enemy hits the shield.</li>
@@ -112,7 +112,7 @@ function Credits({ onClose }: { onClose: () => void }) {
   return (
     <Dialog label="Credits" onClose={onClose}>
       <div className="disp" style={{ fontSize: 22, color: 'var(--dino-light)' }}>CREDITS</div>
-      <dl style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '10px 24px', fontSize: 22, lineHeight: '28px' }}>
+      <dl className="credits">
         {CREDITS.map(([what, who]) => (
           <div key={what} style={{ display: 'contents' }}>
             <dt className="muted" style={{ fontWeight: 500 }}>{what}</dt>
@@ -147,8 +147,8 @@ function Dialog({ label, onClose, children }: { label: string; onClose: () => vo
     return () => { window.removeEventListener('keydown', onKey); opener?.focus(); };
   }, []);
   return (
-    <div ref={box} className="abs" style={{ inset: 'calc(-1 * var(--oy)) calc(-1 * var(--ox))', background: 'rgba(5,3,12,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} role="dialog" aria-modal="true" aria-label={label}>
-      <div className="panel pxframe col" style={{ width: 960, padding: '36px 44px', gap: 18 }}>
+    <div ref={box} className="dialog" role="dialog" aria-modal="true" aria-label={label}>
+      <div className="panel pxframe col dialog-box">
         {children}
         <button className="btn btn-primary" style={{ padding: '18px 24px', fontSize: 16, alignSelf: 'flex-end' }} onClick={onClose} autoFocus>GOT IT</button>
       </div>
@@ -162,26 +162,26 @@ export function CourseScreen() {
     <>
       <Background />
       <TopBar step={0} />
-      <div className="title-block" style={{ top: 140 }}>
+      <div className="title-block menu-title" style={{ top: 140 }}>
         <h1 className="title outline" style={{ fontWeight: 400 }}>CHOOSE YOUR COURSE</h1>
         <div className="subtitle">Only Course 6 is ready for now</div>
       </div>
-      <div className="abs" style={{ left: 180, top: 320, width: 1240, display: 'flex', flexWrap: 'wrap', gap: 26, justifyContent: 'center' }}>
+      <div className="courses">
         {[1, 2, 3, 4, 5, 6, 7].map(n => n === 6 ? (
-          <button key={n} className="tile on col" style={{ width: 290, height: 170, justifyContent: 'center', alignItems: 'flex-start', gap: 12, padding: '0 24px', position: 'relative', textAlign: 'left' }}
+          <button key={n} className="tile on col course" style={{ alignItems: 'flex-start', gap: 12, textAlign: 'left' }}
             onClick={() => { playSfx('select'); go('units'); }}>
-            <span className="disp" style={{ fontSize: 24 }}>COURSE 6</span>
-            <span style={{ fontWeight: 700, fontSize: 22 }}>Passages 3rd Edition</span>
-            <span style={{ fontWeight: 500, fontSize: 18, opacity: 0.85 }}>{unitsWithQuestions(6).length} units ready</span>
+            <span className="disp course-name">COURSE 6</span>
+            <span className="course-book">Passages 3rd Edition</span>
+            <span className="course-ready">{unitsWithQuestions(6).length} units ready</span>
           </button>
         ) : (
-          <div key={n} className="col" style={{ width: 290, height: 170, justifyContent: 'center', gap: 14, padding: '0 24px', background: 'rgba(14,10,30,.82)', border: '4px dashed rgba(242,238,255,.22)', color: 'rgba(242,238,255,.45)' }}>
-            <div className="row" style={{ justifyContent: 'space-between' }}><span className="disp" style={{ fontSize: 20 }}>COURSE {n}</span><span className="lock" /></div>
+          <div key={n} className="col course course-soon">
+            <div className="row" style={{ justifyContent: 'space-between' }}><span className="disp course-name">COURSE {n}</span><span className="lock" /></div>
             <span className="disp" style={{ alignSelf: 'flex-start', padding: '6px 10px', background: 'rgba(242,238,255,.12)', fontSize: 11 }}>COMING SOON</span>
           </div>
         ))}
       </div>
-      <div className="abs" style={{ left: 190, top: 776 }}><BackButton onClick={() => go('start')} /></div>
+      <div className="row menu-foot"><BackButton onClick={() => go('start')} /></div>
     </>
   );
 }
@@ -193,32 +193,32 @@ export function UnitsScreen() {
     <>
       <Background />
       <TopBar step={1} done={['COURSE 6']} />
-      <div className="title-block" style={{ top: 132 }}>
+      <div className="title-block menu-title" style={{ top: 132 }}>
         <h1 className="title outline" style={{ fontWeight: 400 }}>CHOOSE THE UNITS</h1>
         <div className="subtitle">Course 6 · Passages 3rd Edition — which units go into battle?</div>
       </div>
-      <div className="abs panel col" style={{ left: 216, top: 284, width: 1168, gap: 20, padding: '36px 40px 32px' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }} role="group" aria-label="Units">
+      <div className="panel col units-panel">
+        <div className="units" role="group" aria-label="Units">
           {available.map(n => {
             const on = units.includes(n);
             return (
-              <button key={n} className={`tile ${on ? 'on' : ''} col`} aria-pressed={on} style={{ width: 160, height: 132, alignItems: 'center', justifyContent: 'center', gap: 12, position: 'relative' }}
+              <button key={n} className={`tile ${on ? 'on' : ''} col unit`} aria-pressed={on}
                 onClick={() => { playSfx('select'); toggleUnit(n); }}>
                 <span className="disp" style={{ fontSize: 12, letterSpacing: '.12em', opacity: 0.7 }}>UNIT</span>
-                <span className="disp" style={{ fontSize: 44, lineHeight: '44px' }}>{String(n).padStart(2, '0')}</span>
+                <span className="disp unit-n">{String(n).padStart(2, '0')}</span>
                 {on && <span className="okbox" style={{ position: 'absolute', right: -14, top: -14, width: 40, height: 40, background: 'var(--yellow)', borderWidth: 4 }}><img src={`${A}/sprites/check.svg`} width={20} height={14} alt="" /></span>}
               </button>
             );
           })}
         </div>
-        <div className="row" style={{ justifyContent: 'space-between', paddingTop: 18, borderTop: '3px dashed var(--line)' }}>
+        <div className="row units-foot">
           <div className="row" style={{ gap: 16 }}>
             <BackButton onClick={() => go('course')} />
             <button className="btn btn-light" style={{ padding: '18px 24px', fontSize: 14 }} onClick={() => { playSfx('select'); setUnits(units.length === available.length ? [] : available); }}>
               {units.length === available.length ? 'NONE' : 'ALL'}
             </button>
           </div>
-          <div className="col" style={{ alignItems: 'center', gap: 6 }}>
+          <div className="col units-count">
             <div className="disp" style={{ fontSize: 16, color: 'var(--dino-light)' }}>{units.length} UNIT{units.length === 1 ? '' : 'S'}</div>
             <div className="muted" style={{ fontWeight: 500, fontSize: 20 }}>{units.length ? units.join(' · ') : 'Pick at least one'}</div>
           </div>
@@ -257,17 +257,17 @@ export function DifficultyScreen() {
     <>
       <Background />
       <TopBar step={2} done={['COURSE 6', `UNITS ${units.join('·')}`]} />
-      <div className="title-block" style={{ top: 132 }}>
+      <div className="title-block menu-title" style={{ top: 132 }}>
         <h1 className="title outline" style={{ fontWeight: 400 }}>HOW TOUGH?</h1>
         <div className="subtitle">It changes how forgiving the battle is — not the English</div>
       </div>
-      <div className="abs row" style={{ left: 190, top: 292, width: 1220, gap: 40, alignItems: 'flex-start' }} role="radiogroup" aria-label="Difficulty">
+      <div className="diffs" role="radiogroup" aria-label="Difficulty">
         {DIFFS.map(d => {
           const s = DIFFICULTY[d.id];
           const on = d.id === difficulty;
           return (
-            <button key={d.id} role="radio" aria-checked={on} className="panel col" onClick={() => { playSfx('select'); setDifficulty(d.id); }}
-              style={{ width: 380, textAlign: 'left', ...(on ? { transform: 'translateY(-14px)', boxShadow: 'inset 0 0 0 3px var(--line), 0 0 0 4px var(--white), 0 18px 0 var(--edge)' } : {}) }}>
+            <button key={d.id} role="radio" aria-checked={on} className="panel col diff" onClick={() => { playSfx('select'); setDifficulty(d.id); }}
+              style={{ textAlign: 'left', ...(on ? { transform: 'translateY(-14px)', boxShadow: 'inset 0 0 0 3px var(--line), 0 0 0 4px var(--white), 0 18px 0 var(--edge)' } : {}) }}>
               <div className="row" style={{ justifyContent: 'space-between', padding: '20px 24px', background: d.color, boxShadow: `inset 0 -6px 0 ${d.dark}`, borderBottom: '4px solid var(--edge)' }}>
                 <span className="disp outline-sm" style={{ fontSize: 26, color: 'var(--white)' }}>{d.name}</span>
                 <span style={{ fontWeight: 700, fontSize: 18, color: 'var(--ink)' }}>{d.level}</span>
@@ -285,9 +285,9 @@ export function DifficultyScreen() {
           );
         })}
       </div>
-      <div className="abs row" style={{ left: 190, top: 776, width: 1220, justifyContent: 'space-between', gap: 24 }}>
+      <div className="row menu-foot diffs-foot">
         <BackButton onClick={() => go('units')} disabled={busy} />
-        <span className="error-text" role="alert" style={{ flex: 1 }}>{error}</span>
+        <span className="error-text" role="alert">{error}</span>
         <button className="btn btn-primary" style={{ padding: '18px 28px', fontSize: 18 }} onClick={create} disabled={busy}>{busy ? 'CREATING…' : 'CREATE LOBBY ▶'}</button>
       </div>
     </>

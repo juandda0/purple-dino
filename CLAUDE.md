@@ -31,6 +31,7 @@ Puertos: Vite 5173, Auth emulator 9099, Database emulator 9000, Emulator UI 4000
 ## Decisiones
 
 - **React 19 + Vite + TypeScript, sin motor de juego**: la escena es HTML/CSS (escenario 1600×900 = grilla 320×180 ×5). Se puede revisar si el juego necesita movimiento libre o muchas partículas.
+- **Menús fluidos en pantallas compactas**: en celular, tablet vertical o pantallas bajitas (`useCompactScreen`), el inicio y los pasos de crear partida salen del escenario escalado y fluyen en una columna con scroll (`Stage fluid` + reglas `.fluid` en `game.css`). En el proyector se ven igual que siempre; el lobby y la batalla siguen siendo solo escenario.
 - **Firebase Realtime Database** + Auth anónima + Hosting. Sin Cloud Functions en v1: la pantalla del host decide cada ronda.
 - La **respuesta correcta nunca se escribe en la base**; solo vive en la memoria del host y se publica en `reveal.correct` si hubo espadazo.
 - El host y el celular son **chunks separados** (`lazy`): los celulares no descargan el banco de preguntas ni el audio.

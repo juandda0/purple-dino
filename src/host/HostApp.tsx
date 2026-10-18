@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { music } from '../audio/music';
 import { setSfxMuted } from '../audio/sfx';
 import { Stage } from '../ui/Stage';
+import { useCompactScreen } from '../ui/useCompactScreen';
 import { CourseScreen, DifficultyScreen, StartScreen, UnitsScreen } from './screens/Menus';
 import { RoomScreen } from './RoomScreen';
 import { useHost } from './store';
@@ -19,8 +20,12 @@ export default function HostApp() {
     el.classList.add('shake');
   }, []);
 
+  // the lobby and the battle are made for the projector; the menus reflow on phones and portrait tablets
+  const fluid = useCompactScreen() && screen !== 'room';
+
   // after a screen change the pressed button is gone: move focus to the new screen's heading
   useEffect(() => {
+    shaker.current?.closest('.stage-wrap')?.scrollTo({ top: 0 }); // fluid menus scroll: start the new one at the top
     const h = shaker.current?.querySelector<HTMLElement>('h1');
     if (h) {
       h.tabIndex = -1;
@@ -35,8 +40,8 @@ export default function HostApp() {
   }, [muted]);
 
   return (
-    <Stage>
-      <div ref={shaker} className="abs" style={{ inset: 0 }}>
+    <Stage fluid={fluid}>
+      <div ref={shaker} className="host-screens">
         {screen === 'start' && <StartScreen />}
         {screen === 'course' && <CourseScreen />}
         {screen === 'units' && <UnitsScreen />}

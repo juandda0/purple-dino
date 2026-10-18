@@ -88,6 +88,43 @@ button:disabled { cursor: not-allowed; }
 .title-block { position: absolute; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
 .title { font-family: var(--display); font-size: 48px; line-height: 56px; color: var(--white); }
 .subtitle { font-weight: 500; font-size: 26px; line-height: 32px; color: var(--muted); }
+.host-screens { position: absolute; inset: 0; }
+.menu-foot { position: absolute; left: 190px; top: 776px; }
+/* start */
+.start-art { position: absolute; inset: 0; pointer-events: none; }
+.start-hero { position: absolute; left: 130px; top: 440px; }
+.start-glow { position: absolute; left: 1040px; top: 360px; width: 540px; height: 460px; background: radial-gradient(closest-side, rgba(232, 67, 76, .28), rgba(232, 67, 76, 0)); }
+.start-king { position: absolute; left: 1060px; top: 390px; width: 480px; height: 400px; }
+.start-title { top: 96px; }
+.start-title h1 { font-size: 96px; line-height: 104px; color: var(--white); font-weight: 400; }
+.start-tagline { font-size: 15px; letter-spacing: .14em; }
+.start-sub { font-weight: 500; font-size: 24px; }
+.start-actions { position: absolute; left: 600px; top: 560px; width: 400px; gap: 18px; }
+.start-create { padding: 24px 28px; font-size: 22px; }
+.start-foot { position: absolute; left: 0; bottom: 28px; width: 1600px; text-align: center; font-size: 12px; letter-spacing: .08em; }
+/* course, units, difficulty */
+.courses { position: absolute; left: 180px; top: 320px; width: 1240px; display: flex; flex-wrap: wrap; gap: 26px; justify-content: center; }
+.course { width: 290px; height: 170px; justify-content: center; padding: 0 24px; position: relative; }
+.course-name { font-size: 24px; }
+.course-book { font-weight: 700; font-size: 22px; }
+.course-ready { font-weight: 500; font-size: 18px; opacity: .85; }
+.course-soon { gap: 14px; background: rgba(14, 10, 30, .82); border: 4px dashed rgba(242, 238, 255, .22); color: rgba(242, 238, 255, .45); }
+.course-soon .course-name { font-size: 20px; }
+.units-panel { position: absolute; left: 216px; top: 284px; width: 1168px; gap: 20px; padding: 36px 40px 32px; }
+.units { display: flex; flex-wrap: wrap; gap: 20px; }
+.unit { width: 160px; height: 132px; align-items: center; justify-content: center; gap: 12px; position: relative; }
+.unit-n { font-size: 44px; line-height: 44px; }
+.units-foot { justify-content: space-between; padding-top: 18px; border-top: 3px dashed var(--line); }
+.units-count { align-items: center; gap: 6px; text-align: center; }
+.diffs { position: absolute; left: 190px; top: 292px; width: 1220px; display: flex; gap: 40px; align-items: flex-start; }
+.diff { width: 380px; }
+.diffs-foot { width: 1220px; justify-content: space-between; gap: 24px; }
+.diffs-foot .error-text { flex: 1; }
+/* dialogs (how to play, credits): the backdrop covers the whole window */
+.dialog { position: absolute; inset: calc(-1 * var(--oy)) calc(-1 * var(--ox)); background: rgba(5, 3, 12, .75); display: flex; align-items: center; justify-content: center; }
+.dialog-box { width: 960px; padding: 36px 44px; gap: 18px; }
+.dialog-text { font-size: 26px; line-height: 36px; }
+.credits { display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 22px; line-height: 28px; }
 .lock { width: 34px; height: 30px; position: relative; flex-shrink: 0; }
 .lock::before { content: ''; position: absolute; left: 7px; top: 0; width: 20px; height: 18px; border: 5px solid currentColor; border-bottom: none; }
 .lock::after { content: ''; position: absolute; left: 0; bottom: 0; width: 34px; height: 18px; background: currentColor; }
@@ -168,6 +205,82 @@ button:disabled { cursor: not-allowed; }
 }
 
 .edge-br { right: calc(16px - var(--ox)); bottom: calc(16px - var(--oy)); }
+
+/* ---------- fluid menus: start + create game on phones, portrait tablets and short screens (ui/Stage.tsx) ---------- */
+/* no scaled stage: the same screens flow in one centered column and scroll; background and vignette stay put behind */
+.stage-wrap.fluid { display: block; overflow-x: hidden; overflow-y: auto; }
+.screen.fluid { width: 100%; height: auto; min-height: 100%; }
+.fluid .host-screens { position: relative; inset: auto; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; gap: 28px;
+  padding: max(20px, env(safe-area-inset-top)) 16px calc(84px + env(safe-area-inset-bottom)); }
+.fluid .bg, .fluid .vignette { position: fixed; inset: 0; left: 0; top: 0; width: 100%; height: 100%; z-index: -1; }
+.fluid .vignette { box-shadow: inset 0 0 80px 20px rgba(5, 3, 12, .55); }
+.fluid .edge-br { position: fixed; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); }
+.fluid .title-block { position: static; gap: 12px; padding: 0 4px; }
+.fluid .title { font-size: clamp(20px, 6vw, 40px); line-height: 1.3; }
+.fluid .outline { text-shadow: 3px 3px 0 var(--ink), -3px 3px 0 var(--ink), 3px -3px 0 var(--ink), -3px -3px 0 var(--ink), 0 6px 0 var(--ink); }
+.fluid .subtitle { font-size: clamp(17px, 4.6vw, 22px); line-height: 1.3; }
+.fluid .topbar { position: static; width: 100%; max-width: 760px; padding: 0; flex-wrap: wrap; gap: 14px 20px; }
+.fluid .logo { font-size: 13px; line-height: 20px; }
+.fluid .steps { flex-wrap: wrap; gap: 6px; font-size: 9px; letter-spacing: 0; }
+.fluid .steps > .row { gap: 6px !important; }
+.fluid .steps .s { padding: 6px 8px; border-width: 2px; }
+.fluid .steps .ln { width: 8px; height: 3px; }
+.fluid .menu-foot { position: static; width: 100%; max-width: 760px; }
+.fluid .menu-foot .btn { padding: 16px 18px !important; font-size: 12px !important; }
+/* start: title, then the dino facing King Dread, then the buttons */
+.fluid .start-title { order: 1; padding-top: clamp(0px, 4vh, 40px); }
+.fluid .start-title h1 { font-size: clamp(36px, min(15vw, 12vh), 80px); line-height: 1.1; }
+.fluid .start-tagline { font-size: clamp(9px, 2.6vw, 13px); line-height: 1.6; letter-spacing: .08em; }
+.fluid .start-sub { font-size: clamp(17px, 4.8vw, 22px); }
+.fluid .start-art { order: 2; position: relative; inset: auto; display: flex; align-items: flex-end; justify-content: center; gap: clamp(8px, 6vw, 48px); }
+.fluid .start-hero { position: static; --fw: clamp(100px, min(34vw, 26vh), 200px) !important; --fh: clamp(100px, min(34vw, 26vh), 200px) !important; }
+.fluid .start-glow { display: none; }
+.fluid .start-king { position: static; width: clamp(120px, min(40vw, 31vh), 240px); height: auto; aspect-ratio: 6 / 5;
+  background: radial-gradient(closest-side, rgba(232, 67, 76, .28), rgba(232, 67, 76, 0)); }
+.fluid .start-actions { order: 3; position: static; width: 100%; max-width: 400px; gap: 16px; }
+.fluid .start-create { padding: 22px 16px; font-size: clamp(15px, 4.6vw, 20px); }
+.fluid .start-actions .btn-light { font-size: 13px !important; padding: 16px 12px !important; }
+.fluid .start-foot { order: 4; position: static; width: auto; margin-top: auto; font-size: 9px; line-height: 1.6; }
+/* course */
+.fluid .courses { position: static; width: 100%; max-width: 760px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+.fluid .course { width: auto; height: auto; min-height: 96px; padding: 14px; }
+.fluid .course.on { order: -1; grid-column: 1 / -1; min-height: 120px; padding: 18px 20px; } /* the playable one first */
+.fluid .course-name { font-size: 18px; }
+.fluid .course-soon .course-name { font-size: 12px; }
+.fluid .course-book { font-size: 18px; }
+.fluid .course-ready { font-size: 16px; }
+.fluid .course-soon { gap: 10px; }
+.fluid .course-soon > .disp { font-size: 9px !important; }
+.fluid .course .lock { transform: scale(.7); transform-origin: right center; }
+/* units */
+.fluid .units-panel { position: static; width: 100%; max-width: 760px; gap: 18px; padding: 24px 18px 20px; }
+.fluid .units { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 16px; }
+.fluid .unit { width: auto; height: auto; aspect-ratio: 1; min-height: 84px; gap: 8px; }
+.fluid .unit-n { font-size: 28px; line-height: 28px; }
+.fluid .units-foot { flex-wrap: wrap; gap: 14px; }
+.fluid .units-count { order: -1; width: 100%; }
+.fluid .units-foot .btn { padding: 16px 18px !important; font-size: 12px !important; }
+.fluid .units-foot > .btn-primary, .fluid .diffs-foot > .btn-primary { flex-basis: 100%; font-size: 14px !important; padding: 20px 18px !important; }
+/* difficulty: the cards stack; the picked one is outlined instead of lifted */
+.fluid .diffs { position: static; width: 100%; max-width: 760px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; align-items: start; }
+.fluid .diff { width: auto; }
+.fluid .diff[aria-checked='true'] { transform: none !important; }
+.fluid .diff > .row:first-child { padding: 14px 18px !important; }
+.fluid .diff .outline-sm { font-size: 20px !important; }
+.fluid .diff > .col { padding: 18px !important; gap: 12px !important; }
+.fluid .diff .row { font-size: 19px !important; }
+.fluid .diff .crest { width: 33px; height: 30px; }
+.fluid .diffs-foot { flex-wrap: wrap; gap: 14px; }
+.fluid .diffs-foot .error-text { order: -1; flex-basis: 100%; }
+.fluid .diffs-foot .error-text:empty { display: none; }
+/* dialogs */
+.fluid .dialog { position: fixed; inset: 0; z-index: 6; overflow-y: auto; align-items: safe center; padding: 16px; }
+.fluid .dialog-box { width: 100%; max-width: 760px; padding: 24px 20px; gap: 14px; }
+.fluid .dialog-text { font-size: 18px; line-height: 26px; }
+.fluid .credits { grid-template-columns: 1fr; gap: 2px; font-size: 16px; line-height: 22px; }
+.fluid .credits dd { margin-bottom: 10px; }
+.fluid .dialog-box > .disp:first-child { font-size: 16px !important; }
+.fluid .dialog-box > .btn { font-size: 13px !important; padding: 16px 20px !important; }
 
 /* ---------- phone ---------- */
 .phone-app { min-height: 100%; display: flex; justify-content: center; background: linear-gradient(#1E1438, #0E0A1E 70%); }
