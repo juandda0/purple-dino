@@ -42,7 +42,7 @@ export class Music {
     if (!this.ctx) {
       this.ctx = new AudioContext();
       this.master = this.ctx.createGain();
-      this.master.gain.value = 0.8;
+      this.master.gain.value = this.muted ? 0 : 0.8;
       this.tone = this.ctx.createBiquadFilter();
       this.tone.type = 'lowpass';
       this.tone.frequency.value = 20000;

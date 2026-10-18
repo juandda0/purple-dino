@@ -75,6 +75,39 @@ function dinoFist(img, x0, y0, w, h) {
   }
 }
 
+// Extra art pixels added to the left of the attack frames so the sword is not cut by Landlord's frame edge
+const BLADE_EXT = 110;
+/** Continues the blade that touches column 0 for `ext` px to the left, tapering to a point (shading kept per row). */
+function extendBlade(img, ext) {
+  const rows = [];
+  for (let y = 0; y < img.h; y++) if (img.alpha(0, y)) rows.push(y);
+  const out = new Img(img.w + ext, img.h).blit(img, ext, 0);
+  if (!rows.length) return out;
+  const top = rows[0], bottom = rows[rows.length - 1], mid = (top + bottom) / 2, half = (bottom - top) / 2;
+  const tip = 6; // a few px of breathing room before the point
+  for (let x = tip; x < ext; x++) {
+    const h = half * Math.min(1, ((x - tip) / (ext - tip)) * 1.6); // reaches full width ~60% of the way in
+    const y0 = Math.round(mid - h), y1 = Math.round(mid + h);
+    for (let y = y0; y <= y1; y++) {
+      // map the narrower span back onto the original rows so highlight/shadow bands stay
+      const src = y1 === y0 ? Math.round(mid) : Math.round(top + ((y - y0) / (y1 - y0)) * (bottom - top));
+      out.set(x, y, img.get(0, src));
+    }
+  }
+  return out;
+}
+
+// Ordered-dither fade of the first `width` columns (hides the straight cut of Landlord's frame edge)
+const BAYER4 = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+function fadeLeftEdge(img, width) {
+  const o = img.clone();
+  o.forEach((x, y) => {
+    if (x >= width || !o.alpha(x, y)) return;
+    if ((BAYER4[(y % 4) * 4 + (x % 4)] + 0.5) / 16 > x / width) o.set(x, y, null);
+  });
+  return o;
+}
+
 function eraseRect(img, x0, y0, x1, y1) {
   for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) img.set(x, y, null);
   return img;
@@ -194,14 +227,16 @@ async function buildPov() {
     const kept = dropSpecks(white.clone(), 40);
     kept.forEach((x, y) => { if (kept.alpha(x, y)) { arc.set(x, y, '#ffffff'); arm.set(x, y, null); } });
     await arm.save(out('pov', `sword_attack_${i + 1}_arm.png`));
-    // longer forearm (60 more rows continuing the diagonal) so the swing can be raised above the question panel
-    const long = new Img(192, 252).blit(arm, 0, 0);
-    for (let y = 192; y < 252; y++) for (let x = 0; x < 192; x++) {
+    // longer forearm (108 more rows continuing the diagonal): the swing is raised above the question panel and
+    // the arm still reaches the bottom edge on screens taller than 16:9 (down to ~5:4)
+    const long = new Img(192, 300).blit(arm, 0, 0);
+    for (let y = 192; y < 300; y++) for (let x = 0; x < 192; x++) {
       const sx = x - Math.round((y - 191) * 0.9);
       if (sx >= 0) long.set(x, y, arm.get(sx, 191 - ((y - 191) % 5)));
     }
-    await long.save(out('pov', `sword_attack_${i + 1}_arm_long.png`));
-    await arc.save(out('fx', `swing_arc_${i + 1}.png`));
+    // Landlord's 64px frame cuts the blade at its left edge: extend it into a pointed tip (and shift the arc with it)
+    await extendBlade(long, BLADE_EXT).save(out('pov', `sword_attack_${i + 1}_arm_long.png`));
+    await fadeLeftEdge(arc, 48).pad(BLADE_EXT, 0, 0, 0).save(out('fx', `swing_arc_${i + 1}.png`));
   }
   await strip(atkBig).save(out('pov', 'sword_attack_strip.png'));
 }

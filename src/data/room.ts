@@ -7,6 +7,7 @@ import {
   get, onDisconnect, onValue, ref, remove, serverTimestamp, set, update, type Unsubscribe,
 } from 'firebase/database';
 import { db, ensureSignedIn } from '../lib/firebase';
+import { safeStorage } from '../lib/storage';
 import type { GameConfig, Player, Room } from '../game/types';
 
 const HOST_ROOM_KEY = 'purple-dino:host-room';
@@ -109,10 +110,3 @@ export async function readMyAnswer(code: string, key: string): Promise<number | 
   const snap = await get(ref(db, `answers/${code}/${key}/${await ensureSignedIn()}`));
   return snap.exists() ? Number(snap.val()) : null;
 }
-
-// localStorage can throw (private mode, blocked storage): never let that break the game
-export const safeStorage = {
-  get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
-  set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* ignore */ } },
-  remove: (k: string) => { try { localStorage.removeItem(k); } catch { /* ignore */ } },
-};

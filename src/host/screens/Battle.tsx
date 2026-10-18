@@ -129,8 +129,9 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
       {/* swing in front of the panel, raised above it */}
       {striking && (
         <>
-          <img className="abs" src={`${A}/fx/swing_arc_3.png`} style={{ left: 980, top: -330, width: 960, height: 960, opacity: 0.85 }} alt="" />
-          <img className="abs" src={`${A}/pov/sword_attack_2_arm_long.png`} style={{ left: 980, top: -330, width: 960, height: 1260 }} alt="" />
+          {/* frames are 302 art px wide (Landlord's 192 + 110 px of blade we added) -> 1510 px; anchored to the right edge */}
+          <img className="abs swing" src={`${A}/fx/swing_arc_3.png`} style={{ width: 1510, height: 960, opacity: 0.85 }} alt="" />
+          <img className="abs swing" src={`${A}/pov/sword_attack_2_arm_long.png`} style={{ width: 1510, height: 1500 }} alt="" />
           <div className="abs disp outline float-up" style={{ left: 520, top: 400, fontSize: 52, color: 'var(--yellow)' }}>-1</div>
           <div className="abs disp outline pop-in" style={{ left: 0, top: 28, width: 1600, textAlign: 'center', fontSize: 48, lineHeight: '60px', color: 'var(--yellow)', transform: 'rotate(-2deg)' }}>
             {defeated ? `${stop.name} DEFEATED!` : 'SWORD STRIKE!'}

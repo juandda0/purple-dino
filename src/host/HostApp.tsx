@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { music } from '../audio/music';
 import { setSfxMuted } from '../audio/sfx';
 import { Stage } from '../ui/Stage';
@@ -19,11 +19,11 @@ export default function HostApp() {
     el.classList.add('shake');
   }, []);
 
-  const toggleMute = () => {
-    setMuted(!muted);
-    music.setMuted(!muted);
-    setSfxMuted(!muted);
-  };
+  // the sound preference is remembered between sessions
+  useEffect(() => {
+    music.setMuted(muted);
+    setSfxMuted(muted);
+  }, [muted]);
 
   return (
     <Stage>
@@ -34,7 +34,7 @@ export default function HostApp() {
         {screen === 'difficulty' && <DifficultyScreen />}
         {screen === 'room' && code && <RoomScreen code={code} onShake={shake} />}
       </div>
-      <button className="abs tag" style={{ right: 16, bottom: 16, padding: '8px 10px', fontSize: 10, zIndex: 5 }} onClick={toggleMute} aria-pressed={muted}>
+      <button className="abs tag edge-br" style={{ padding: '8px 10px', fontSize: 10, zIndex: 5 }} onClick={() => setMuted(!muted)} aria-pressed={muted}>
         {muted ? 'SOUND OFF' : 'SOUND ON'}
       </button>
     </Stage>

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRoom, useSecondsLeft } from '../data/hooks';
-import { JoinError, joinRoom, leavePresence, readMyAnswer, safeStorage, setReady, submitAnswer } from '../data/room';
+import { JoinError, joinRoom, leavePresence, readMyAnswer, setReady, submitAnswer } from '../data/room';
+import { safeStorage } from '../lib/storage';
 import { ensureSignedIn } from '../lib/firebase';
 import { AVATARS } from '../game/stops';
 import type { Reveal, Room } from '../game/types';
