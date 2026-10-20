@@ -196,21 +196,49 @@ a.btn { text-decoration: none; }
 
 /* first-person arms (192x192 frames -> 960x960) */
 .pov { position: absolute; top: calc(-60px + var(--oy)); width: 960px; height: 960px; pointer-events: none; }
-.pov-shield { left: calc(-110px - var(--ox)); }
-.pov-sword { left: calc(740px + var(--ox)); }
-.swing { left: calc(430px + var(--ox)); top: -330px; pointer-events: none; } /* blade stays above the question panel */
+/* at rest the arms breathe, one asset pixel (5 px) at a time, out of step with each other; faster in panic */
+.pov-shield { left: calc(-110px - var(--ox)); animation: breathe 1.6s step-end infinite; }
+.pov-sword { left: calc(740px + var(--ox)); animation: breathe 1.6s step-end -.8s infinite; }
+.panic .pov { animation-duration: .8s; }
+@keyframes breathe { 0% { transform: translateY(0); } 25% { transform: translateY(-5px); } 50% { transform: translateY(-10px); } 75% { transform: translateY(-5px); } }
 .walking .pov { animation: bob .44s steps(2) infinite alternate; }
 .walking .pov-sword { animation-delay: .22s; }
 @keyframes bob { to { transform: translateY(-20px); } }
-.block .pov-shield { animation: block .35s steps(3) 2; }
+.block .pov-shield { animation: block .35s steps(3) 2, breathe 1.6s step-end .7s infinite; }
 @keyframes block { 50% { transform: translate(10px, -16px); } }
-.pov-shield.shield-up { animation: shieldup .5s steps(2) .9s 3; }
+.pov-shield.shield-up { animation: shieldup .5s steps(2) .9s 3, breathe 1.6s step-end infinite; }
+
+/* sword strike (Battle.tsx, IMPACT_MS = 180): wind-up 0-70 ms, cut 70-180, impact 180-300, follow-through 300-400,
+   then the idle sword rises back to guard with a small overshoot (400-650 ms) and breathes again */
+.swing { left: calc(430px + var(--ox)); top: -330px; width: 1510px; pointer-events: none; background-repeat: no-repeat; image-rendering: pixelated; } /* blade stays above the question panel */
+.swing-arm { height: 1500px; background-size: 6040px 1500px; animation: swing-arm .4s step-end forwards; }
+.swing-arc { height: 960px; background-size: 6040px 960px; animation: swing-arc .4s step-end forwards; }
+@keyframes swing-arm { 0% { background-position: 0 0; } 17.5% { background-position: -1510px 0; } 45% { background-position: -3020px 0; } 75% { background-position: -4530px 0; } 100% { visibility: hidden; } }
+@keyframes swing-still { 100% { visibility: hidden; } }
+@keyframes sword-wait { 0% { visibility: hidden; } 100% { visibility: visible; } }
+@keyframes swing-arc { 0% { visibility: hidden; } 17.5% { visibility: visible; background-position: -1510px 0; opacity: .85; } 45% { background-position: -3020px 0; opacity: .85; } 75% { background-position: -4530px 0; opacity: .5; } 100% { visibility: hidden; } }
+.pov-sword.return { animation: sword-return .65s step-end both, breathe 1.6s step-end .65s infinite; }
+@keyframes sword-return {
+  0% { visibility: hidden; transform: translateY(300px); }
+  61.5% { visibility: visible; transform: translateY(300px); }
+  68% { transform: translateY(110px); } 74.5% { transform: translateY(5px); } 80.8% { transform: translateY(-35px); }
+  87.2% { transform: translateY(-30px); } 93.6% { transform: translateY(-10px); } 100% { transform: translateY(0); }
+}
 @keyframes shieldup { 50% { filter: brightness(1.7) drop-shadow(0 0 24px var(--green)); } }
 
 /* juice */
 .shake { animation: shake .45s steps(6); }
 @keyframes shake { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-14px, 6px); } 40% { transform: translate(12px, -8px); } 60% { transform: translate(-8px, 8px); } 80% { transform: translate(6px, -4px); } }
 .enemy { transition: transform .25s steps(3); }
+/* idle motion per stop (stops.ts `idle`), on a wrapper so the hit / lunge / vanish transforms on .enemy still apply */
+.enemy-body { transform-origin: 50% 100%; }
+.enemy-body.breathe { animation: enemy-breathe 2s step-end infinite; }
+.enemy-body.prowl { animation: enemy-prowl 1.4s step-end infinite; }
+.enemy-body.hover { animation: enemy-hover 1.2s step-end infinite; }
+.panic .enemy-body { animation-duration: 1s; }
+@keyframes enemy-breathe { 0% { transform: none; } 25% { transform: scale(1.01, 1.025); } 50% { transform: scale(1.02, 1.05); } 75% { transform: scale(1.01, 1.025); } }
+@keyframes enemy-prowl { 0% { transform: none; } 25% { transform: translateX(-10px) scaleY(1.03); } 50% { transform: translateX(-10px); } 75% { transform: translateX(5px) scaleY(1.03); } }
+@keyframes enemy-hover { 0% { transform: none; } 25% { transform: translateY(-10px); } 50% { transform: translateY(-20px) rotate(-1deg); } 75% { transform: translateY(-10px); } }
 .enemy.hit { animation: hit .5s steps(2) 3; }
 @keyframes hit { 50% { filter: brightness(3) saturate(0); } }
 .enemy.lunge { transform: scale(1.5) translateY(40px); }
@@ -227,7 +255,11 @@ a.btn { text-decoration: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .walking .pov, .shake, .enemy, .timer.panic, .danger, .confetti-piece, .float-up, .pop-in, .block .pov-shield, .pov-shield.shield-up,
-  .spr:not(.once) { animation: none !important; transition: none !important; }
+  .pov, .enemy-body, .spr:not(.once) { animation: none !important; transition: none !important; }
+  /* the strike without motion: the impact frame for 300 ms, then the sword back in guard */
+  .swing-arm { animation: swing-still .3s step-end forwards !important; background-position: -3020px 0; }
+  .swing-arc { animation: swing-still .3s step-end forwards !important; background-position: -3020px 0; opacity: .85; }
+  .pov-sword.return { animation: sword-wait .3s step-end both !important; }
   .bar > div { transition: none; }
 }
 

@@ -214,6 +214,7 @@ async function buildPov() {
   const atkBig = atkFrames.map((f, i) => dino(f, atkFists[i]));
   for (let i = 0; i < atkBig.length; i++) await atkBig[i].save(out('pov', `sword_attack_${i + 1}.png`));
   // the swing arc is pure white in Landlord: split it into its own layer so it can be placed over the enemy
+  const swingArms = [], swingArcs = [];
   for (let i = 0; i < atkBig.length; i++) {
     const arc = new Img(192, 192), arm = atkBig[i].clone();
     // white pixels not touching the blade, grouped; the big groups are the arc + its sparks
@@ -235,9 +236,14 @@ async function buildPov() {
       if (sx >= 0) long.set(x, y, arm.get(sx, 191 - ((y - 191) % 5)));
     }
     // Landlord's 64px frame cuts the blade at its left edge: extend it into a pointed tip (and shift the arc with it)
-    await extendBlade(long, BLADE_EXT).save(out('pov', `sword_attack_${i + 1}_arm_long.png`));
-    await fadeLeftEdge(arc, 48).pad(BLADE_EXT, 0, 0, 0).save(out('fx', `swing_arc_${i + 1}.png`));
+    swingArms.push(extendBlade(long, BLADE_EXT));
+    swingArcs.push(fadeLeftEdge(arc, 48).pad(BLADE_EXT, 0, 0, 0));
+    await swingArms[i].save(out('pov', `sword_attack_${i + 1}_arm_long.png`));
+    await swingArcs[i].save(out('fx', `swing_arc_${i + 1}.png`));
   }
+  // the in-game swing (Battle.tsx): wind-up, cut, impact, follow-through as CSS-stepped strips, arm and arc in sync
+  await strip(swingArms).save(out('pov', 'sword_swing_strip.png'));
+  await strip(swingArcs).save(out('fx', 'swing_arc_strip.png'));
   await strip(atkBig).save(out('pov', 'sword_attack_strip.png'));
 }
 

@@ -7,7 +7,7 @@ const A = '/assets';
 const IMAGES = [
   `${A}/bg/battle.png`, `${A}/pov/shield_0_full.png`, `${A}/pov/shield_1_scratched.png`, `${A}/pov/shield_2_cracked.png`,
   `${A}/pov/shield_3_split.png`, `${A}/pov/shield_4_gone.png`, `${A}/pov/shield_block_1.png`, `${A}/pov/shield_shards.png`,
-  `${A}/pov/sword_idle.png`, `${A}/pov/sword_attack_2_arm_long.png`, `${A}/fx/swing_arc_3.png`, `${A}/fx/hit_ring.png`,
+  `${A}/pov/sword_idle.png`, `${A}/pov/sword_swing_strip.png`, `${A}/fx/swing_arc_strip.png`, `${A}/fx/hit_ring.png`,
   `${A}/fx/shadow_puff.png`, `${A}/fx/dust.png`, `${A}/ui/hp_frame.png`, `${A}/ui/hp_fill.png`, `${A}/ui/hp_empty.png`,
   `${A}/ui/frame_purple_0.png`, `${A}/ui/crest_full.png`, `${A}/ui/crest_empty.png`,
   ...['icon_triangle', 'icon_diamond', 'icon_star', 'icon_circle', 'check'].map(n => `${A}/sprites/${n}.svg`),

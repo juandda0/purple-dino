@@ -72,7 +72,7 @@
 | 4 | Volcano | **Ashhorn** – tricerátops de sombra | Cuernos y gola, el más pesado |
 | 5 | Castle Gate | **King Dread** (jefe) – T-Rex de sombra con corona | Custodia a la princesa enjaulada |
 
-**Todos los enemigos son dinosaurios de sombra**: siluetas casi negras con un borde de luz morado, humo oscuro alrededor y **ojos rojos brillantes**. Al recibir un espadazo destellan en blanco.
+**Todos los enemigos son dinosaurios de sombra**: siluetas casi negras con un borde de luz morado, humo oscuro alrededor y **ojos rojos brillantes**. Al recibir un espadazo destellan en blanco. Nunca están quietos: respiran, acechan de lado a lado o planean (el de la cueva), y se agitan más en el último tercio del tiempo.
 
 Cada enemigo tiene **vida = número de preguntas que hay que acertar** para derrotarlo (depende de la dificultad). Su barra de vida aparece sobre él.
 
@@ -117,7 +117,7 @@ Cada dificultad usa una parte de estos estados (ver sección 4). Cuando el escud
 ### 3.5 Juice (lo que lo hace divertido)
 
 - **Caminata**: las manos del dino suben y bajan al ritmo de los pasos, fondo con parallax y una mini barra de progreso arriba (dino → castillo).
-- **Espadazo**: la espada cruza la pantalla en arco, destello blanco, el enemigo parpadea, salen números de daño y partículas, y **la pantalla tiembla**.
+- **Espadazo**: la espada cruza la pantalla en arco, destello blanco, el enemigo parpadea, salen números de daño y partículas, y **la pantalla tiembla** justo cuando la hoja conecta. El tajo dura menos de medio segundo (carga, corte, impacto, remate) y el brazo vuelve a la guardia con un pequeño rebote; nunca se queda congelado durante el reveal. En reposo, los dos brazos respiran a destiempo.
 - **Golpe al escudo**: el enemigo se abalanza hacia la cámara, el escudo se sacude, saltan astillas, la pantalla tiembla y se oye un "¡CLANK!".
 - **Mensaje grupal**: "Ana, Luis + 9 more struck" (reconocimiento sin ranking individual).
 - **Combo**: "COMBO x3" si aciertan varias seguidas a la primera.

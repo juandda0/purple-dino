@@ -11,6 +11,8 @@ import { HpBars, Road, ShieldRow, Timer } from '../../ui/Hud';
 import { Sprite } from '../../ui/Sprite';
 
 const A = '/assets';
+/** When the blade connects (the swing strip's 3rd frame in game.css, and the enemyHit sound). */
+const IMPACT_MS = 180;
 const SHIELD_FILE: Record<ShieldSprite, string> = {
   full: 'shield_0_full', scratched: 'shield_1_scratched', cracked: 'shield_2_cracked', split: 'shield_3_split', gone: 'shield_4_gone',
 };
@@ -53,20 +55,25 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
   const latest = useRef({ reveal, combo: state.combo, enemyHp: state.enemyHp, lives: state.lives, onShake });
   latest.current = { reveal, combo: state.combo, enemyHp: state.enemyHp, lives: state.lives, onShake };
   const revealKey = reveal?.key;
+  const [impactKey, setImpactKey] = useState<string | null>(null);
   useEffect(() => {
     const { reveal: r, combo, enemyHp, lives, onShake: shake } = latest.current;
     if (!revealKey || !r) return;
     const timers: Array<ReturnType<typeof setTimeout>> = [];
     if (r.outcome === 'strike') {
       playSfx('swing');
-      timers.push(setTimeout(() => playSfx('enemyHit'), 180));
+      timers.push(setTimeout(() => {
+        playSfx('enemyHit');
+        setImpactKey(revealKey);
+        shake();
+      }, IMPACT_MS));
       if (combo >= 2) timers.push(setTimeout(() => playSfx('combo'), 500));
       if (enemyHp === 0) timers.push(setTimeout(() => playSfx('enemyDefeated'), 900));
       if (r.shieldUp) timers.push(setTimeout(() => playSfx('ready'), 1200));
     } else {
       playSfx(lives <= 1 ? 'shieldBreak' : 'clank');
+      shake();
     }
-    shake();
     return () => timers.forEach(clearTimeout);
   }, [revealKey]);
 
@@ -75,11 +82,13 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
   const hurt = reveal?.outcome === 'shield';
   const shield = shieldFor(difficulty, state.lives);
   const lastChance = isLastChance(state.lives);
-  const defeated = striking && state.enemyHp === 0;
+  const impact = striking && impactKey === revealKey; // the hit effects wait for the blade
+  const finalBlow = striking && state.enemyHp === 0;
+  const defeated = impact && finalBlow;
   const shieldUp = striking && Boolean(reveal.shieldUp);
 
   return (
-    <div className={`abs ${walking ? 'walking' : ''} ${hurt ? 'block' : ''}`} style={{ inset: 0 }}>
+    <div className={`abs ${walking ? 'walking' : ''} ${hurt ? 'block' : ''} ${panic ? 'panic' : ''}`} style={{ inset: 0 }}>
       <img className="bg" src={`${A}/bg/battle.png`} alt="" />
 
       {/* enemy */}
@@ -90,12 +99,14 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
             <HpBars hp={state.enemyHp} max={state.enemyMaxHp} />
           </div>
           <div style={{ position: 'relative', width: stop.width, height: stop.height }}>
-            <img
-              className={`enemy ${striking && !defeated ? 'hit' : ''} ${defeated ? 'gone' : ''} ${hurt ? 'lunge' : ''}`}
-              src={`${A}/sprites/${striking && stop.hitSprite ? stop.hitSprite : hurt && stop.attackSprite ? stop.attackSprite : stop.enemy}.svg`}
-              width={stop.width} height={stop.height} alt={stop.name}
-            />
-            {striking && <Sprite src={`${A}/fx/hit_ring.png`} frames={16} width={240} height={240} duration={0.7} once className="abs" style={{ left: stop.width / 2 - 120, top: stop.height / 2 - 140 }} />}
+            <div className={`enemy-body ${stop.idle}`}>
+              <img
+                className={`enemy ${impact && !defeated ? 'hit' : ''} ${defeated ? 'gone' : ''} ${hurt ? 'lunge' : ''}`}
+                src={`${A}/sprites/${impact && stop.hitSprite ? stop.hitSprite : hurt && stop.attackSprite ? stop.attackSprite : stop.enemy}.svg`}
+                width={stop.width} height={stop.height} alt={stop.name}
+              />
+            </div>
+            {impact && <Sprite src={`${A}/fx/hit_ring.png`} frames={16} width={240} height={240} duration={0.7} once className="abs" style={{ left: stop.width / 2 - 120, top: stop.height / 2 - 140 }} />}
             {defeated && <Sprite src={`${A}/fx/shadow_puff.png`} frames={16} width={320} height={320} duration={1.2} once className="abs" style={{ left: stop.width / 2 - 160, top: stop.height / 2 - 200 }} />}
           </div>
         </div>
@@ -110,7 +121,8 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
       {/* first-person dino arms */}
       <img className={`pov pov-shield ${shieldUp ? 'shield-up' : ''}`} src={`${A}/pov/${hurt && shield !== 'gone' ? 'shield_block_1' : SHIELD_FILE[shield]}.png`} alt="" />
       {hurt && lastChance && <img className="abs float-up" src={`${A}/pov/shield_shards.png`} style={{ left: 20, top: 400, width: 445, height: 400 }} alt="" />}
-      {!striking && <img className="pov pov-sword" src={`${A}/pov/sword_idle.png`} alt="" />}
+      {/* hidden by the swing, then rises back to guard (game.css .return) */}
+      <img className={`pov pov-sword ${striking ? 'return' : ''}`} src={`${A}/pov/sword_idle.png`} alt="" />
 
       <div className="vignette" />
       {(lastChance || panic) && room.status !== 'walking' && <div className="danger" style={panic && !lastChance ? { opacity: 0.6 } : undefined} />}
@@ -139,13 +151,13 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
       {/* swing in front of the panel, raised above it */}
       {striking && (
         <>
-          {/* frames are 302 art px wide (Landlord's 192 + 110 px of blade we added) -> 1510 px; anchored to the right edge */}
-          <img className="abs swing" src={`${A}/fx/swing_arc_3.png`} style={{ width: 1510, height: 960, opacity: 0.85 }} alt="" />
-          <img className="abs swing" src={`${A}/pov/sword_attack_2_arm_long.png`} style={{ width: 1510, height: 1500 }} alt="" />
-          <div className="abs disp outline float-up" style={{ left: 520, top: 400, fontSize: 52, color: 'var(--yellow)' }}>-1</div>
+          {/* wind-up, cut, impact, follow-through: 4 frames of 302 art px (Landlord's 192 + 110 px of blade we added) -> 1510 px */}
+          <div className="abs swing swing-arc" style={{ backgroundImage: `url(${A}/fx/swing_arc_strip.png)` }} />
+          <div className="abs swing swing-arm" style={{ backgroundImage: `url(${A}/pov/sword_swing_strip.png)` }} />
+          {impact && <div className="abs disp outline float-up" style={{ left: 520, top: 400, fontSize: 52, color: 'var(--yellow)' }}>-1</div>}
           {shieldUp && <div className="abs disp outline float-up" style={{ left: 170, top: 430, fontSize: 44, color: 'var(--green)', animationDelay: '.9s', animationFillMode: 'both' }}>+1 SHIELD</div>}
           <div className="abs disp outline pop-in" style={{ left: 0, top: 28, width: 1600, textAlign: 'center', fontSize: 48, lineHeight: '60px', color: 'var(--yellow)', transform: 'rotate(-2deg)' }}>
-            {defeated ? `${stop.name} DEFEATED!` : 'SWORD STRIKE!'}
+            {finalBlow ? `${stop.name} DEFEATED!` : 'SWORD STRIKE!'}
           </div>
         </>
       )}

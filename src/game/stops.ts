@@ -8,15 +8,16 @@ export interface Stop {
   attackSprite?: string; // pose when it hits the shield
   width: number; // display size on the 1600x900 stage
   height: number;
+  idle: 'breathe' | 'prowl' | 'hover'; // idle motion on the battle screen (game.css .enemy-body)
   teaser: string;
 }
 
 export const STOPS: readonly Stop[] = [
-  { name: 'SHADE RAPTOR', scene: 'FOREST', enemy: 'enemy_raptor', hitSprite: 'enemy_raptor_hit', width: 360, height: 252, teaser: 'Something fast moves between the trees…' },
-  { name: 'NIGHTWING', scene: 'THE CAVE', enemy: 'enemy_ptero', width: 432, height: 240, teaser: 'Something moves in the dark…' },
-  { name: 'MIRE SPINE', scene: 'SWAMP', enemy: 'enemy_spino', width: 420, height: 276, teaser: 'A sail of spikes rises from the mud…' },
-  { name: 'ASHHORN', scene: 'VOLCANO', enemy: 'enemy_trike', width: 420, height: 264, teaser: 'The ground shakes. Horns in the smoke…' },
-  { name: 'KING DREAD', scene: 'CASTLE GATE', enemy: 'enemy_king', hitSprite: 'enemy_king_hit', attackSprite: 'enemy_king_roar', width: 480, height: 400, teaser: 'The king of shadows guards the princess.' },
+  { name: 'SHADE RAPTOR', scene: 'FOREST', enemy: 'enemy_raptor', hitSprite: 'enemy_raptor_hit', width: 360, height: 252, idle: 'prowl', teaser: 'Something fast moves between the trees…' },
+  { name: 'NIGHTWING', scene: 'THE CAVE', enemy: 'enemy_ptero', width: 432, height: 240, idle: 'hover', teaser: 'Something moves in the dark…' },
+  { name: 'MIRE SPINE', scene: 'SWAMP', enemy: 'enemy_spino', width: 420, height: 276, idle: 'breathe', teaser: 'A sail of spikes rises from the mud…' },
+  { name: 'ASHHORN', scene: 'VOLCANO', enemy: 'enemy_trike', width: 420, height: 264, idle: 'breathe', teaser: 'The ground shakes. Horns in the smoke…' },
+  { name: 'KING DREAD', scene: 'CASTLE GATE', enemy: 'enemy_king', hitSprite: 'enemy_king_hit', attackSprite: 'enemy_king_roar', width: 480, height: 400, idle: 'breathe', teaser: 'The king of shadows guards the princess.' },
 ];
 
 /** Avatars from the DinoCharacters pack (design/assets/dinos/avatar_*.png). */
