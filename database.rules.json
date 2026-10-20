@@ -63,6 +63,7 @@
             "$i": { ".validate": "$i.matches(/^[01]$/) && newData.isString() && newData.val().length >= 1 && newData.val().length <= 16" }
           },
           "moreStrikers": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200" },
+          "shieldUp": { ".validate": "newData.val() === true && newData.parent().child('outcome').val() === 'strike'" },
           "$other": { ".validate": false }
         },
 

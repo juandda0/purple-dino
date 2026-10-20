@@ -271,6 +271,13 @@ async function buildDinos() {
     const f = (await frames(path.join(DINO_DIR, name, 'idle.png'), 24, 24))[0];
     await f.trim().img.save(out('dinos', `avatar_${name.split('_')[1]}.png`));
   }
+  // each avatar colour also jumps (victory) and falls (game over) in the endings, at Scale3x like the hero
+  for (const name of AVATARS) {
+    for (const anim of ['jump', 'dead']) {
+      const fr = await frames(path.join(DINO_DIR, name, anim + '.png'), 24, 24);
+      await strip(fr.map(f => f.scale3x())).save(out('dinos', `${name.split('_')[1]}_${anim}_3x.png`));
+    }
+  }
   // hero (purple, male/sena) and princess (pink, female/kira): every animation as a strip,
   // at 1x (24px frames) and Scale3x (72px frames) to sit on the 320x180 grid at a "close" distance
   for (const [who, src] of [['hero', 'male_sena'], ['princess', 'female_kira']]) {

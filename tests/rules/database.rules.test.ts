@@ -85,6 +85,14 @@ describe('rooms: the teacher owns her room', () => {
     await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'shield' }));
     await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1, votes: [0, 2, 0, 0] }));
   });
+  it('the streak shield (shieldUp) only comes with a sword strike, and only as true', async () => {
+    await seedQuestion();
+    const reveal = { key: 'kx9a2b-s0q3a0', percent: 80, answered: 3, eligible: 3 };
+    await assertSucceeds(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1, votes: [0, 3, 0, 0], shieldUp: true }));
+    await assertFails(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'shield', shieldUp: true }));
+    await assertFails(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1, shieldUp: false }));
+    await assertFails(set(ref(db('teacher'), `rooms/${CODE}/reveal`), { ...reveal, outcome: 'strike', correct: 1, shieldUp: 'yes' }));
+  });
   it('only the host deletes the room; anyone may clean up an abandoned one', async () => {
     await seed(`rooms/${CODE}`, room());
     await assertFails(remove(ref(db('ana'), `rooms/${CODE}`)));

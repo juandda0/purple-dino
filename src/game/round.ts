@@ -10,6 +10,7 @@ export interface RoundInput {
   answers: Record<string, number>;
   players: Record<string, Player>;
   state: BattleState;
+  maxLives: number; // the difficulty's lives (cap for the streak shield)
 }
 
 export type RoundDecision =
@@ -17,10 +18,10 @@ export type RoundDecision =
   | { kind: 'nobody' }
   | { kind: 'resolved'; result: RoundResult; reveal: Reveal; correct: number };
 
-export function decideRound({ key, answer, attempt, eligible, answers, players, state }: RoundInput): RoundDecision {
+export function decideRound({ key, answer, attempt, eligible, answers, players, state, maxLives }: RoundInput): RoundDecision {
   if (eligible.size === 0) return { kind: 'nobody' };
   const t = tally(answers, eligible, answer);
-  const result = resolveRound(state, isMajority(t.correct, eligible.size) ? 'strike' : 'shield', attempt === 0);
+  const result = resolveRound(state, isMajority(t.correct, eligible.size) ? 'strike' : 'shield', attempt === 0, maxLives);
   const reveal: Reveal = {
     key,
     outcome: result.outcome,
@@ -39,6 +40,7 @@ export function decideRound({ key, answer, attempt, eligible, answers, players, 
       .filter((n): n is string => Boolean(n));
     reveal.strikers = names.slice(0, 2);
     reveal.moreStrikers = Math.max(0, names.length - 2);
+    if (result.shieldUp) reveal.shieldUp = true;
   }
   return { kind: 'resolved', result, reveal, correct: t.correct };
 }

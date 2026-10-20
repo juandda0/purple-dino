@@ -36,6 +36,9 @@ export const shieldFor = (difficulty: Difficulty, livesLeft: number): ShieldSpri
 /** Last chance = the shield is gone and one more miss loses. */
 export const isLastChance = (livesLeft: number) => livesLeft === 1;
 
+/** Every this many first-try strikes in a row (combo x3, x6…) the shield gets one hit back, if it had lost any. */
+export const STREAK_FOR_SHIELD = 3;
+
 export const initialState = (difficulty: Difficulty): BattleState => ({
   stop: 0,
   enemyHp: enemyHpFor(difficulty, 0),
@@ -69,17 +72,19 @@ export function tally(answers: Record<string, number>, eligible: ReadonlySet<str
 }
 
 export type RoundResult =
-  | { outcome: 'strike'; state: BattleState; enemyDefeated: boolean; won: boolean }
+  | { outcome: 'strike'; state: BattleState; enemyDefeated: boolean; won: boolean; shieldUp: boolean }
   | { outcome: 'shield'; state: BattleState; lost: boolean };
 
-/** Applies a round outcome to the battle state. */
-export function resolveRound(state: BattleState, outcome: Outcome, firstAttempt: boolean): RoundResult {
+/** Applies a round outcome to the battle state. `maxLives`: the difficulty's lives, the cap for the streak reward. */
+export function resolveRound(state: BattleState, outcome: Outcome, firstAttempt: boolean, maxLives: number): RoundResult {
   if (outcome === 'strike') {
     const enemyHp = state.enemyHp - 1;
     const combo = firstAttempt ? state.combo + 1 : 0;
     const enemyDefeated = enemyHp <= 0;
     const won = enemyDefeated && state.stop === BOSS_STOP;
-    return { outcome, enemyDefeated, won, state: { ...state, enemyHp: Math.max(0, enemyHp), combo } };
+    const shieldUp = combo > 0 && combo % STREAK_FOR_SHIELD === 0 && state.lives < maxLives;
+    const lives = shieldUp ? state.lives + 1 : state.lives;
+    return { outcome, enemyDefeated, won, shieldUp, state: { ...state, enemyHp: Math.max(0, enemyHp), combo, lives } };
   }
   const lives = state.lives - 1;
   return { outcome, lost: lives <= 0, state: { ...state, lives: Math.max(0, lives), combo: 0 } };

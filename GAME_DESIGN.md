@@ -121,7 +121,8 @@ Cada dificultad usa una parte de estos estados (ver sección 4). Cuando el escud
 - **Golpe al escudo**: el enemigo se abalanza hacia la cámara, el escudo se sacude, saltan astillas, la pantalla tiembla y se oye un "¡CLANK!".
 - **Mensaje grupal**: "Ana, Luis + 9 more struck" (reconocimiento sin ranking individual).
 - **Combo**: "COMBO x3" si aciertan varias seguidas a la primera.
-- **Final**: King Dread se desvanece en humo, el dino abre la jaula y la princesa sale; confeti pixel al amanecer.
+- **Escudo por racha**: cada 3 espadazos seguidos a la primera (combo x3, x6…) el escudo recupera un golpe, si había perdido alguno (nunca pasa de las vidas de la dificultad). En el proyector: "STREAK x3 · SHIELD +1", "+1 SHIELD" flotando y el escudo brilla; en el celular, "PACK STREAK · SHIELD +1". Sale en `reveal.shieldUp` (solo con espadazo).
+- **Final**: King Dread se desvanece en humo, el dino abre la jaula y la princesa sale; confeti pixel al amanecer. En los dos finales salen los dinos que eligió la clase (hasta 4 colores, los más elegidos), no el morado por defecto: saltan junto a la princesa al ganar y quedan caídos al perder. En cada celular sale el dino de ese alumno.
 - **Música chiptune** por escenario + efectos de sonido (solo en el proyector; los celulares en silencio).
 
 ---
@@ -242,7 +243,7 @@ rooms/{code}
   state: { stop, enemyHp, enemyMaxHp, lives, combo, questionNumber }
   question: { key, text, options[4], unit, attempt, startedAt, endsAt, eligible }   ← SIN la respuesta correcta
   reveal: { key, outcome: "strike" | "shield", percent, answered, eligible,
-            votes[], correct, strikers[], moreStrikers }   ← votes/correct/strikers/moreStrikers solo si hubo espadazo
+            votes[], correct, strikers[], moreStrikers, shieldUp }   ← votes/correct/strikers/moreStrikers/shieldUp solo si hubo espadazo
   players/{uid}: { name, avatar, ready, joinedAt }
 hostRooms/{uid}: code                     ← una sala por profe
 presence/{code}/{uid}: true               ← quién está conectado ahora
@@ -261,7 +262,7 @@ answers/{code}/{key}/{uid}: optionIndex   ← una respuesta por alumno y ronda
 > **Mockups actuales: HTML local en `design/mockups/`** (abrir `index.html` con un servidor local). Incluyen las 11 pantallas del proyector y las 7 del celular, en inglés y con el estilo nuevo.
 > **Assets de terceros (prioridad sobre lo dibujado a mano):** `design/tools/build-assets.js` (`cd design && npm i && npm run assets`) toma los packs de `design/assets-src/` y genera `design/assets/` unificados a la grilla 320×180 (galería en `mockups/assets.html`, créditos y licencias en `design/assets/CREDITS.md`):
 > - **POV**: el jugador en primera persona de *Landlord* espejado (escudo izq., espada der.), con los puños repintados como garras moradas de dino; 5 estados del escudo de acero (intacto → rayado → agrietado → partido → sin escudo), bloqueo, ataque y escudo en pedazos.
-> - **Dinos**: héroe morado y princesa rosada (con corona) del pack *DinoCharacters*, con todas sus animaciones; 12 avatares de colores para el lobby.
+> - **Dinos**: héroe morado y princesa rosada (con corona) del pack *DinoCharacters*, con todas sus animaciones; 12 avatares de colores para el lobby, y de cada color el salto y la caída (`<color>_jump_3x` / `<color>_dead_3x`) para los finales.
 > - **Castillos**: *Sunny Castle #18* (Pixel_1992) = el castillo liberado (victoria). *Lamora* queda generado (`bg/title.png`, `bg/gameover_castle.png`) pero no se usa: con tanto detalle tapaba el título y los textos; inicio y game over usan fondos más limpios (noche con luna y bosque nocturno).
 > - **Fondos**: cielos de *Ocean and Clouds* detrás del terreno de `sprites.py`. **UI**: crestas de escudo (vidas), barras de vida, emblemas y marcos de *Pixel UI pack 3*. **FX**: humo e impactos de *Free Smoke Fx*. **Sonido**: UI de JDSherbert y efectos de batalla (golpes, escudo) de *Landlord*; la música no viene de Landlord (ver abajo).
 > - **Música** (`mockups/music.js`, prueba en `mockups/musica.html`, `npm run music`): lobby, batalla, jefe, ganar y perder. Durante cada pregunta hay un solo umbral (`PANIC_AT = 1/3` en `src/audio/music.ts`): calma hasta el último tercio del tiempo y luego pánico, con la pista intensa, +12 % de tempo, latido, tic-tac y una subida de ruido; al llegar a 0 suena un golpe y la música baja. Pistas: lobby, batalla, batalla intensa y game over generadas en Suno (prompts en `design/SUNO_PROMPTS.md`), con puntos de loop que saltan el final de cada canción; jefe = remix del tema intenso de Suno con capas de órgano, coro y percusión (`bossRemix()`); victoria compuesta en `build-music.js` (Mi mayor, 150 BPM) y luego vuelve el lobby.

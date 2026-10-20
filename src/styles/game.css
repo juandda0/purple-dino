@@ -204,6 +204,8 @@ a.btn { text-decoration: none; }
 @keyframes bob { to { transform: translateY(-20px); } }
 .block .pov-shield { animation: block .35s steps(3) 2; }
 @keyframes block { 50% { transform: translate(10px, -16px); } }
+.pov-shield.shield-up { animation: shieldup .5s steps(2) .9s 3; }
+@keyframes shieldup { 50% { filter: brightness(1.7) drop-shadow(0 0 24px var(--green)); } }
 
 /* juice */
 .shake { animation: shake .45s steps(6); }
@@ -224,7 +226,7 @@ a.btn { text-decoration: none; }
 @keyframes fall { from { transform: translateY(-40px); } to { transform: translateY(940px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .walking .pov, .shake, .enemy, .timer.panic, .danger, .confetti-piece, .float-up, .pop-in, .block .pov-shield,
+  .walking .pov, .shake, .enemy, .timer.panic, .danger, .confetti-piece, .float-up, .pop-in, .block .pov-shield, .pov-shield.shield-up,
   .spr:not(.once) { animation: none !important; transition: none !important; }
   .bar > div { transition: none; }
 }

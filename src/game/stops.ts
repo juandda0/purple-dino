@@ -22,3 +22,7 @@ export const STOPS: readonly Stop[] = [
 /** Avatars from the DinoCharacters pack (design/assets/dinos/avatar_*.png). */
 export const AVATARS = ['sena', 'olaf', 'tard', 'loki', 'kira', 'cole', 'mort', 'doux', 'nico', 'vita', 'mono', 'kuro'] as const;
 export type Avatar = (typeof AVATARS)[number];
+export const DINO_COLORS: Record<Avatar, string> = {
+  sena: 'Purple', olaf: 'Green', tard: 'Orange', loki: 'Blue', kira: 'Pink', cole: 'Lavender',
+  mort: 'Red', doux: 'Teal', nico: 'Brown', vita: 'Olive', mono: 'White', kuro: 'Black',
+};

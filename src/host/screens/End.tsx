@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { DIFFICULTY } from '../../game/rules';
+import { AVATARS, DINO_COLORS, type Avatar } from '../../game/stops';
 import type { Room } from '../../game/types';
 import { Road } from '../../ui/Hud';
 import { Sprite } from '../../ui/Sprite';
@@ -37,6 +38,42 @@ function Confetti() {
   );
 }
 
+/** The colours the class picked, most picked first (at most 4): the endings show the pack, not a default dino. */
+function packAvatars(room: Room): Avatar[] {
+  const count = new Map<Avatar, number>();
+  for (const p of Object.values(room.players ?? {})) {
+    const a = p.avatar as Avatar;
+    if (AVATARS.includes(a)) count.set(a, (count.get(a) ?? 0) + 1);
+  }
+  return [...count].sort((x, y) => y[1] - x[1]).slice(0, 4).map(([a]) => a);
+}
+
+const PACK_SIZE = [360, 288, 252, 216]; // one frame (72 px strips) for 1..4 dinos
+
+/** The class's dinos side by side across [left, left + width], feet at `top + 360`; every other one stands a bit behind. */
+function Pack({ room, won, left, width, top }: { room: Room; won: boolean; left: number; width: number; top: number }) {
+  const avatars = packAvatars(room);
+  if (!avatars.length) {
+    // nobody left in the room: the classic purple hero
+    return won
+      ? <Sprite src={`${A}/dinos/hero_jump_3x.png`} frames={4} width={360} height={360} duration={0.7} className="abs" style={{ left: left + width - 360, top }} label="Purple dino jumping" />
+      : <Sprite src={`${A}/dinos/hero_dead_3x.png`} frames={5} frame={2} width={360} height={360} className="abs" style={{ left: left + width - 360, top }} label="Defeated dino" />;
+  }
+  const size = PACK_SIZE[avatars.length - 1]!;
+  const step = avatars.length > 1 ? (width - size) / (avatars.length - 1) : 0;
+  return (
+    <>
+      {avatars.map((a, i) => {
+        const style = { left: left + width - size - i * step, top: top + 360 - size - (i % 2 ? 30 : 0), zIndex: i % 2 ? 0 : 1, animationDelay: `${-i * 0.18}s` };
+        const label = `${DINO_COLORS[a]} dino ${won ? 'jumping' : 'defeated'}`;
+        return won
+          ? <Sprite key={a} src={`${A}/dinos/${a}_jump_3x.png`} frames={4} width={size} height={size} duration={0.7} className="abs" style={style} label={label} />
+          : <Sprite key={a} src={`${A}/dinos/${a}_dead_3x.png`} frames={5} frame={2} width={size} height={size} className="abs" style={style} label={label} />;
+      })}
+    </>
+  );
+}
+
 const Stat = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <div className="row" style={{ justifyContent: 'space-between', fontSize: 22, fontWeight: 500 }}><span>{label}</span>{children}</div>
 );
@@ -50,7 +87,7 @@ export function Victory({ room, stats, onPlayAgain, onExit }: EndProps) {
       <img className="bg" src={`${A}/bg/victory.png`} alt="" />
       <Confetti />
       <img className="abs" src={`${A}/sprites/cage.svg`} style={{ left: 1200, top: 470, width: 180, height: 240 }} alt="Open cage" />
-      <Sprite src={`${A}/dinos/hero_jump_3x.png`} frames={4} width={360} height={360} duration={0.7} className="abs" style={{ left: 470, top: 450 }} label="Purple dino jumping" />
+      <Pack room={room} won left={470} width={420} top={450} />
       <Sprite src={`${A}/dinos/princess_idle_3x.png`} frames={3} width={360} height={420} duration={0.9} className="abs" style={{ left: 880, top: 390 }} label="The princess" />
       <div className="title-block" style={{ top: 24 }}>
         <img src={`${A}/ui/emblem_purple.png`} width={160} height={80} alt="" />
@@ -88,7 +125,7 @@ export function GameOver({ room, stats, onPlayAgain, onChangeUnits, onExit }: En
         <div style={{ fontWeight: 700, fontSize: 30 }}>The shadows win… this time.</div>
         <Road stop={state?.stop ?? 0} dim />
       </div>
-      <Sprite src={`${A}/dinos/hero_dead_3x.png`} frames={5} frame={2} width={360} height={360} className="abs" style={{ left: 620, top: 470 }} label="Defeated dino" />
+      <Pack room={room} won={false} left={500} width={480} top={470} />
       <img className="abs" src={`${A}/pov/shield_shards.png`} style={{ left: 930, top: 700, width: 267, height: 240 }} alt="Broken shield" />
       <div className="abs panel col" style={{ left: 40, bottom: 48, width: 420, gap: 14, padding: '24px 26px 30px' }}>
         <div className="disp" style={{ fontSize: 14, letterSpacing: '.06em', color: 'var(--red)' }}>THE SHIELD BROKE</div>

@@ -58,6 +58,7 @@ export interface Reveal {
   eligible: number;
   strikers?: string[]; // first names of those who got it right (strike only, max 2) …
   moreStrikers?: number; // … plus how many more
+  shieldUp?: boolean; // strike only: the streak (combo x3, x6…) repaired one hit of the shield
 }
 
 export interface Player {

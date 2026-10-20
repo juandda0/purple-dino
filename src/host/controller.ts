@@ -224,7 +224,7 @@ export class GameController {
     // R11: whoever left during the question without answering does not count (if nobody is left: "nobody", no life lost)
     const counted = countedAtEnd(round.eligible, answers, this.online);
 
-    const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: counted, answers, players: this.players, state: this.state });
+    const decision = decideRound({ key: round.key, answer: round.answer, attempt: round.attempt, eligible: counted, answers, players: this.players, state: this.state, maxLives: DIFFICULTY[this.config.difficulty].lives });
     if (decision.kind === 'nobody') {
       // nobody could answer (e.g. the Wi-Fi dropped): no penalty, same question again
       this.later(TIMING.nobodyMs, () => this.ask(false, true));

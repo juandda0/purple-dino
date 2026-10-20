@@ -62,6 +62,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
       timers.push(setTimeout(() => playSfx('enemyHit'), 180));
       if (combo >= 2) timers.push(setTimeout(() => playSfx('combo'), 500));
       if (enemyHp === 0) timers.push(setTimeout(() => playSfx('enemyDefeated'), 900));
+      if (r.shieldUp) timers.push(setTimeout(() => playSfx('ready'), 1200));
     } else {
       playSfx(lives <= 1 ? 'shieldBreak' : 'clank');
     }
@@ -75,6 +76,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
   const shield = shieldFor(difficulty, state.lives);
   const lastChance = isLastChance(state.lives);
   const defeated = striking && state.enemyHp === 0;
+  const shieldUp = striking && Boolean(reveal.shieldUp);
 
   return (
     <div className={`abs ${walking ? 'walking' : ''} ${hurt ? 'block' : ''}`} style={{ inset: 0 }}>
@@ -106,7 +108,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
       )}
 
       {/* first-person dino arms */}
-      <img className="pov pov-shield" src={`${A}/pov/${hurt && shield !== 'gone' ? 'shield_block_1' : SHIELD_FILE[shield]}.png`} alt="" />
+      <img className={`pov pov-shield ${shieldUp ? 'shield-up' : ''}`} src={`${A}/pov/${hurt && shield !== 'gone' ? 'shield_block_1' : SHIELD_FILE[shield]}.png`} alt="" />
       {hurt && lastChance && <img className="abs float-up" src={`${A}/pov/shield_shards.png`} style={{ left: 20, top: 400, width: 445, height: 400 }} alt="" />}
       {!striking && <img className="pov pov-sword" src={`${A}/pov/sword_idle.png`} alt="" />}
 
@@ -117,6 +119,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
       <div className="abs hud-left">
         <Road stop={state.stop} />
         <ShieldRow lives={state.lives} maxLives={DIFFICULTY[difficulty].lives} />
+        {shieldUp && <div className="tag pop-in" role="status" style={{ padding: '8px 14px', fontSize: 16, background: 'var(--green)', color: 'var(--ink)' }}>STREAK x{state.combo} · SHIELD +1</div>}
       </div>
       <div className="abs hud-right">
         <div className="tag" style={{ padding: '10px 16px', fontSize: 18 }}>STOP {state.stop + 1}/5 · {stop.scene}</div>
@@ -140,6 +143,7 @@ export function Battle({ room, answered, eligible, onShake }: Props) {
           <img className="abs swing" src={`${A}/fx/swing_arc_3.png`} style={{ width: 1510, height: 960, opacity: 0.85 }} alt="" />
           <img className="abs swing" src={`${A}/pov/sword_attack_2_arm_long.png`} style={{ width: 1510, height: 1500 }} alt="" />
           <div className="abs disp outline float-up" style={{ left: 520, top: 400, fontSize: 52, color: 'var(--yellow)' }}>-1</div>
+          {shieldUp && <div className="abs disp outline float-up" style={{ left: 170, top: 430, fontSize: 44, color: 'var(--green)', animationDelay: '.9s', animationFillMode: 'both' }}>+1 SHIELD</div>}
           <div className="abs disp outline pop-in" style={{ left: 0, top: 28, width: 1600, textAlign: 'center', fontSize: 48, lineHeight: '60px', color: 'var(--yellow)', transform: 'rotate(-2deg)' }}>
             {defeated ? `${stop.name} DEFEATED!` : 'SWORD STRIKE!'}
           </div>

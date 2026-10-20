@@ -5,16 +5,12 @@ import { JoinError, joinRoom, leavePresence, readMyAnswer, setReady, submitAnswe
 import { safeStorage } from '../lib/storage';
 import { ensureSignedIn } from '../lib/firebase';
 import { cleanName } from '../game/names';
-import { AVATARS } from '../game/stops';
+import { AVATARS, DINO_COLORS } from '../game/stops';
 import type { Reveal, Room } from '../game/types';
 import { ANSWER_STYLES } from '../ui/answers';
 
 const A = '/assets';
 const PROFILE_KEY = 'purple-dino:profile';
-const DINO_COLORS: Record<string, string> = {
-  sena: 'Purple', olaf: 'Green', tard: 'Orange', loki: 'Blue', kira: 'Pink', cole: 'Lavender',
-  mort: 'Red', doux: 'Teal', nico: 'Brown', vita: 'Olive', mono: 'White', kuro: 'Black',
-};
 const JOINED_KEY = (code: string) => `purple-dino:joined:${code}`;
 
 interface Profile { name: string; avatar: string }
@@ -214,7 +210,7 @@ function InRoom({ code, uid }: { code: string; uid: string }) {
     case 'reveal':
       return <Result head={head} reveal={room.reveal!} mine={answers[room.reveal!.key]} lives={room.state?.lives ?? 0} streak={personal.streak} />;
     default:
-      return <Final room={room} personal={personal} name={me.name} />;
+      return <Final room={room} personal={personal} name={me.name} avatar={me.avatar} />;
   }
 }
 
@@ -380,6 +376,7 @@ function Result({ head, reveal, mine, lives, streak }: { head: React.ReactNode; 
             {right ? <><span className="okbox" style={{ width: 30, height: 30 }}><img src={`${A}/sprites/check.svg`} width={18} height={13} alt="" /></span>You got it right{streak >= 2 ? ` · streak x${streak}` : ''}</> : mine == null ? "You didn't answer this time" : 'Not this one — the pack had your back'}
           </div>
         )}
+        {strike && reveal.shieldUp && <div className="tag" style={{ padding: '8px 12px', fontSize: 11, background: 'var(--green)', color: 'var(--ink)' }}>PACK STREAK · SHIELD +1</div>}
         {!strike && lives === 1 && <div className="tag" style={{ padding: '8px 12px', fontSize: 11, background: 'var(--red)' }}>LAST CHANCE</div>}
         <div className="card row" style={{ justifyContent: 'space-between', padding: '16px 18px', fontWeight: 500, fontSize: 20, width: '100%' }}>
           <span>Class</span><b style={{ color: strike ? 'var(--text)' : 'var(--red)' }}>{reveal.percent}% correct</b>
@@ -390,14 +387,14 @@ function Result({ head, reveal, mine, lives, streak }: { head: React.ReactNode; 
   );
 }
 
-function Final({ room, personal, name }: { room: Room; personal: Personal; name: string }) {
+function Final({ room, personal, name, avatar }: { room: Room; personal: Personal; name: string; avatar: string }) {
   const won = room.status === 'won';
   const avg = personal.percents.length ? Math.round(personal.percents.reduce((a, b) => a + b, 0) / personal.percents.length) : 0;
   return (
     <div className={`phone ${won ? '' : 'hurt'}`} style={won ? { background: `url(${A}/castles/sunny_18.png) center top / 100% auto no-repeat`, imageRendering: 'pixelated' } : undefined}>
       <div className="center-col" style={{ justifyContent: 'flex-start', paddingTop: won ? 40 : 20 }}>
         <div className="row" style={{ alignItems: 'flex-end', gap: 4 }}>
-          <div className="spr" style={{ '--n': won ? 4 : 5, '--fw': '144px', '--fh': '144px', '--t': '.7s', '--f': 2, backgroundImage: `url(${A}/dinos/${won ? 'hero_jump_3x' : 'hero_dead_3x'}.png)`, ...(won ? {} : { animation: 'none', backgroundPosition: '-288px 0' }) } as React.CSSProperties} aria-hidden="true" />
+          <div className="spr" style={{ '--n': won ? 4 : 5, '--fw': '144px', '--fh': '144px', '--t': '.7s', '--f': 2, backgroundImage: `url(${A}/dinos/${avatar}_${won ? 'jump' : 'dead'}_3x.png)`, ...(won ? {} : { animation: 'none', backgroundPosition: '-288px 0' }) } as React.CSSProperties} aria-hidden="true" />
           {won && <div className="spr" style={{ '--n': 3, '--fw': '144px', '--fh': '168px', '--t': '.9s', backgroundImage: `url(${A}/dinos/princess_idle_3x.png)` } as React.CSSProperties} aria-hidden="true" />}
         </div>
         <h1 className="disp outline-sm" style={{ fontSize: 24, lineHeight: '34px', fontWeight: 400, color: won ? 'var(--white)' : 'var(--red)' }}>

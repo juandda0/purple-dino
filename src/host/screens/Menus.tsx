@@ -89,6 +89,7 @@ function HowToPlay({ onClose }: { onClose: () => void }) {
         <li>Everyone scans the QR code and joins with their first name.</li>
         <li>The whole class is the purple dino. Answer on your phone before time runs out.</li>
         <li>More than half right → <b style={{ color: 'var(--yellow)' }}>SWORD STRIKE</b>. Otherwise the enemy hits the shield.</li>
+        <li>3 strikes in a row on the first try → <b style={{ color: 'var(--green)' }}>the shield gets one hit back</b>.</li>
         <li>No shield left and another miss → game over. Beat King Dread to save the princess!</li>
       </ol>
     </Dialog>
