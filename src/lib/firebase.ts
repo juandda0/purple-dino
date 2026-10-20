@@ -2,7 +2,7 @@
 // to the local emulators (npm run dev:emu); the emulator host follows the page host so phones on the same Wi-Fi
 // can reach a laptop running `npm run dev:lan` (see README).
 import { initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth, signInAnonymously } from 'firebase/auth';
+import { browserLocalPersistence, browserSessionPersistence, connectAuthEmulator, indexedDBLocalPersistence, initializeAuth, signInAnonymously } from 'firebase/auth';
 import { connectDatabaseEmulator, getDatabase, onValue, ref } from 'firebase/database';
 
 const env = import.meta.env;
@@ -21,7 +21,7 @@ const app = initializeApp({
 /** A production build without a real Firebase project (scripts/check-env.mjs blocks deploying it). */
 export const misconfigured = !useEmulators && (!env.VITE_FIREBASE_DATABASE_URL?.startsWith('https://') || env.VITE_FIREBASE_PROJECT_ID?.startsWith('demo-'));
 
-export const auth = getAuth(app);
+export const auth = initializeAuth(app, { persistence: [indexedDBLocalPersistence, browserLocalPersistence, browserSessionPersistence] });
 export const db = getDatabase(app);
 
 if (useEmulators) {

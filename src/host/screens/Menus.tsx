@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { music } from '../../audio/music';
 import { playSfx } from '../../audio/sfx';
 import { createRoom } from '../../data/room';
 import { unitsWithQuestions } from '../../game/questions';
 import { DIFFICULTY } from '../../game/rules';
 import type { Difficulty } from '../../game/types';
+import { navigate } from '../../lib/router';
 import { Sprite } from '../../ui/Sprite';
 import { useHost } from '../store';
 
@@ -42,7 +42,6 @@ function BackButton({ onClick, disabled = false }: { onClick: () => void; disabl
 
 export function StartScreen() {
   const go = useHost(s => s.go);
-  const navigate = useNavigate();
   const [help, setHelp] = useState(false);
   const [credits, setCredits] = useState(false);
   const start = async () => {

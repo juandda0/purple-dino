@@ -264,9 +264,9 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 - [ ] Aprobar
 - Quita el banco de respuestas del cliente (riesgo aceptado hoy). Requiere Blaze. Esfuerzo alto.
 
-### Oportunidad M — Quitar `react-router-dom` · rendimiento · DESPUÉS · pendiente
-- [ ] Aprobar
-- ~20 KB gz menos para el celular con 3 rutas simples.
+### Oportunidad M — Quitar `react-router-dom` · rendimiento · DESPUÉS · hecho (2026-10-19)
+- [x] Aprobar
+- `src/lib/router.ts` (History API). Junto con `initializeAuth` sin resolver de popups: el chunk inicial pasó de 154 a 134 KB gz. React + Firebase van en un chunk `vendor` aparte, que sobrevive a los deploys del juego en la caché del celular.
 
 ### Oportunidad N — Estilos repetidos a clases · calidad · DESPUÉS · pendiente
 - [ ] Aprobar
@@ -279,7 +279,6 @@ Nunca se aplican solas: marca `[x]` o pídelo en el chat.
 
 - Memoria y red en un portátil escolar de 4 GB con Wi-Fi real (música, L6 ya aplicado).
 - Cuota de altas anónimas por IP de Firebase Auth con muchas clases tras la misma red del colegio.
-- Qué cabecera de caché gana en el Hosting real (`/assets/**` vs `*.js`).
 - La CSP (L5.4) y los dominios regionales de Realtime Database contra el proyecto Firebase real, mirando violaciones en la consola.
 
 ## Lo que está bien y no hay que tocar

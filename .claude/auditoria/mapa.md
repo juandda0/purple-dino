@@ -1,7 +1,7 @@
 # Mapa — Purple Dino (commit 0c3bef0)
 
 ## Stack
-React 19.3 + react-router 7.18 + Zustand 5, Vite 7.3, TypeScript 5.9 (strict), Firebase JS SDK 12.19 (Auth anónima + Realtime Database), Firebase Hosting. Tests: Vitest 3.2 (lógica) + @firebase/rules-unit-testing 5 (reglas, emulador). ESLint 9 + typescript-eslint. Node 22, Java 21 (emuladores). Sin backend propio ni Cloud Functions.
+React 19.3 (router propio, `src/lib/router.ts`) + Zustand 5, Vite 7.3, TypeScript 5.9 (strict), Firebase JS SDK 12.19 (Auth anónima + Realtime Database), Firebase Hosting. Tests: Vitest 3.2 (lógica) + @firebase/rules-unit-testing 5 (reglas, emulador). ESLint 9 + typescript-eslint. Node 22, Java 21 (emuladores). Sin backend propio ni Cloud Functions.
 
 ## Verificación
 `npm run typecheck` · `npm run lint` · `npm test` · `npm run test:rules` (levanta emulador; si ya corre `dev:emu`, usar `npx vitest run --config vitest.rules.config.ts`) · `npm run build` · todo: `npm run verify`.

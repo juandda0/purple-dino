@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRoom, useSecondsLeft } from '../data/hooks';
 import { JoinError, joinRoom, leavePresence, readMyAnswer, setReady, submitAnswer } from '../data/room';
 import { safeStorage } from '../lib/storage';
 import { ensureSignedIn } from '../lib/firebase';
+import { navigate, useFromStart } from '../lib/router';
 import { cleanName } from '../game/names';
 import { AVATARS, DINO_COLORS } from '../game/stops';
 import type { Reveal, Room } from '../game/types';
@@ -23,8 +23,7 @@ const loadProfile = (): Profile => {
 };
 
 /** Student phone app: the controller. Phones stay silent (design §3.5). */
-export default function PlayApp() {
-  const { code: codeParam } = useParams();
+export default function PlayApp({ codeParam }: { codeParam: string | null }) {
   const code = codeParam && /^\d{4}$/.test(codeParam) ? codeParam : null;
   const [uid, setUid] = useState<string | null>(null);
 
@@ -54,9 +53,8 @@ function Logo() {
 }
 
 function Join({ code, onJoined }: { code: string | null; onJoined: (uid: string, code: string) => void }) {
-  const navigate = useNavigate();
   // opened from the start screen on a computer (JOIN A GAME): offer the way back; a phone from the QR code has nowhere to go back to
-  const fromStart = (useLocation().state as { fromStart?: boolean } | null)?.fromStart === true;
+  const fromStart = useFromStart();
   const [profile, setProfile] = useState(loadProfile);
   const [typedCode, setTypedCode] = useState(code ?? '');
   const [error, setError] = useState<string | null>(null);
