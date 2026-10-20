@@ -1,0 +1,25 @@
+{
+  "name": "purple-dino-promo",
+  "private": true,
+  "type": "module",
+  "description": "Promo trailer for Purple Dino, made with Remotion from real gameplay recordings.",
+  "scripts": {
+    "grabar": "node scripts/grabar.mjs",
+    "studio": "remotion studio src/index.jsx",
+    "voz": "node scripts/importar-voz.mjs",
+    "compases": "node scripts/compases.mjs",
+    "render": "../node_modules/.bin/vite-node scripts/frenazo.mjs && ../node_modules/.bin/vite-node scripts/srt.mjs && remotion render src/index.jsx Trailer out/purple-dino-trailer.mp4 --concurrency=2 --offthreadvideo-cache-size-in-bytes=800000000 --crf=18"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.535",
+    "@remotion/google-fonts": "4.0.535",
+    "firebase": "12.19.0",
+    "puppeteer-core": "25.13.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.535"
+  },
+  "devDependencies": {
+    "msedge-tts": "2.1.0"
+  }
+}

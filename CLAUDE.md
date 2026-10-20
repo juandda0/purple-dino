@@ -27,6 +27,7 @@ Puertos: Vite 5173, Auth emulator 9099, Database emulator 9000, Emulator UI 4000
 - `src/play/` app del celular. `src/ui/` componentes compartidos. `src/audio/` música y efectos (solo proyector).
 - `src/content/questions/course-6/unit-XX.json` banco de preguntas (provisional B1).
 - `design/` mockups, generadores de assets y packs de terceros (`assets-src/`, créditos en `design/assets/CREDITS.md`).
+- `promo/` tráiler en Remotion, con su propio `package.json`: `npm run grabar win|lose` graba una partida real (necesita `dev:emu` corriendo), `guion.md` tiene el texto para ElevenLabs, `npm run voz` importa la toma y `npm run render` saca el MP4.
 
 ## Decisiones
 
